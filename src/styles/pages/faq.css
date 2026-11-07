@@ -1,0 +1,12 @@
+/* FAQ page: the custom order page's accordion, in one block per topic. */
+.faq-list{border-top:2px solid var(--ink)}
+.faq-group{padding-bottom:8px}
+.faq-group-head{align-items:flex-start}
+.faq-more{display:flex;flex-wrap:wrap;gap:12px 28px;padding-top:16px;padding-bottom:56px}
+
+@media (min-width:1024px){
+  .faq-group .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  .faq-group-head{grid-column:1/5}
+  .faq-group .faq-list{grid-column:6/13}
+  #faq-top h1 .ln{display:inline}
+}

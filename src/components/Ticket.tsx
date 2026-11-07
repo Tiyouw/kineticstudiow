@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { productHref, type Locale } from "@/lib/i18n";
-import { formatIdr, formatUsd, type Product, getWaLinks } from "@/content";
+import { prices, type Product, getWaLinks } from "@/content";
 import type { CommonDict } from "@/i18n/common";
 
 /** Premade mascot as a ticket stub. `stampDelay` sets when the SOLD stamp slams in (CSS --sd). */
 export default async function Ticket({ p, locale, c, stampDelay }: { p: Product; locale: Locale; c: CommonDict; stampDelay?: string }) {
   const w = await getWaLinks();
   const link = productHref(locale, p.slug);
-  const price = formatIdr(p.priceIdr);
+  const pr = prices(p, locale);
   const t = c.product;
   return (
     <article className={"tk" + (p.sold ? " sold" : "")} id={`tk-${p.no}`} data-status={p.sold ? "sold" : "available"}>
@@ -21,11 +21,11 @@ export default async function Ticket({ p, locale, c, stampDelay }: { p: Product;
         <span className="tk-no">#{p.no}</span>
         <h3 className="tk-name"><Link href={link}>{p.name}</Link></h3>
         <p className="tk-status">{p.sold ? t.sold : t.available}</p>
-        <p className="tk-price"><b>{price}</b>{formatUsd(p.priceUsd)}{p.wasIdr ? <> <s>{formatIdr(p.wasIdr)}</s></> : null}</p>
+        <p className="tk-price"><b>{pr.main}</b>{pr.alt}{pr.was ? <> <s>{pr.was}</s></> : null}</p>
         {p.sold ? (
           <span className="btn tk-btn tk-gone" aria-disabled="true">{t.gone}</span>
         ) : (
-          <a className="btn btn-red tk-btn" href={w.href("order", locale, { no: p.no, name: p.name, price })} target="_blank" rel="noopener">{t.order}</a>
+          <a className="btn btn-red tk-btn" href={w.href("order", locale, { no: p.no, name: p.name, price: pr.main })} target="_blank" rel="noopener">{t.order}</a>
         )}
       </div>
       <div className="tk-stub"><span className="tk-admit">{t.admit}</span><span className="tk-seat">{t.seat}<b>{p.no}</b></span></div>

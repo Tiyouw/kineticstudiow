@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext } from "react";
-import { DEFAULT_WA, waHref, waText, type WaConfig, type WaData, type WaKind } from "@/lib/whatsapp";
+import { DEFAULT_WA, mailHref, waHref, waText, type WaConfig, type WaData, type WaKind } from "@/lib/whatsapp";
 import type { Locale } from "@/lib/i18n";
 
 const Ctx = createContext<WaConfig>(DEFAULT_WA);
@@ -15,5 +15,6 @@ export function useWa() {
   return {
     href: (kind: WaKind, locale: Locale, data?: WaData) => waHref(kind, locale, data, cfg),
     text: (kind: WaKind, locale: Locale, data?: WaData) => waText(kind, locale, data, cfg),
+    mail: (kind: WaKind, locale: Locale, data?: WaData) => mailHref(kind, locale, data, cfg),
   };
 }

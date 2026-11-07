@@ -1,4 +1,5 @@
 import type { Locale } from "./i18n";
+import { SOCIAL } from "./site";
 
 
 export type WaKind = "general" | "order" | "ask" | "project" | "custom";
@@ -60,4 +61,19 @@ export function waText(kind: WaKind, locale: Locale, data: WaData = {}, cfg: WaC
 
 export function waHref(kind: WaKind, locale: Locale, data?: WaData, cfg: WaConfig = DEFAULT_WA): string {
   return `https://wa.me/${cfg.number}?text=${encodeURIComponent(waText(kind, locale, data, cfg))}`;
+}
+
+const SUBJECT: Record<WaKind, Record<Locale, string>> = {
+  general: { en: "Mascot enquiry", id: "Tanya maskot" },
+  order: { en: "Order: premade mascot #{no} {name}", id: "Order: maskot premade #{no} {name}" },
+  ask: { en: "Question: premade mascot #{no} {name}", id: "Tanya: maskot premade #{no} {name}" },
+  project: { en: "Something like \"{project}\"", id: "Mirip project \"{project}\"" },
+  custom: { en: "Custom design brief", id: "Brief desain custom" },
+};
+
+/** The same message as an email to the studio, for buyers abroad who don't use WhatsApp. */
+export function mailHref(kind: WaKind, locale: Locale, data: WaData = {}, cfg: WaConfig = DEFAULT_WA): string {
+  const subject = SUBJECT[kind][locale].replace(/\{(\w+)\}/g, (_, k: keyof WaData) => String(data[k] ?? "")).replace(/\s+/g, " ").trim();
+  const body = waText(kind, locale, data, cfg);
+  return `mailto:${SOCIAL.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

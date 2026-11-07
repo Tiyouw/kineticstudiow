@@ -5,12 +5,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { href, locales, type Locale } from "@/lib/i18n";
 import { fill } from "@/i18n/pages/product";
-import { formatIdr, formatUsd, getProduct, getProducts, getCopy, getWaLinks } from "@/content";
+import { prices, getProduct, getProducts, getCopy, getWaLinks } from "@/content";
 import Ticket from "@/components/Ticket";
 import Bubble from "@/components/Bubble";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
-import { ArrowIcon, CheckIcon, WaIcon } from "@/components/Icons";
+import { ArrowIcon, CheckIcon, MailIcon, WaIcon } from "@/components/Icons";
 import Gallery, { type View } from "@/components/shop/Gallery";
 
 type Props = { params: Promise<{ lang: Locale; slug: string }> };
@@ -50,7 +50,8 @@ export default async function ProductPage({ params }: Props) {
   const t = (await getCopy("product", locale));
   const all = await getProducts();
   const name = titleCase(p.name);
-  const price = formatIdr(p.priceIdr);
+  const pr = prices(p, locale);
+  const price = pr.main;
   const wa = { no: p.no, name: p.name, price };
 
   // the next three other products, wrapping around the list, available ones first
@@ -109,8 +110,8 @@ export default async function ProductPage({ params }: Props) {
                 <p id="p-status" className="tk-status hx" style={d(".76s")}>{p.sold ? c.product.sold : c.product.available}</p>
                 <p id="p-price" className="hx" style={d(".84s")}>
                   <b>{price}</b>
-                  <span>{formatUsd(p.priceUsd)}</span>
-                  {p.wasIdr && !p.sold ? <><span className="was-l">{t.was}</span><span className="was">{formatIdr(p.wasIdr)}<i /></span></> : null}
+                  <span>{pr.alt}</span>
+                  {pr.was && !p.sold ? <><span className="was-l">{t.was}</span><span className="was">{pr.was}<i /></span></> : null}
                 </p>
                 <div id="p-actions" className="hx" style={d(".95s")}>
                   {p.sold ? (
@@ -119,6 +120,7 @@ export default async function ProductPage({ params }: Props) {
                     <a className="btn btn-red" href={w.href("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
                   )}
                   <a className="btn btn-line" href={w.href("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
+                  {locale === "en" ? <a className="mail-alt" href={w.mail(p.sold ? "general" : "order", locale, wa)}><MailIcon /> {c.emailInstead}</a> : null}
                 </div>
                 {p.sold ? (
                   <div id="p-sold" className="hx" style={d("1.05s")}>

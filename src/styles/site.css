@@ -164,3 +164,10 @@ tiyoouw-mark{display:block;color:var(--ink)}
 /* real client logos from the CMS: one ink, sized to the lettered marks */
 .mk-logo{display:inline-flex;align-items:center}
 .mk-logo img{height:44px;width:auto;max-width:160px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9}
+
+/* "Prefer email?" link next to the WhatsApp buttons (English pages) */
+.mail-alt{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-weight:700;font-size:15px;color:inherit;text-decoration:underline;text-underline-offset:3px}
+.mail-alt svg{width:18px;height:18px}
+#p-actions .mail-alt{flex-basis:100%;margin-top:4px}
+#cta-mail{display:flex;width:max-content;margin-top:14px}
+#send-mail{display:flex;width:max-content;margin:12px auto 0}

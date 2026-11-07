@@ -8,7 +8,7 @@ import { sanityFetch } from "@/sanity/client";
 import { mergeCopy } from "@/sanity/copy";
 import { DICTS, type Copy, type CopyKey } from "@/i18n/dicts";
 import type { Locale } from "@/lib/i18n";
-import { DEFAULT_WA, waHref, waText, type WaConfig, type WaData, type WaKind } from "@/lib/whatsapp";
+import { DEFAULT_WA, mailHref, waHref, waText, type WaConfig, type WaData, type WaKind } from "@/lib/whatsapp";
 import type { ClientMark, Product, Project, Testimonial } from "./types";
 
 export * from "./types";
@@ -81,6 +81,18 @@ export const getWa = cache(async (): Promise<WaConfig> => {
 export const formatIdr = (n: number) => "Rp " + n.toLocaleString("id-ID");
 export const formatUsd = (n: number) => "$" + n;
 
+/**
+ * A product's prices for one language: English pages are for buyers abroad, so USD leads there and rupiah is the
+ * aside; Indonesian pages are the other way round. The struck-through price follows the lead currency.
+ */
+export function prices(p: Pick<Product, "priceIdr" | "priceUsd" | "wasIdr">, locale: Locale) {
+  const usdFirst = locale === "en" && p.priceUsd > 0;
+  const wasUsd = p.wasIdr && p.priceIdr ? Math.round((p.priceUsd * p.wasIdr) / p.priceIdr) : 0;
+  return usdFirst
+    ? { main: formatUsd(p.priceUsd), alt: formatIdr(p.priceIdr), was: p.wasIdr ? formatUsd(wasUsd) : null }
+    : { main: formatIdr(p.priceIdr), alt: p.priceUsd ? formatUsd(p.priceUsd) : "", was: p.wasIdr ? formatIdr(p.wasIdr) : null };
+}
+
 /** WhatsApp links for server components: `const w = await getWaLinks(); w.href("order", locale, data)`. */
 export async function getWaLinks() {
   const cfg = await getWa();
@@ -88,5 +100,6 @@ export async function getWaLinks() {
     cfg,
     href: (kind: WaKind, locale: Locale, data?: WaData) => waHref(kind, locale, data, cfg),
     text: (kind: WaKind, locale: Locale, data?: WaData) => waText(kind, locale, data, cfg),
+    mail: (kind: WaKind, locale: Locale, data?: WaData) => mailHref(kind, locale, data, cfg),
   };
 }
