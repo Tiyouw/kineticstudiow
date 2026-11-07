@@ -1,0 +1,9 @@
+/* Shop: everything else lives in kinetic.css (#how, #catalog-bar, #licence, .tk) */
+#how{padding-top:48px}
+#catalog .tk[hidden]{display:none}
+@media (min-width:1024px){
+  #how{padding-top:72px}
+  /* one line on desktop ("Premade mascots"), two on mobile */
+  #shop-head h1 .ln{display:inline-block}
+  #shop-head h1 .ln+.ln{margin-left:.25em}
+}

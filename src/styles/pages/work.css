@@ -1,0 +1,32 @@
+/* Work page: real-browser fixes and the mobile layout on top of kinetic.css */
+
+/* the sheet covers the viewport, not the first frame of a canvas */
+#sheet{position:fixed;inset:0;width:auto;height:100vh;height:100dvh}
+#sheet-panel{overscroll-behavior:contain}
+#sheet-bg{cursor:pointer}
+
+@media (max-width:1023px){
+  #projects{padding-top:48px}
+  /* tile 01 is "big" on desktop and wide on mobile */
+  #proj-grid .big{grid-column:span 2}
+  #proj-grid .big .tile-art{aspect-ratio:auto;height:240px}
+  #proj-grid .big .tile-art img{max-height:200px}
+  #proj-grid .big .tile-cap strong{font-size:22px}
+  #proj-grid.is-filtered .big .tile-art{aspect-ratio:1;height:auto}
+  #proj-grid.is-filtered .big .tile-art img{max-height:130px}
+
+  /* bottom sheet: gallery sits between the description and the button */
+  #sheet-panel{max-height:calc(100dvh - 52px);display:flex;flex-direction:column;padding-bottom:max(28px,env(safe-area-inset-bottom))}
+  #sheet-info{display:contents}
+  #sheet-info .tag{align-self:flex-start}
+  #sheet-gal{order:1}
+  #sheet-cta{order:2;flex:none}
+}
+
+@media (min-width:1024px){
+  #projects{padding-top:72px}
+  #work-head h1 .ln{display:inline-block}
+  #sheet-panel{width:min(1000px,calc(100vw - 64px));margin-left:calc(min(1000px,calc(100vw - 64px)) / -2);top:max(24px,calc(50vh - 380px));max-height:min(760px,calc(100vh - 48px))}
+  #proj-grid.is-filtered .big .tile-art img{max-height:220px}
+  #proj-grid.is-filtered .big .tile-cap strong{font-size:20px}
+}

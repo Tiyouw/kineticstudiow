@@ -1,0 +1,19 @@
+/* Product detail: the layout lives in kinetic.css (#crumbs, #pm, #pinfo, #included, #more-row) */
+#get h2{margin-bottom:24px}
+#more-shop{margin-top:12px}
+#pm .stamp{font-size:56px;padding:4px 20px;top:46%}
+
+/* sold product */
+#product.is-sold .pm-layer img{opacity:.4;filter:grayscale(1)}
+#product.is-sold #p-status{color:var(--red)}
+#product.is-sold #p-price b{color:var(--ink-2);text-decoration:line-through}
+#product.is-sold #p-no,#product.is-sold .tk-admit{color:var(--ink-2)}
+#product.is-sold #pinfo{box-shadow:6px 6px 0 rgba(28,60,109,.4)}
+#p-sold{margin-top:28px;padding:20px;border:2px dashed var(--ink);background:var(--paper)}
+#p-sold p{margin:0 0 12px;font-size:16px}
+#p-sold .link{margin:0}
+
+@media (max-width:1023px){
+  #crumbs .wrap{padding:0}
+  #pm .stamp{font-size:40px}
+}

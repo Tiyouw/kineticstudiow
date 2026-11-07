@@ -1,0 +1,68 @@
+import type { Locale } from "@/lib/i18n";
+
+const product = {
+  en: {
+    crumbsAria: "Breadcrumb",
+    shop: "Shop",
+    bandL: "Premade mascot",
+    bandR: "Exclusive · one only",
+    was: "was",
+    ask: "Ask about this mascot",
+    orderMsg: "Your order message",
+    galleryAria: "Product views",
+    view: "View",
+    showView: "Show view {n}",
+    imgAlt: "{name} mascot, view {n}",
+    getEyebrow: "In the envelope",
+    getTitle: "What you get",
+    gets: ["Vector files (AI and SVG)", "PNG files on a transparent background", "Full-colour and one-ink versions", "Name and colour tweak to fit your brand"],
+    getPh: "Placeholder, confirm with Fatwa",
+    onceTitle: "Sold once",
+    once: "When {name} finds its brand, it comes off the shelf. No other brand will ever wear it.",
+    soldTitle: "Already sold",
+    soldOnce: "{name} has found its brand and left the shelf. No other brand will ever wear it.",
+    soldNote: "This one has found its brand. Want a character like it, drawn just for you?",
+    soldCta: "Start a custom order",
+    moreEyebrow: "Still looking",
+    moreTitle: "More premade mascots",
+    allEyebrow: "Box office",
+    seeAll: "See all {n} mascots",
+    theShop: "The shop",
+    seeShop: "See the shop",
+  },
+  id: {
+    crumbsAria: "Breadcrumb",
+    shop: "Toko",
+    bandL: "Maskot premade",
+    bandR: "Eksklusif · cuma satu",
+    was: "dari",
+    ask: "Tanya soal maskot ini",
+    orderMsg: "Pesan order kamu",
+    galleryAria: "Tampilan produk",
+    view: "Tampilan",
+    showView: "Lihat tampilan {n}",
+    imgAlt: "Maskot {name}, tampilan {n}",
+    getEyebrow: "Isi amplopnya",
+    getTitle: "Yang kamu dapat",
+    gets: ["File vektor (AI dan SVG)", "File PNG dengan latar transparan", "Versi full colour dan satu tinta", "Penyesuaian nama dan warna biar pas sama brand kamu"],
+    getPh: "Placeholder, konfirmasi ke Fatwa",
+    onceTitle: "Dijual sekali",
+    once: "Begitu {name} ketemu brand-nya, dia turun dari etalase. Nggak akan ada brand lain yang memakainya.",
+    soldTitle: "Sudah terjual",
+    soldOnce: "{name} sudah ketemu brand-nya dan turun dari etalase. Nggak akan ada brand lain yang memakainya.",
+    soldNote: "Maskot ini sudah punya brand. Mau karakter serupa yang digambar khusus buat kamu?",
+    soldCta: "Mulai custom order",
+    moreEyebrow: "Masih cari-cari?",
+    moreTitle: "Maskot premade lainnya",
+    allEyebrow: "Loket",
+    seeAll: "Lihat semua {n} maskot",
+    theShop: "Ke toko",
+    seeShop: "Lihat toko",
+  },
+};
+
+export type ProductDict = (typeof product)["en"];
+export const getProductDict = (l: Locale): ProductDict => product[l];
+
+/** "{name}" style fill-in. */
+export const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));

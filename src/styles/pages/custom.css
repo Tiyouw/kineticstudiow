@@ -1,0 +1,17 @@
+/* Custom order page (Mix A d10 mobile / d11 desktop). Most rules live in kinetic.css. */
+
+/* #page clips with overflow:hidden, which makes it a scroll box and stops the sticky preview.
+   clip cuts the same overflow without becoming a scroll container. */
+#page:has(#brief){overflow:clip}
+
+#faq-head{align-items:flex-start}
+.qa h3{margin:0;font:inherit}
+
+@media (max-width:1023px){
+  #faq{padding-bottom:24px}
+}
+
+@media (min-width:1024px){
+  #order-head h1 .ln{display:inline}
+  #faq{padding-bottom:40px}
+}
