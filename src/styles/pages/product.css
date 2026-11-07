@@ -17,3 +17,6 @@
   #crumbs .wrap{padding:0}
   #pm .stamp{font-size:40px}
 }
+
+/* the second currency sits on its own line under the lead price (and the struck one) */
+#p-price .p-alt{display:block;margin-top:4px;font-weight:600;font-size:15px;color:var(--ink-2)}

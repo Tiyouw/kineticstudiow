@@ -110,8 +110,8 @@ export default async function ProductPage({ params }: Props) {
                 <p id="p-status" className="tk-status hx" style={d(".76s")}>{p.sold ? c.product.sold : c.product.available}</p>
                 <p id="p-price" className="hx" style={d(".84s")}>
                   <b>{price}</b>
-                  <span>{pr.alt}</span>
                   {pr.was && !p.sold ? <><span className="was-l">{t.was}</span><span className="was">{pr.was}<i /></span></> : null}
+                  {pr.alt ? <span className="p-alt">{pr.alt}</span> : null}
                 </p>
                 <div id="p-actions" className="hx" style={d(".95s")}>
                   {p.sold ? (
