@@ -1,18 +1,21 @@
 import { NextResponse } from "next/server";
-import { getAuth, isConfigured } from "@/lib/threads";
+import { getAccounts, isConfigured } from "@/lib/threads";
 
 export const dynamic = "force-dynamic";
 
-/** For the Studio's Threads pane: connection state only, never the token. */
+/** For the Studio: which Threads accounts are connected. Never the tokens. */
 export async function GET() {
-  const a = isConfigured() ? await getAuth().catch(() => null) : null;
+  const list = isConfigured() ? await getAccounts().catch(() => []) : [];
   return NextResponse.json(
     {
       configured: isConfigured(),
-      connected: !!a?.token,
-      username: a?.username ?? null,
-      expiresAt: a?.token ? a.expiresAt ?? null : null,
-      lastError: a?.lastError ?? null,
+      accounts: list.map((a) => ({
+        id: a.userId,
+        username: a.username ?? null,
+        connected: !!a.token,
+        expiresAt: a.token ? a.expiresAt ?? null : null,
+        lastError: a.lastError ?? null,
+      })),
     },
     { headers: { "Cache-Control": "no-store" } },
   );

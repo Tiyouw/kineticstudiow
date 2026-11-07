@@ -4,6 +4,7 @@ import { copyFields } from "../copy";
 import { QUESTIONS } from "@/lib/fatwaQuestions";
 import SharePanel from "../SharePanel";
 import ThreadsPostInfo from "../ThreadsPostInfo";
+import ThreadsAccountsInput from "../ThreadsAccountsInput";
 
 const L = (name: string, title: string, long = false, required = false) =>
   defineField({
@@ -134,19 +135,35 @@ export const post = defineType({
     // nothing is stored here: the field only shows the share buttons and ready-to-paste captions
     defineField({ name: "share", title: "Bagikan", type: "string", readOnly: true, components: { input: SharePanel }, description: "Buka X, Threads, dan lainnya dengan caption dan link sudah terisi, atau copy caption-nya." }),
     defineField({ name: "related", title: "Terkait dengan", type: "reference", to: [{ type: "product" }, { type: "project" }], description: "Opsional: maskot atau karya yang dibahas. Tampil sebagai kartu di bawah tulisan." }),
-    defineField({ name: "shareThreads", title: "Kirim ke Threads", type: "boolean", initialValue: false, description: "Saat di-Publish, tulisan ini otomatis diposting ke Threads Kinetic: foto, caption, dan link. Hanya sekali." }),
-    defineField({ name: "shareIgStory", title: "Teruskan ke Instagram Story", type: "boolean", initialValue: false, hidden: ({ document }) => !document?.shareThreads, description: "Post Threads-nya juga muncul sebagai Story (24 jam) di Instagram yang terhubung dengan Threads." }),
+    defineField({
+      name: "threadsAccounts", title: "Kirim ke Threads", type: "array", of: [defineArrayMember({ type: "string" })],
+      components: { input: ThreadsAccountsInput },
+      description: "Opsional. Saat di-Publish, tulisan ini otomatis diposting ke akun yang dicentang: foto, caption, dan link. Sekali per akun.",
+    }),
+    defineField({ name: "shareIgStory", title: "Teruskan ke Instagram Story", type: "boolean", initialValue: false, hidden: ({ document }) => !(document?.threadsAccounts as string[] | undefined)?.length, description: "Post Threads-nya juga muncul sebagai Story (24 jam) di Instagram yang terhubung dengan tiap akun Threads itu." }),
     // nothing is stored here: shows the Threads link, numbers or the reason it failed
     defineField({ name: "threadsInfo", title: "Status Threads", type: "string", readOnly: true, components: { input: ThreadsPostInfo } }),
     defineField({ name: "shareX", title: "Kirim ke X (nanti)", type: "boolean", initialValue: false, description: "Belum aktif." }),
     defineField({
       name: "social", title: "Status posting media sosial", type: "object", readOnly: true, options: { collapsible: true, collapsed: true },
       fields: [
-        defineField({ name: "threadsId", title: "ID Threads", type: "string" }),
-        defineField({ name: "threadsUrl", title: "Link Threads", type: "url" }),
-        defineField({ name: "threadsError", title: "Kendala Threads", type: "string" }),
+        defineField({
+          name: "threads", title: "Threads", type: "array",
+          of: [defineArrayMember({
+            type: "object", name: "threadsShare",
+            fields: [
+              defineField({ name: "account", title: "ID akun", type: "string" }),
+              defineField({ name: "username", title: "Akun", type: "string" }),
+              defineField({ name: "id", title: "ID post", type: "string" }),
+              defineField({ name: "url", title: "Link", type: "url" }),
+              defineField({ name: "sharedAt", title: "Dikirim pada", type: "datetime" }),
+              defineField({ name: "error", title: "Kendala", type: "string" }),
+              defineField({ name: "igStoryStatus", title: "Instagram Story", type: "string" }),
+            ],
+            preview: { select: { title: "username", subtitle: "url" }, prepare: ({ title, subtitle }) => ({ title: title ? `@${title}` : "Akun Threads", subtitle }) },
+          })],
+        }),
         defineField({ name: "threadsLock", title: "Sedang dikirim sejak", type: "datetime", hidden: true }),
-        defineField({ name: "igStoryStatus", title: "Instagram Story", type: "string" }),
         defineField({ name: "xId", title: "ID X", type: "string" }),
         defineField({ name: "xUrl", title: "Link X", type: "url" }),
         defineField({ name: "sharedAt", title: "Dikirim pada", type: "datetime" }),

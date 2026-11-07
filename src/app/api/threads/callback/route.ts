@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { checkState, connect, noteError } from "@/lib/threads";
+import { checkState, connect } from "@/lib/threads";
 import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
     return back(`ok=1&user=${encodeURIComponent(username)}`);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    await noteError(msg);
     return back(`error=${encodeURIComponent(msg)}`);
   }
 }
