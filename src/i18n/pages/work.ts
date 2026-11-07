@@ -2,7 +2,8 @@ import type { Locale } from "@/lib/i18n";
 
 const work = {
   en: {
-    metaTitle: "Work",
+    metaTitle: "Work: mascot & character design portfolio",
+    metaDesc: "Portfolio of hand-drawn retro mascots, character designs, badges and lettering made for brands.",
     strip: ["Work", "Jember, East Java"],
     eyebrow: "Selected work",
     title: ["Fresh off", "the press"],
@@ -25,7 +26,8 @@ const work = {
     ctaSub: "Tell me about your brand on WhatsApp. Every project here started with one chat.",
   },
   id: {
-    metaTitle: "Karya",
+    metaTitle: "Karya: portofolio desain maskot",
+    metaDesc: "Portofolio maskot retro, desain karakter, badge, dan lettering yang digambar tangan untuk berbagai brand.",
     strip: ["Karya", "Jember, Jawa Timur"],
     eyebrow: "Karya pilihan",
     title: ["Baru keluar", "dari meja sablon"],

@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: { default: "Kinetic Studiow", template: "%s · Kinetic Studiow" },
     description: id
       ? "Maskot kartun retro dan branding, digambar tangan di Jember, Jawa Timur. Order lewat WhatsApp."
-      : "Retro cartoon mascots and branding, hand-drawn in Jember, East Java. Order on WhatsApp.",
+      : "Custom retro cartoon mascots and branding, hand-drawn in Indonesia for brands worldwide. Premade mascots or commissions.",
     keywords: id
       ? ["desain maskot", "jasa maskot", "ilustrasi retro", "maskot brand", "logo vintage", "lettering", "desain merch", "ilustrator Jember", "Kinetic Studiow"]
-      : ["mascot design", "retro cartoon mascot", "vintage logo", "brand mascot", "custom lettering", "merch graphics", "illustrator Indonesia", "Kinetic Studiow"],
+      : ["custom mascot design", "mascot commission", "brand mascot", "retro cartoon mascot", "premade mascot", "character design", "cartoon logo", "vintage logo", "custom lettering", "merch graphics", "mascot illustrator", "Kinetic Studiow"],
     openGraph: { type: "website", siteName: "Kinetic Studiow", locale: id ? "id_ID" : "en_US", alternateLocale: id ? "en_US" : "id_ID" },
     twitter: { card: "summary_large_image" },
     ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } } : {}),

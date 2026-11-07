@@ -12,7 +12,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: (await getCopy("custom", lang)).metaTitle, description: (await getCopy("custom", lang)).lede, alternates: alternates(lang, "/custom-order") };
+  return { title: (await getCopy("custom", lang)).metaTitle, description: (await getCopy("custom", lang)).metaDesc, alternates: alternates(lang, "/custom-order") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });

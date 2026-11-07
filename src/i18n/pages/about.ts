@@ -2,7 +2,8 @@ import type { Locale } from "@/lib/i18n";
 
 const about = {
   en: {
-    metaTitle: "About",
+    metaTitle: "About: mascot illustrator in Indonesia",
+    metaDesc: "Kinetic Studiow is a mascot and illustration studio in Jember, Indonesia, drawing retro cartoon characters for brands worldwide.",
     strip: ["About", "Jember, East Java"],
     eyebrow: "About the studio",
     title: ["The hand", "behind", "Kinetic"],
@@ -26,7 +27,8 @@ const about = {
     creditsName: "tiyoouw",
   },
   id: {
-    metaTitle: "Tentang",
+    metaTitle: "Tentang: ilustrator maskot dari Jember",
+    metaDesc: "Kinetic Studiow adalah studio maskot dan ilustrasi di Jember yang menggambar karakter kartun retro untuk brand.",
     strip: ["Tentang", "Jember, Jawa Timur"],
     eyebrow: "Tentang studio",
     title: ["Tangan", "di balik", "Kinetic"],

@@ -2,7 +2,8 @@ import type { Locale } from "@/lib/i18n";
 
 const shop = {
   en: {
-    metaTitle: "Shop: premade mascots",
+    metaTitle: "Shop: premade mascots for sale",
+    metaDesc: "Premade retro cartoon mascots for sale. Each one is sold only once, so your brand gets a character no one else has.",
     pageName: "Shop",
     place: "Jember, East Java",
     eyebrow: "Box office",
@@ -29,7 +30,8 @@ const shop = {
     ctaSub: "Get a character drawn for your brand from scratch. It starts with one chat.",
   },
   id: {
-    metaTitle: "Toko: maskot premade",
+    metaTitle: "Toko: maskot premade siap pakai",
+    metaDesc: "Maskot kartun retro premade yang siap dibeli. Tiap maskot cuma dijual sekali, jadi brand-mu punya karakter yang tidak dimiliki orang lain.",
     pageName: "Toko",
     place: "Jember, Jawa Timur",
     eyebrow: "Loket",

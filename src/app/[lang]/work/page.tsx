@@ -11,7 +11,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: (await getCopy("work", lang)).metaTitle, description: (await getCopy("work", lang)).lede, alternates: alternates(lang, "/work") };
+  return { title: (await getCopy("work", lang)).metaTitle, description: (await getCopy("work", lang)).metaDesc, alternates: alternates(lang, "/work") };
 }
 
 export default async function WorkPage({ params }: Props) {

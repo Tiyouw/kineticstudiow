@@ -77,8 +77,9 @@ export default async function ProductPage({ params }: Props) {
     offers: {
       "@type": "Offer",
       url: `${SITE_URL}/${locale}/shop/${p.slug}`,
-      priceCurrency: "IDR",
-      price: p.priceIdr,
+      // English pages are for buyers abroad: USD there, rupiah on the Indonesian pages
+      priceCurrency: locale === "en" && p.priceUsd ? "USD" : "IDR",
+      price: locale === "en" && p.priceUsd ? p.priceUsd : p.priceIdr,
       availability: p.sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
       seller: { "@id": `${SITE_URL}/#studio` },
     },

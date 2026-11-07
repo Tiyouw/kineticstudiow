@@ -18,7 +18,8 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: { absolute: `Kinetic Studiow · ${(await getCopy("home", lang)).metaTitle}` }, alternates: alternates(lang, "") };
+  const h = await getCopy("home", lang);
+  return { title: { absolute: `Kinetic Studiow · ${h.metaTitle}` }, description: h.metaDesc, alternates: alternates(lang, "") };
 }
 
 function Ring({ text }: { text: string }) {

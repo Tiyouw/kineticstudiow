@@ -2,7 +2,8 @@ import type { Locale } from "@/lib/i18n";
 
 const home = {
   en: {
-    metaTitle: "Retro mascots for brands with character",
+    metaTitle: "Custom retro mascot design for brands",
+    metaDesc: "Custom retro cartoon mascots, logos and lettering, hand-drawn in Indonesia for brands worldwide. Pick a premade mascot or commission your own.",
     strip: ["Mascot · Branding", "Retro cartoon illustrator", "Jember, East Java"],
     eyebrow: "Drawn by hand, printed in two inks",
     titleM: ["Retro mascots", "for brands with", "character"],
@@ -30,7 +31,8 @@ const home = {
     quotePh: "Client quote placeholder",
   },
   id: {
-    metaTitle: "Maskot retro untuk brand yang punya karakter",
+    metaTitle: "Jasa desain maskot retro untuk brand",
+    metaDesc: "Jasa desain maskot kartun retro, logo, dan lettering, digambar tangan di Jember. Pilih maskot premade atau pesan custom lewat WhatsApp.",
     strip: ["Maskot · Branding", "Ilustrator kartun retro", "Jember, Jawa Timur"],
     eyebrow: "Digambar tangan, dicetak dua tinta",
     titleM: ["Maskot retro", "untuk brand", "berkarakter"],

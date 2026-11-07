@@ -5,12 +5,7 @@ import { defaultLocale, isLocale } from "@/lib/i18n";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const first = pathname.split("/")[1] ?? "";
-  if (isLocale(first)) {
-    // the 404 page has no params: it reads the language from this header
-    const headers = new Headers(req.headers);
-    headers.set("x-locale", first);
-    return NextResponse.next({ request: { headers } });
-  }
+  if (isLocale(first)) return NextResponse.next();
   const url = req.nextUrl.clone();
   url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
   return NextResponse.redirect(url);

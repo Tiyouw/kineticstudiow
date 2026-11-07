@@ -4,7 +4,8 @@ export type Option = { key: string; label: string };
 
 const custom = {
   en: {
-    metaTitle: "Custom order",
+    metaTitle: "Custom mascot design commission",
+    metaDesc: "Commission a custom mascot, logo or lettering. Tell us about your brand and get a quote on WhatsApp.",
     pageName: "Custom order",
     eyebrow: "Custom order",
     titleLines: ["Make your", "mascot"],
@@ -83,7 +84,8 @@ const custom = {
     ],
   },
   id: {
-    metaTitle: "Pesan custom",
+    metaTitle: "Pesan desain maskot custom",
+    metaDesc: "Pesan maskot, logo, atau lettering custom. Ceritakan brand-mu dan dapatkan penawaran lewat WhatsApp.",
     pageName: "Pesan custom",
     eyebrow: "Pesan custom",
     titleLines: ["Bikin", "maskotmu"],
