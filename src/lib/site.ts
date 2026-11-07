@@ -7,7 +7,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.kineti
 export const SOCIAL = {
   instagram: "https://instagram.com/kinetic.studiow",
   behance: "https://behance.net/kineticstd",
-  email: "kineticcreative666@gmail.com",
+  email: "hello@kineticstudiow.my.id",
 };
 
 /** canonical + hreflang for a path without its locale ("" for home, "/shop", "/shop/x"). */

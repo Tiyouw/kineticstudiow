@@ -24,7 +24,7 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
           <ul className="f-links">
             <li><a href="https://instagram.com/kinetic.studiow" target="_blank" rel="noopener"><InstagramIcon /> Instagram<span>@kinetic.studiow</span></a></li>
             <li><a href="https://behance.net/kineticstd" target="_blank" rel="noopener"><BehanceIcon /> Behance<span>kineticstd</span></a></li>
-            <li><a href="mailto:kineticcreative666@gmail.com"><MailIcon /> {f.email}<span>kineticcreative666@gmail.com</span></a></li>
+            <li><a href="mailto:hello@kineticstudiow.my.id"><MailIcon /> {f.email}<span>hello@kineticstudiow.my.id</span></a></li>
             <li><a href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> WhatsApp<span>{f.chatToOrder}</span></a></li>
           </ul>
         </div>
