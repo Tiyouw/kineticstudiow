@@ -171,3 +171,6 @@ tiyoouw-mark{display:block;color:var(--ink)}
 #p-actions .mail-alt{flex-basis:100%;margin-top:4px}
 #cta-mail{display:flex;width:max-content;margin-top:14px}
 #send-mail{display:flex;width:max-content;margin:12px auto 0}
+
+/* Draft mode badge (Pratinjau in the Studio) */
+#draft-exit{position:fixed;left:12px;bottom:12px;z-index:9999;padding:8px 12px;background:var(--red);color:#fff;font-weight:700;font-size:13px;border:2px solid var(--ink);text-decoration:none}

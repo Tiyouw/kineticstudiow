@@ -2,9 +2,45 @@
 /** The Studio at /studio: where Fatwa edits the site. */
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
+import { defineDocuments, defineLocations, presentationTool, type DocumentLocationResolvers } from "sanity/presentation";
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schemaTypes, copyTypes, SINGLETONS } from "./src/sanity/schemas";
 import Guide from "./src/sanity/Guide";
+import { DICTS } from "./src/i18n/dicts";
+
+/** Where each copy dictionary shows on the site (path after the language). */
+const COPY_PATHS: Record<string, { title: string; path: string }> = {
+  common: { title: "Beranda (teks bersama)", path: "" },
+  home: { title: "Beranda", path: "" },
+  work: { title: "Karya", path: "/work" },
+  shop: { title: "Toko", path: "/shop" },
+  product: { title: "Toko", path: "/shop" },
+  custom: { title: "Pesan custom", path: "/custom-order" },
+  about: { title: "Tentang", path: "/about" },
+  faq: { title: "FAQ", path: "/faq" },
+};
+
+const both = (title: string, path: string) => [
+  { title: `${title} (EN)`, href: `/en${path}` },
+  { title: `${title} (ID)`, href: `/id${path}` },
+];
+
+/** The "used on" list Pratinjau shows on each document. */
+const locations: DocumentLocationResolvers = {
+  product: defineLocations({
+    select: { name: "name", slug: "slug.current" },
+    resolve: (doc) => ({
+      locations: doc?.slug ? [...both(`#${doc.name ?? ""}`, `/shop/${doc.slug}`), ...both("Toko", "/shop")] : both("Toko", "/shop"),
+    }),
+  }),
+  project: defineLocations({ message: "Tampil di halaman Karya", locations: [...both("Karya", "/work"), ...both("Beranda", "")] }),
+  testimonial: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
+  clientMark: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
+  settings: defineLocations({ message: "Nomor & template WhatsApp dipakai di semua halaman", locations: [...both("Pesan custom", "/custom-order"), ...both("Beranda", "")] }),
+  ...Object.fromEntries(
+    Object.keys(DICTS).filter((k) => COPY_PATHS[k]).map((k) => [`copy_${k}`, defineLocations({ locations: both(COPY_PATHS[k].title, COPY_PATHS[k].path) })]),
+  ),
+};
 
 export default defineConfig({
   name: "kinetic",
@@ -38,6 +74,17 @@ export default defineConfig({
             S.list().title("Teks halaman").items(copyTypes.map((t) => S.listItem().title(t.title ?? t.name).id(t.name).child(S.document().schemaType(t.name).documentId(t.name)))),
           ),
         ]),
+    }),
+    presentationTool({
+      name: "pratinjau",
+      title: "Pratinjau",
+      previewUrl: { initial: "/en", previewMode: { enable: "/api/draft-mode/enable", disable: "/api/draft-mode/disable" } },
+      resolve: {
+        mainDocuments: defineDocuments([
+          { route: "/:lang/shop/:slug", filter: `_type == "product" && slug.current == $slug` },
+        ]),
+        locations,
+      },
     }),
   ],
 });

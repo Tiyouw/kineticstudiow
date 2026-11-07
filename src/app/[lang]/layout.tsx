@@ -7,6 +7,8 @@ import { Anton, Barlow } from "next/font/google";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import Nav from "@/components/Nav";
 import WaFloat from "@/components/WaFloat";
 import PageTransition from "@/components/PageTransition";
@@ -48,7 +50,7 @@ export default async function LangLayout({ children, params }: { children: React
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const locale = lang as Locale;
-  const [c, wa] = await Promise.all([getCopy("common", locale), getWa()]);
+  const [c, wa, draft] = await Promise.all([getCopy("common", locale), getWa(), draftMode().then((d) => d.isEnabled)]);
   return (
     <html lang={locale} className={`${anton.variable} ${barlow.variable}`} suppressHydrationWarning>
       <body>
@@ -67,6 +69,13 @@ export default async function LangLayout({ children, params }: { children: React
         <ScrollReveal />
         <Script src="/tiyoouw-mark.js" strategy="beforeInteractive" />
         <Analytics />
+        {draft ? (
+          <>
+            {/* Pratinjau in the Studio: refreshes on every edit; the link leaves draft mode */}
+            <VisualEditing />
+            <a id="draft-exit" href={`/api/draft-mode/disable?to=/${locale}`}>Keluar pratinjau</a>
+          </>
+        ) : null}
       </body>
     </html>
   );
