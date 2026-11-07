@@ -1,29 +1,108 @@
 # Kinetic Studiow — website
 
-Portfolio + premade-mascot shop for **Kinetic Studiow** (retro cartoon mascot illustrator, Jember).
-A collab with **tiyoouw** (website). Orders go to WhatsApp with prefilled messages; no checkout.
+Portfolio + premade-mascot shop for **Kinetic Studiow** (Fatwa, retro cartoon mascot illustrator, Jember).
+Built by **tiyoouw** (Tiyo). Orders go to WhatsApp with prefilled messages; there is no checkout.
 
-- Next.js 15 (App Router) + React 19 + TypeScript, deployed on Vercel
-- Bilingual: `/id` (default) and `/en`
-- Design source: enowX canvas "Kinetic Mix A — Sablon Varsity"
+- Live: https://www.kineticstudiow.my.id (the apex `kineticstudiow.my.id` redirects to `www`)
+- Editors: https://www.kineticstudiow.my.id/studio (Sanity Studio, Indonesian, with a "Panduan" guide pane)
+- Repo: github.com/Tiyouw/kineticstudiow (public). A push to `main` deploys to production on Vercel.
+
+## Stack
+
+- Next.js 15.5 (App Router), React 19, TypeScript, plain CSS
+- Sanity 4 as CMS (`next-sanity` 11). **Stay on Sanity 4 while on Next 15**: Sanity 5 needs a newer React than Next 15 bundles and the build breaks.
+- Vercel hosting + Web Analytics
+- Languages: `/en` (default, the target market) and `/id`. Bare paths redirect to `/en`.
 
 ## Develop
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000 -> /id
-npm run build
+vercel env pull .env.local   # or copy the Sanity vars from Vercel
+npm run dev                  # http://localhost:3000 -> /en
 ```
+
+The Sanity CLI needs Node 20.19+ / 22 (`npx -y node@22 node_modules/sanity/bin/sanity ...` on older machines).
 
 ## Where things are
 
 | Path | What |
 |---|---|
-| `src/app/[lang]/` | pages: home, work, shop, shop/[slug], custom-order, about |
-| `src/content/` | products, projects, client marks, testimonials (typed; a CMS will replace `data.ts`) |
-| `src/i18n/` | copy in ID and EN (`common.ts` shared, `pages/*` per page) |
-| `src/lib/whatsapp.ts` | WhatsApp number and message templates |
-| `src/styles/kinetic.css` | design CSS ported from the canvas (`scripts/port-css.py`) |
-| `src/styles/site.css` | real-browser adjustments (responsive, fixed overlays) |
-| `public/assets/` | brand assets (placeholders for real work/product images) |
-| `public/tiyoouw-mark.js` | tiyoouw logo web component (loader + footer credit) |
+| `src/app/[lang]/` | pages: home, work, shop, shop/[slug], custom-order, about, not-found, catch-all 404 |
+| `src/app/studio/` | the Sanity Studio route (`/studio`, noindex) |
+| `src/app/api/revalidate/` | Sanity webhook target: clears the `sanity` cache tag |
+| `src/app/sitemap.ts`, `robots.ts` | SEO endpoints (all pages × both languages, hreflang) |
+| `src/app/[lang]/**/opengraph-image.tsx` | share cards (site + one per product) |
+| `src/content/index.ts` | data layer: GROQ queries, `getCopy`, `getWa`, price formatting |
+| `src/content/data.ts` | the original placeholder content, now only the seed source |
+| `src/i18n/` | page copy in EN and ID; the code defaults for the CMS "Teks halaman" docs |
+| `src/sanity/` | schemas, Studio structure, the editors' guide (`Guide.tsx`), copy merge helpers |
+| `sanity.config.ts`, `sanity.cli.ts` | Studio and CLI config (project `yqf1n0yb`, dataset `production`) |
+| `src/lib/site.ts` | `SITE_URL`, social links, contact email, canonical/hreflang helper |
+| `src/lib/whatsapp.ts` | default WhatsApp number and templates (the CMS overrides them) |
+| `src/lib/img.ts` | srcset helper for the WebP brand art in `public/assets/` |
+| `scripts/seed-sanity.ts` | one-time seed of the CMS from `data.ts` (uses `createIfNotExists`) |
+| `.github/workflows/sanity-backup.yml` | weekly CMS backup |
+
+## How content flows
+
+1. Fatwa edits in `/studio` and clicks **Publish**.
+2. A Sanity webhook calls `POST /api/revalidate` (secret `SANITY_REVALIDATE_SECRET`), which runs `revalidateTag("sanity")`.
+3. The site shows the change in a few seconds. Without the webhook, pages still refresh every hour.
+
+Page copy: each `copy_<page>` document in the CMS mirrors a dictionary in `src/i18n/`. A filled CMS field wins;
+an empty one falls back to the code. **So after editing a string in code, also change (or clear) it in the CMS**,
+or the old CMS value keeps showing. New keys added in code appear in the Studio automatically, empty.
+
+Images uploaded to Sanity are served through its CDN with `auto=format` (AVIF/WebP) and a width cap, so editors
+can upload JPG/PNG as they are.
+
+## Accounts and services
+
+Credentials live in Tiyo's enowX vault (by name) or in Vercel env vars, never in the repo.
+
+| Service | What for | Access |
+|---|---|---|
+| Vercel (project `kineticstudiow`) | hosting, env vars, analytics | vault `vercel` |
+| GitHub `Tiyouw/kineticstudiow` | code, Actions backup (secret `SANITY_READ_TOKEN`) | vault `github` |
+| Sanity `kineticstudiow-cms` (`yqf1n0yb`) | CMS. Members: Tiyo, Kinetic's Google account | sanity.io/manage |
+| Cloudflare (zone `kineticstudiow.my.id`) | DNS + Email Routing | vault `cloudflare-tiyo` |
+| Google Search Console | indexing (verified by DNS TXT) | Tiyo's Google account |
+
+Env vars (Vercel, production + preview): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
+`SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `SANITY_REVALIDATE_SECRET`, `SANITY_STUDIO_*`, `SANITY_API_*`.
+Optional: `NEXT_PUBLIC_SITE_URL` (overrides the canonical domain), `NEXT_PUBLIC_GSC_VERIFICATION`.
+
+DNS (Cloudflare, both **DNS only**, not proxied):
+`A @ 216.198.79.1` and `CNAME www → <project>.vercel-dns-017.com`, plus Cloudflare Email Routing MX/SPF/DKIM
+and the Google verification TXT.
+
+Email: `hello@kineticstudiow.my.id` is a Cloudflare Email Routing rule forwarding to a Gmail inbox
+(forward only; replying *as* hello@ needs Gmail "Send mail as" with an SMTP service).
+
+## Backup and restore
+
+Every Monday 03:00 WIB (and on demand: Actions → "Sanity backup" → Run workflow) the CMS is exported
+(published documents + images) as a workflow artifact kept 90 days.
+
+Restore: download the artifact, unzip it, then
+
+```bash
+SANITY_AUTH_TOKEN=<a write/admin token> npx sanity dataset import kinetic-sanity-<date>.tar.gz production --replace
+```
+
+## Moving to a new domain (e.g. .com)
+
+1. Add the domain to the Vercel project; point its DNS at Vercel (DNS only).
+2. Set `NEXT_PUBLIC_SITE_URL=https://www.<new>` in Vercel and redeploy (or change the fallback in `src/lib/site.ts`).
+3. Make the old `.my.id` domain 301-redirect to the new one (Vercel → Domains → Redirect).
+4. Sanity → API → CORS origins: add `https://www.<new>`. Update the Studio URL in sanity.io/manage.
+5. Update the hard-coded `KINETICSTUDIOW.MY.ID` text in the share cards (`src/lib/og.tsx` and the `opengraph-image.tsx` files) and the email domain in `src/lib/site.ts`, Footer and About, plus Cloudflare Email Routing.
+6. Search Console: add the new property and use **Change of address**; submit the new sitemap. Same in Bing Webmaster Tools.
+
+## Gotchas
+
+- Don't call `headers()`/`cookies()` in `src/app/[lang]/not-found.tsx`: Next renders it into every page, so the whole site would turn dynamic. It renders both languages and picks one on the client.
+- The 404 for unknown paths is drawn by JavaScript after load (Next 15 sends the layout in the RSC payload only). Status is still 404 and it is noindex. Revisit when upgrading to Next 16.
+- Vercel Web Analytics ignores headless/bot visits, so automated checks don't show up there.
+- `mix-b` branch / `Kinetic-b` worktree holds the alternative design (Mix B). Keep it.
