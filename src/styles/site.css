@@ -11,15 +11,12 @@
 /* WhatsApp float follows the visitor */
 #wa-float{position:fixed;top:auto;bottom:max(20px,env(safe-area-inset-bottom))}
 
-/* Home intro: entrances wait for the loader only when it actually plays */
-.skip-intro #loader{display:none}
-.skip-intro .hx,.skip-intro .hx-pop,.skip-intro .hx-fade{animation-delay:max(0s,calc(var(--d,.5s) - 2.2s))}
-.skip-intro .idle{animation-delay:max(0s,calc(var(--i,3.2s) - 2.2s))}
-.skip-intro #wa-float{animation-delay:max(0s,calc(var(--wd,1s) - 2.2s))}
 
 /* tiyoouw mark (web component) */
 tiyoouw-mark{display:block;color:var(--ink)}
-#ld-tiyo{width:88px;opacity:0;animation:ld-in-r .6s var(--ease) .36s forwards}
+/* tiyoouw mark as tall as the Kinetic badge (the mark fills ~84% of its box) */
+#ld-tiyo{width:150px;opacity:0;animation:ld-in-r .6s var(--ease) .36s forwards}
+#ld-collab{gap:12px}
 .f-tiyo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600}
 .f-tiyo tiyoouw-mark{width:28px}
 
@@ -82,4 +79,24 @@ tiyoouw-mark{display:block;color:var(--ink)}
 }
 @media (min-width:1024px){
   #footer{width:auto;max-width:1200px;padding-left:48px;padding-right:48px;box-sizing:content-box}
+}
+
+@media (min-width:1024px){
+  #ld-tiyo{width:200px}
+  #ld-collab{gap:28px}
+}
+
+/* page transition: one squeegee stroke, left to right (driven by PageTransition.tsx) */
+#pt{position:fixed;inset:0;z-index:125;pointer-events:none;visibility:hidden}
+#pt.on{visibility:visible;pointer-events:auto}
+#pt-ink{position:absolute;inset:0;background:var(--ink);background-image:radial-gradient(circle,rgba(251,245,232,.12) 1.2px,transparent 1.6px);background-size:7px 7px;clip-path:inset(0 100% 0 0)}
+#pt-sq{position:absolute;top:0;left:0;width:18px;height:100%;background:linear-gradient(90deg,var(--deep) 0 12px,var(--red) 12px 18px);box-shadow:4px 0 0 rgba(19,43,80,.25);transform:translateX(-24px)}
+
+@media (min-width:1024px){
+  #nav{width:auto;max-width:1200px;padding-left:48px;padding-right:48px;box-sizing:content-box}
+}
+@media (min-width:1024px) and (max-width:1296px){
+  #nav{padding-left:32px;padding-right:32px;grid-template-columns:160px 1fr auto;gap:16px}
+  #nav-links{gap:0}
+  #nav-links a{padding:0 8px;letter-spacing:.08em}
 }

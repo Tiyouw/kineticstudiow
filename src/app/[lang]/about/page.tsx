@@ -5,7 +5,6 @@ import { waHref } from "@/lib/whatsapp";
 import { getCommon } from "@/i18n/common";
 import { getAbout } from "@/i18n/pages/about";
 import { getClientMarks } from "@/content";
-import PageIn from "@/components/PageIn";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
 import Clients from "@/components/Clients";
@@ -44,7 +43,6 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <>
-      <PageIn />
       <main>
         <section id="intro">
           <div className="wrap">

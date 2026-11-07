@@ -4,7 +4,6 @@ import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getShop } from "@/i18n/pages/shop";
 import { getProducts } from "@/content";
-import PageIn from "@/components/PageIn";
 import Ticket from "@/components/Ticket";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
@@ -33,7 +32,6 @@ export default async function ShopPage({ params }: Props) {
 
   return (
     <>
-      <PageIn />
       <main>
         <section id="shop-head" className="band on-ink ph-band">
           <div className="band-ht" />

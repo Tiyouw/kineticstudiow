@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getCustom } from "@/i18n/pages/custom";
-import PageIn from "@/components/PageIn";
 import Process from "@/components/Process";
 import Footer from "@/components/Footer";
 import BriefForm from "@/components/custom/BriefForm";
@@ -25,7 +24,6 @@ export default async function CustomOrderPage({ params }: Props) {
 
   return (
     <>
-      <PageIn />
       <main>
         <section id="order-head" className="band on-ink ph-band">
           <div className="band-ht" />

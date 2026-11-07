@@ -7,7 +7,6 @@ import { waHref, waText } from "@/lib/whatsapp";
 import { getCommon } from "@/i18n/common";
 import { fill, getProductDict } from "@/i18n/pages/product";
 import { formatIdr, formatUsd, getProduct, getProducts } from "@/content";
-import PageIn from "@/components/PageIn";
 import Ticket from "@/components/Ticket";
 import Bubble from "@/components/Bubble";
 import CtaBand from "@/components/CtaBand";
@@ -69,7 +68,6 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
-      <PageIn />
       <main>
         <nav id="crumbs" aria-label={t.crumbsAria}>
           <div className="wrap">

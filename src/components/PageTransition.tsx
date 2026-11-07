@@ -1,0 +1,78 @@
+"use client";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+
+/**
+ * Squeegee swipe between pages: the navy ink pulls in from the left over the old page,
+ * the route changes underneath, then the same pull carries on to the right and uncovers
+ * the new page. One continuous left-to-right stroke, no hard cut.
+ */
+const EASE = "cubic-bezier(.65,0,.35,1)";
+const IN_MS = 460;
+const OUT_MS = 520;
+
+export default function PageTransition() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const root = useRef<HTMLDivElement>(null);
+  const ink = useRef<HTMLDivElement>(null);
+  const sq = useRef<HTMLDivElement>(null);
+  const waiting = useRef(false);
+  const busy = useRef(false);
+  const revealRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    const sweep = (from: string, to: string, ms: number) => {
+      const w = window.innerWidth;
+      const a = ink.current!.animate([{ clipPath: from }, { clipPath: to }], { duration: ms, easing: EASE, fill: "forwards" });
+      sq.current!.animate([{ transform: "translateX(-24px)" }, { transform: `translateX(${w}px)` }], { duration: ms, easing: EASE, fill: "forwards" });
+      return a.finished;
+    };
+
+    const onClick = (e: MouseEvent) => {
+      if (busy.current || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.("a");
+      if (!a || !a.href || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      e.stopPropagation();
+      busy.current = true;
+      root.current!.classList.add("on");
+      sweep("inset(0 100% 0 0)", "inset(0 0 0 0)", IN_MS).then(() => {
+        waiting.current = true;
+        router.push(url.pathname + url.search + url.hash);
+        // never leave the page covered if the route takes too long
+        window.setTimeout(() => waiting.current && reveal(), 8000);
+      });
+    };
+
+    const reveal = () => {
+      waiting.current = false;
+      sweep("inset(0 0 0 0)", "inset(0 0 0 100%)", OUT_MS).then(() => {
+        root.current?.classList.remove("on");
+        busy.current = false;
+      });
+    };
+    revealRef.current = reveal;
+
+    window.addEventListener("click", onClick, true);
+    return () => window.removeEventListener("click", onClick, true);
+  }, [router]);
+
+  useEffect(() => {
+    if (!waiting.current) return;
+    // let the new page paint once before uncovering it
+    let r2 = 0;
+    const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => revealRef.current()); });
+    return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2); };
+  }, [pathname]);
+
+  return (
+    <div id="pt" ref={root} aria-hidden="true">
+      <div id="pt-ink" ref={ink} />
+      <div id="pt-sq" ref={sq} />
+    </div>
+  );
+}

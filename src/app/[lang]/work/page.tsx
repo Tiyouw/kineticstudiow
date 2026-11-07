@@ -4,7 +4,6 @@ import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getWork } from "@/i18n/pages/work";
 import { getProjects } from "@/content";
-import PageIn from "@/components/PageIn";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 import WorkBrowser from "@/components/work/WorkBrowser";
@@ -24,7 +23,6 @@ export default async function WorkPage({ params }: Props) {
 
   return (
     <>
-      <PageIn />
       <main>
         <WorkBrowser projects={projects} locale={locale} c={c} w={w} />
         <CtaBand locale={locale} c={c} title={w.ctaTitle} sub={w.ctaSub} />

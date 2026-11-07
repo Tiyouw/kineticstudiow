@@ -6,6 +6,7 @@ import { isLocale, locales, type Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import Nav from "@/components/Nav";
 import WaFloat from "@/components/WaFloat";
+import PageTransition from "@/components/PageTransition";
 import "@/styles/kinetic.css";
 import "@/styles/site.css";
 
@@ -51,6 +52,7 @@ export default async function LangLayout({ children, params }: { children: React
           {children}
           <WaFloat locale={locale} label={c.waFloat} />
         </div>
+        <PageTransition />
         <Script src="/tiyoouw-mark.js" strategy="beforeInteractive" />
       </body>
     </html>

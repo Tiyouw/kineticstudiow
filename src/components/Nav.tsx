@@ -8,7 +8,7 @@ import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import { CloseIcon, MenuIcon, WaIcon } from "./Icons";
 
-const ITEMS: Exclude<PageKey, "home">[] = ["work", "shop", "custom", "about"];
+const ITEMS: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
 export function currentPage(pathname: string): PageKey {
   const seg = pathname.split("/")[2] ?? "";
