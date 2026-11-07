@@ -58,7 +58,8 @@ const TIPS = [
   "Selalu klik Publish. Selama masih draft, perubahan belum tampil di situs.",
   "Setelah Publish, situs ikut berubah dalam beberapa detik. Kalau belum, refresh halamannya.",
   "Foto: pakai PNG (bisa transparan) atau JPG. Bentuk persegi paling rapi di kartu toko.",
-  "Ukuran foto cukup sekitar 1500–2500 px di sisi terpanjang. Sistem otomatis mengecilkan untuk pengunjung.",
+  "Tidak perlu ubah ke WebP sendiri: situs otomatis mengubah foto ke format ringan (WebP/AVIF) dan mengecilkannya untuk pengunjung.",
+  "Ukuran ideal 1600–2000 px di sisi terpanjang, maksimal sekitar 10 MB per foto. Foto mentah yang jauh lebih besar tetap bisa, hanya unggahnya lebih lama.",
 ];
 
 export default function Guide() {
