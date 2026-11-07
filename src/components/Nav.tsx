@@ -7,6 +7,7 @@ import { useWa } from "@/components/WaProvider";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import { CloseIcon, MenuIcon, WaIcon } from "./Icons";
+import { img } from "@/lib/img";
 
 const ITEMS: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
@@ -72,7 +73,7 @@ export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
   return (
     <header id="nav">
       <Link id="nav-logo" href={href(locale, "home")} aria-label={c.homeLabel}>
-        <img src="/assets/wordmark-script.png" alt="Kinetic Studiow" />
+        <img {...img("/assets/wordmark-script.png", "120px")} alt="Kinetic Studiow" />
       </Link>
       <nav id="nav-links" aria-label="Main">
         {ITEMS.map((k, i) => (
@@ -89,7 +90,7 @@ export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
       <nav id="menu" className={"on-ink" + (open ? " open" : "")} aria-label="Main" aria-hidden={!open} inert={!open}>
         <div className="band-ht" />
         <div id="menu-head">
-          <Link href={href(locale, "home")} aria-label={c.homeLabel}><img src="/assets/wordmark-script-white.png" alt="Kinetic Studiow" /></Link>
+          <Link href={href(locale, "home")} aria-label={c.homeLabel}><img {...img("/assets/wordmark-script-white.png", "120px")} alt="Kinetic Studiow" /></Link>
           <button id="menu-close" type="button" aria-label={c.closeMenu} onClick={() => setOpen(false)}><CloseIcon /></button>
         </div>
         <ul id="menu-links">
@@ -111,7 +112,7 @@ export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
       <div id="quicknav" className={quick && !open ? "show" : undefined} aria-hidden={!quick} inert={!quick}>
         <div className="qn-in">
           <Link className="qn-logo" href={href(locale, "home")} aria-label={c.homeLabel}>
-            <img src="/assets/wordmark-script.png" alt="Kinetic Studiow" />
+            <img {...img("/assets/wordmark-script.png", "120px")} alt="Kinetic Studiow" />
           </Link>
           <nav className="qn-links" aria-label="Quick">
             {ITEMS.map((k, i) => (

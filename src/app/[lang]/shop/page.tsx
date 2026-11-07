@@ -48,7 +48,9 @@ export default async function ShopPage({ params }: Props) {
 
         <section id="how" className="sec">
           <div className="wrap">
-            <p className="eyebrow">{s.howEyebrow}</p>
+            {/* the visible eyebrow is a styled <p>; this h2 keeps the heading order h1 > h2 > h3 for screen readers */}
+            <h2 className="sr-only">{s.howEyebrow}</h2>
+            <p className="eyebrow" aria-hidden="true">{s.howEyebrow}</p>
             <ol>
               {s.steps.map((st, i) => (
                 <li key={st.title}><span className="how-no" aria-hidden="true">{i + 1}</span><div><h3>{st.title}</h3><p>{st.desc}</p></div></li>

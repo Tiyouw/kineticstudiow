@@ -2,24 +2,21 @@ import "@/styles/pages/notfound.css";
 import { getCopy, getWaLinks } from "@/content";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { headers } from "next/headers";
-import { defaultLocale, href, isLocale, type Locale } from "@/lib/i18n";
+import { href, type Locale } from "@/lib/i18n";
 import Footer from "@/components/Footer";
+import NotFoundPick from "@/components/NotFoundPick";
 import { ArrowIcon, WaIcon } from "@/components/Icons";
+import { img } from "@/lib/img";
 
 export const metadata: Metadata = { robots: { index: false } };
 
 const d = (s: string) => ({ ["--d" as string]: s });
 
-export default async function NotFound() {
+async function View({ locale }: { locale: Locale }) {
   const w = await getWaLinks();
-  const h = (await headers()).get("x-locale") ?? "";
-  const locale: Locale = isLocale(h) ? h : defaultLocale;
-  const c = (await getCopy("common", locale));
-  const t = (await getCopy("notfound", locale));
+  const [c, t] = await Promise.all([getCopy("common", locale), getCopy("notfound", locale)]);
   return (
     <>
-      <title>{`404 · ${t.metaTitle} · Kinetic Studiow`}</title>
       <main>
         <section id="nf">
           <div className="wrap nf-in">
@@ -38,7 +35,7 @@ export default async function NotFound() {
             <div className="nf-art">
               <span className="nf-num" aria-hidden="true">404</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="nf-bird" src="/assets/peace-hand-filled.png" alt={t.art} width={790} height={900} />
+              <img className="nf-bird" {...img("/assets/peace-hand-filled.png", "(min-width: 1024px) 380px, 320px")} alt={t.art} width={790} height={900} />
               <span className="nf-stamp" aria-hidden="true">{t.stamp}</span>
             </div>
           </div>
@@ -46,5 +43,16 @@ export default async function NotFound() {
       </main>
       <Footer locale={locale} c={c} />
     </>
+  );
+}
+
+export default async function NotFound() {
+  const [id, en] = await Promise.all([getCopy("notfound", "id"), getCopy("notfound", "en")]);
+  return (
+    <NotFoundPick
+      id={<View locale="id" />}
+      en={<View locale="en" />}
+      titles={{ id: `404 · ${id.metaTitle} · Kinetic Studiow`, en: `404 · ${en.metaTitle} · Kinetic Studiow` }}
+    />
   );
 }

@@ -12,6 +12,7 @@ import Tile from "@/components/Tile";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 import { ArrowIcon, RegMark, WaIcon } from "@/components/Icons";
+import { img } from "@/lib/img";
 
 type Props = { params: Promise<{ lang: Locale }> };
 
@@ -87,7 +88,7 @@ export default async function HomePage({ params }: Props) {
               <div id="hero-ring" className="hx-fade" style={d("2.6s")}><div className="spin" style={{ width: "100%", height: "100%" }}><Ring text={h.ring} /></div></div>
               <RegMark /><RegMark /><RegMark />
               <div id="hero-mascot" className="hx-pop" style={d("2.5s")}>
-                <div className="idle" style={{ ["--i" as string]: "3.2s" }}><img style={{ position: "relative" }} src="/assets/mascot-full.png" alt={h.mascotAlt} /></div>
+                <div className="idle" style={{ ["--i" as string]: "3.2s" }}><img style={{ position: "relative" }} {...img("/assets/mascot-full.png", "(min-width: 1024px) 340px, 240px")} alt={h.mascotAlt} fetchPriority="high" /></div>
               </div>
             </div>
           </div>
@@ -105,7 +106,7 @@ export default async function HomePage({ params }: Props) {
               <span className="label only-m" style={{ paddingBottom: 6, color: "#D5DBE6" }}>{h.swipe}</span>
               <Link className="link only-d" href={workHref}>{h.seeAllWork} <ArrowIcon /></Link>
             </div>
-            <div id="work-row" role="list">
+            <div id="work-row">
               {projects.slice(0, 5).map((w) => <Tile key={w.id} w={w} locale={locale} c={c} href={workHref} />)}
             </div>
             <Link id="work-more" className="link only-m" href={workHref}>{h.seeAllWork} <ArrowIcon /></Link>

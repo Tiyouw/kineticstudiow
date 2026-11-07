@@ -10,6 +10,7 @@ import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 import TiyoouwCredit from "@/components/TiyoouwCredit";
 import { ArrowIcon, RegMark } from "@/components/Icons";
+import { img } from "@/lib/img";
 
 type Props = { params: Promise<{ lang: Locale }> };
 
@@ -67,7 +68,7 @@ export default async function AboutPage({ params }: Props) {
               <div id="portrait">
                 <RegMark /><RegMark />
                 <div id="portrait-dots" className="hx-fade" style={d(".8s")} />
-                <div id="portrait-hand" style={d("1.1s")}><img src="/assets/peace-hand-filled.png" alt={a.handAlt} /></div>
+                <div id="portrait-hand" style={d("1.1s")}><img {...img("/assets/peace-hand-filled.png", "(min-width: 1024px) 360px, 240px")} alt={a.handAlt} fetchPriority="high" /></div>
                 <div id="photo-ph" className="hx" style={d("1.4s")}>
                   <CameraIcon />
                   <strong>{a.photo}</strong>

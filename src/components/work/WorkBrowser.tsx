@@ -8,6 +8,7 @@ import type { CommonDict } from "@/i18n/common";
 import type { WorkDict } from "@/i18n/pages/work";
 import { TileInner } from "@/components/Tile";
 import { CheckIcon, CloseIcon, WaIcon } from "@/components/Icons";
+import { img } from "@/lib/img";
 
 type Filter = "all" | WorkCategory;
 const FILTERS: Filter[] = ["all", "mascot", "brand", "lettering", "merch"];
@@ -112,7 +113,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
                   aria-haspopup="dialog"
                   onClick={(e) => { lastTile.current = e.currentTarget; setShown(i); setOpenIdx(i); }}
                 >
-                  <TileInner w={pr} locale={locale} c={c} />
+                  <TileInner w={pr} locale={locale} c={c} lazy={i >= 4} />
                 </button>
               );
             })}
@@ -135,7 +136,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
           <div id="sheet-grip" aria-hidden="true" />
           <button id="sheet-close" ref={closeBtn} type="button" aria-label={w.sheet.close} onClick={close}><CloseIcon /></button>
           <div id="sheet-cover" className={p.tone || undefined}>
-            <img src={p.image} alt={p.real ? p.title[locale] : w.sheet.coverAltPh} />
+            <img {...img(p.image, "(min-width: 1024px) 900px, 90vw")} alt={p.real ? p.title[locale] : w.sheet.coverAltPh} loading="lazy" />
           </div>
           <div id="sheet-info">
             <p className="eyebrow" id="sheet-cat">{cat}</p>
@@ -154,7 +155,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
           <div id="sheet-gal">
             {p.gallery.slice(0, 3).map((g, k) => (
               <div key={`${shown}-${k}`} className={/white/.test(g) ? "art-ink" : undefined}>
-                <img src={g} alt={`${p.real ? w.sheet.galleryAlt : w.sheet.galleryAltPh} ${k + 1}`} />
+                <img {...img(g, "(min-width: 1024px) 300px, 160px")} alt={`${p.real ? w.sheet.galleryAlt : w.sheet.galleryAltPh} ${k + 1}`} loading="lazy" />
               </div>
             ))}
           </div>

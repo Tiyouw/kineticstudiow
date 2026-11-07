@@ -5,6 +5,7 @@ import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import TiyoouwCredit from "./TiyoouwCredit";
 import { BehanceIcon, InstagramIcon, MailIcon, WaIcon } from "./Icons";
+import { img } from "@/lib/img";
 
 const PAGES: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
@@ -15,8 +16,8 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
     <footer id="footer">
       <div id="footer-grid">
         <div id="footer-brand">
-          <img className="only-d" src="/assets/badge-full.png" alt={f.badgeAlt} />
-          <img className="only-m" src="/assets/mascot-head-circle.png" alt="Kinetic Studiow" />
+          <img className="only-d" {...img("/assets/badge-full.png", "180px")} alt={f.badgeAlt} loading="lazy" />
+          <img className="only-m" {...img("/assets/mascot-head-circle.png", "60px")} alt="Kinetic Studiow" loading="lazy" />
           <p className="only-d">{f.blurb}</p>
         </div>
         <div id="footer-say">
