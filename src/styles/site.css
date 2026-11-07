@@ -86,11 +86,16 @@ tiyoouw-mark{display:block;color:var(--ink)}
   #ld-collab{gap:28px}
 }
 
-/* page transition: one squeegee stroke, left to right (driven by PageTransition.tsx) */
-#pt{position:fixed;inset:0;z-index:125;pointer-events:none;visibility:hidden}
+/* page transition: one squeegee stroke, left to right (driven by PageTransition.tsx).
+   The ink panel slides (transform only), the squeegee rides its leading edge going in
+   and its trailing edge coming out. */
+#pt{position:fixed;inset:0;z-index:125;pointer-events:none;visibility:hidden;overflow:hidden}
 #pt.on{visibility:visible;pointer-events:auto}
-#pt-ink{position:absolute;inset:0;background:var(--ink);background-image:radial-gradient(circle,rgba(251,245,232,.12) 1.2px,transparent 1.6px);background-size:7px 7px;clip-path:inset(0 100% 0 0)}
-#pt-sq{position:absolute;top:0;left:0;width:18px;height:100%;background:linear-gradient(90deg,var(--deep) 0 12px,var(--red) 12px 18px);box-shadow:4px 0 0 rgba(19,43,80,.25);transform:translateX(-24px)}
+#pt-ink{position:absolute;inset:0;background:var(--ink);background-image:radial-gradient(circle,rgba(251,245,232,.12) 1.2px,transparent 1.6px);background-size:7px 7px;transform:translate3d(-100%,0,0);will-change:transform;backface-visibility:hidden}
+.pt-sq{position:absolute;top:0;bottom:0;width:18px;display:none;background:linear-gradient(90deg,var(--deep) 0 12px,var(--red) 12px 18px);box-shadow:4px 0 0 rgba(19,43,80,.25)}
+.pt-sq-lead{right:-18px}
+.pt-sq-trail{left:0}
+#pt[data-phase="in"] .pt-sq-lead,#pt[data-phase="out"] .pt-sq-trail{display:block}
 
 @media (min-width:1024px){
   #nav{width:auto;max-width:1200px;padding-left:48px;padding-right:48px;box-sizing:content-box}
