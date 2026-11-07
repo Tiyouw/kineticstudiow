@@ -10,7 +10,7 @@ export default function Loader({ c }: { c: CommonDict }) {
       <div id="loader" aria-hidden="true">
         <div id="ld-frame" />
         <div id="ld-collab">
-          <img id="ld-kinetic" {...img("/assets/badge-full.png", "160px")} alt="" />
+          <img id="ld-kinetic" {...img("/assets/badge-full.png", "160px")} alt="Kinetic Studiow" />
           <svg id="ld-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true"><path d="M4 4 20 20" /><path d="M20 4 4 20" /></svg>
           <TiyoouwMark id="ld-tiyo" motion="snap" delay="360" />
         </div>

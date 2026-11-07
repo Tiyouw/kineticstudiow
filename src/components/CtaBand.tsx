@@ -14,7 +14,7 @@ export default async function CtaBand({ locale, c, title, sub, eyebrow }: {
       <div className="band-ht" />
       <div className="wrap">
         <div id="cta-copy">
-          <img id="cta-pennant" className="wave" {...img("/assets/pennant-flag-filled.png", "(min-width: 1024px) 180px, 132px")} alt="" loading="lazy" />
+          <img id="cta-pennant" className="wave" {...img("/assets/pennant-flag-filled.png", "(min-width: 1024px) 180px, 132px")} alt="Kinetic Studiow pennant" aria-hidden="true" loading="lazy" />
           <p className="eyebrow">{eyebrow ?? c.cta.eyebrow}</p>
           <h2 id="cta-title" className="disp rough">{title ?? c.cta.title}</h2>
           <p id="cta-sub">{sub ?? c.cta.sub}</p>

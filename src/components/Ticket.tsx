@@ -13,7 +13,7 @@ export default async function Ticket({ p, locale, c, stampDelay }: { p: Product;
     <article className={"tk" + (p.sold ? " sold" : "")} id={`tk-${p.no}`} data-status={p.sold ? "sold" : "available"}>
       <div className="tk-band"><span>{t.premade}</span><span>{t.exclusive}</span></div>
       <Link className={`tk-art ${p.tone}`} href={link} aria-label={`${p.name}, ${t.seeDetails}`}>
-        <img src={p.image} alt="" loading="lazy" />
+        <img src={p.image} alt={`#${p.no} ${p.name}, ${t.premade} mascot`} loading="lazy" />
         {p.isPlaceholder ? <span className="tk-ph">{t.placeholder}</span> : null}
         {p.sold ? <span className="stamp" style={stampDelay ? { ["--sd" as string]: stampDelay } : undefined}>{t.sold}</span> : null}
       </Link>

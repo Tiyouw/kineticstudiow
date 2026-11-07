@@ -17,7 +17,7 @@ export default function Gallery({ views, no, ph, aria, stamp }: {
       <div id="pm">
         {views.map((x, i) => (
           <div key={i} className={`pm-layer ${x.tone}${i === v ? " on" : ""}`} aria-hidden={i !== v}>
-            <img {...img(x.src, "(min-width: 1024px) 440px, 70vw")} alt={i === v ? x.alt : ""} fetchPriority={i === 0 ? "high" : undefined} loading={i === 0 ? undefined : "lazy"} />
+            <img {...img(x.src, "(min-width: 1024px) 440px, 70vw")} alt={x.alt} fetchPriority={i === 0 ? "high" : undefined} loading={i === 0 ? undefined : "lazy"} />
           </div>
         ))}
         <span id="pm-tag">#{no}</span>
@@ -28,7 +28,7 @@ export default function Gallery({ views, no, ph, aria, stamp }: {
         <div id="thumbs" role="group" aria-label={aria} style={{ gridTemplateColumns: `repeat(${Math.min(views.length, 4)},1fr)` }}>
           {views.map((x, i) => (
             <button key={i} type="button" className="thumb" aria-pressed={i === v} aria-label={x.aria} onClick={() => setV(i)}>
-              <span className={`tb ${x.tone}`}><img src={x.src} alt="" /></span>
+              <span className={`tb ${x.tone}`}><img src={x.src} alt={x.alt} /></span>
               {x.label}
             </button>
           ))}
