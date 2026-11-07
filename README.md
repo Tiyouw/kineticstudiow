@@ -97,7 +97,7 @@ SANITY_AUTH_TOKEN=<a write/admin token> npx sanity dataset import kinetic-sanity
 2. Set `NEXT_PUBLIC_SITE_URL=https://www.<new>` in Vercel and redeploy (or change the fallback in `src/lib/site.ts`).
 3. Make the old `.my.id` domain 301-redirect to the new one (Vercel → Domains → Redirect).
 4. Sanity → API → CORS origins: add `https://www.<new>`. Update the Studio URL in sanity.io/manage.
-5. Update the hard-coded `KINETICSTUDIOW.MY.ID` text in the share cards (`src/lib/og.tsx` and the `opengraph-image.tsx` files) and the email domain in `src/lib/site.ts`, Footer and About, plus Cloudflare Email Routing.
+5. Update the hard-coded domain in the share cards (the `opengraph-image.tsx` files), the Studio guide link (`src/sanity/Guide.tsx`) and the email domain in `src/lib/site.ts`, Footer and About, plus Cloudflare Email Routing.
 6. Search Console: add the new property and use **Change of address**; submit the new sitemap. Same in Bing Webmaster Tools.
 
 ## Gotchas
