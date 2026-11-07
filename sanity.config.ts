@@ -33,7 +33,12 @@ const locations: DocumentLocationResolvers = {
       locations: doc?.slug ? [...both(`#${doc.name ?? ""}`, `/shop/${doc.slug}`), ...both("Toko", "/shop")] : both("Toko", "/shop"),
     }),
   }),
-  project: defineLocations({ message: "Tampil di halaman Karya", locations: [...both("Karya", "/work"), ...both("Beranda", "")] }),
+  project: defineLocations({
+    select: { title: "title.en", slug: "slug.current" },
+    resolve: (doc) => ({
+      locations: [...(doc?.slug ? both(doc.title ?? "Karya", `/work/${doc.slug}`) : []), ...both("Karya", "/work"), ...both("Beranda", "")],
+    }),
+  }),
   testimonial: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
   clientMark: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
   settings: defineLocations({ message: "Nomor & template WhatsApp dipakai di semua halaman", locations: [...both("Pesan custom", "/custom-order"), ...both("Beranda", "")] }),
@@ -82,6 +87,7 @@ export default defineConfig({
       resolve: {
         mainDocuments: defineDocuments([
           { route: "/:lang/shop/:slug", filter: `_type == "product" && slug.current == $slug` },
+          { route: "/:lang/work/:slug", filter: `_type == "project" && slug.current == $slug` },
         ]),
         locations,
       },
