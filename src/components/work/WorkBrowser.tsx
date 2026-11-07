@@ -114,6 +114,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
                 <a
                   key={on ? `${pr.id}-${run}` : pr.id}
                   href={projectHref(locale, pr.slug)}
+                  data-sheet=""
                   className={"tile" + sizeOf(i) + (on && run > 0 ? " in" : "")}
                   id={`work-${pr.id}`}
                   data-cat={pr.category}
