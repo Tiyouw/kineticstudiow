@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { COPY_TITLES, DICTS, type CopyKey } from "@/i18n/dicts";
 import { copyFields } from "../copy";
+import { QUESTIONS } from "@/lib/fatwaQuestions";
 
 const L = (name: string, title: string, long = false, required = false) =>
   defineField({
@@ -121,5 +122,25 @@ export const copyTypes = (Object.keys(DICTS) as CopyKey[]).map((k) =>
   }),
 );
 
-export const schemaTypes = [product, project, testimonial, clientMark, settings, ...copyTypes];
-export const SINGLETONS = ["settings", ...copyTypes.map((t) => t.name)];
+/** Fatwa's answers from the questionnaire page (/q/<token>), shown read-only. */
+const fatwaAnswers = defineType({
+  name: "fatwaAnswers", title: "Jawaban kuesioner", type: "document", readOnly: true,
+  fields: [
+    defineField({ name: "updatedAt", title: "Terakhir diisi", type: "datetime" }),
+    defineField({
+      name: "answers", title: "Jawaban", type: "object",
+      fields: QUESTIONS.map((q) => defineField({
+        name: q.key, title: q.q, type: "object",
+        fields: [
+          defineField({ name: "picks", title: "Pilihan", type: "array", of: [defineArrayMember({ type: "string" })] }),
+          defineField({ name: "other", title: "Lainnya / ubah", type: "text", rows: 2 }),
+          defineField({ name: "text", title: "Jawaban", type: "text", rows: 3 }),
+        ],
+      })),
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Jawaban kuesioner" }) },
+});
+
+export const schemaTypes = [product, project, testimonial, clientMark, settings, fatwaAnswers, ...copyTypes];
+export const SINGLETONS = ["settings", "fatwaAnswers", ...copyTypes.map((t) => t.name)];

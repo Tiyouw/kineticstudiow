@@ -1,0 +1,94 @@
+/* Fatwa's questionnaire (/q/<token>): the site's palette, mobile first. */
+:root {
+  --navy: #1C3C6D;
+  --cream: #F3E9D2;
+  --paper: #FBF6EA;
+  --red: #D7312B;
+  --ink: #1B2233;
+  --muted: #5B6273;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body.qz {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-barlow), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.qz-wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 48px; }
+
+.qz-top {
+  position: sticky; top: 0; z-index: 2;
+  margin: 0 -16px 16px; padding: 12px 16px 10px;
+  background: var(--navy); color: var(--paper);
+  display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center;
+}
+.qz-brand { font-family: var(--font-anton), Impact, sans-serif; letter-spacing: .04em; text-transform: uppercase; font-size: 18px; }
+.qz-status { font-size: 14px; font-weight: 600; min-height: 1.2em; text-align: right; }
+.qz-status.saved { color: #9BE3A5; }
+.qz-status.error { color: #FFB4A8; }
+.qz-bar { grid-column: 1 / -1; height: 8px; border-radius: 99px; background: rgba(255,255,255,.18); overflow: hidden; }
+.qz-bar span { display: block; height: 100%; background: var(--red); border-radius: inherit; transition: width .3s ease; }
+.qz-count { grid-column: 1 / -1; font-size: 13px; opacity: .8; }
+
+h1 { font-family: var(--font-anton), Impact, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .02em; color: var(--navy); font-size: 34px; line-height: 1.05; margin: 0 0 8px; }
+.qz-sec { margin: 8px 0 14px; }
+.qz-eyebrow { margin: 0 0 4px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+.qz-muted { color: var(--muted); margin: 0 0 8px; }
+
+.qz-card {
+  background: var(--paper);
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 0 0 14px;
+  box-shadow: 4px 4px 0 var(--navy);
+}
+.qz-hello ul { padding-left: 20px; margin: 8px 0 12px; }
+.qz-hello li { margin: 4px 0; }
+fieldset.qz-q { min-width: 0; }
+.qz-q legend { float: left; width: 100%; padding: 0; margin: 0 0 6px; font-weight: 700; font-size: 18px; color: var(--navy); }
+.qz-q legend + * { clear: both; }
+.qz-q.is-done { border-color: #2F7D4A; box-shadow: 4px 4px 0 #2F7D4A; }
+.qz-n {
+  display: inline-grid; place-items: center;
+  width: 26px; height: 26px; margin-right: 8px; border-radius: 50%;
+  background: var(--navy); color: var(--paper); font-size: 13px; vertical-align: 2px;
+}
+.qz-q.is-done .qz-n { background: #2F7D4A; }
+.qz-note { margin: 0 0 10px; font-size: 15px; color: var(--muted); }
+
+.qz-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+.qz-chip {
+  font: inherit; font-size: 16px; font-weight: 600;
+  min-height: 44px; padding: 8px 14px;
+  border: 2px solid var(--navy); border-radius: 99px;
+  background: #fff; color: var(--navy); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.qz-chip[aria-pressed="true"] { background: var(--navy); color: var(--paper); }
+.qz-chip.qz-skip { border-style: dashed; color: var(--muted); border-color: var(--muted); font-weight: 500; }
+.qz-chip.qz-skip[aria-pressed="true"] { background: var(--muted); color: #fff; }
+.qz-chip:focus-visible, .qz-btn:focus-visible, .qz-input:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+
+.qz-input {
+  width: 100%; font: inherit; font-size: 16px;
+  padding: 10px 12px; min-height: 44px;
+  border: 2px solid #C9BFA6; border-radius: 10px; background: #fff; color: var(--ink);
+  resize: vertical;
+}
+.qz-input:focus { border-color: var(--navy); }
+
+.qz-nav { display: flex; gap: 10px; justify-content: space-between; margin-top: 6px; }
+.qz-btn {
+  font-family: var(--font-anton), Impact, sans-serif; font-size: 18px; letter-spacing: .04em; text-transform: uppercase;
+  min-height: 50px; padding: 10px 22px; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--navy);
+}
+.qz-red { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 3px 3px 0 var(--navy); }
+.qz-line { background: transparent; color: var(--navy); }
+.qz-nav .qz-red { flex: 1; }
+
+@media (prefers-reduced-motion: reduce) { .qz-bar span { transition: none; } }

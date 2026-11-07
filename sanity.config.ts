@@ -26,6 +26,7 @@ export default defineConfig({
       structure: (S) =>
         S.list().title("Konten Kinetic").items([
           S.listItem().title("Panduan").id("panduan").child(S.component(Guide).id("panduan-pane").title("Panduan")),
+          S.listItem().title("Jawaban kuesioner").id("fatwaAnswers").child(S.document().schemaType("fatwaAnswers").documentId("fatwaAnswers")),
           S.divider(),
           S.documentTypeListItem("product").title("Produk (maskot premade)"),
           S.documentTypeListItem("project").title("Karya"),
