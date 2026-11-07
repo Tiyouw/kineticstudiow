@@ -3,7 +3,7 @@ import { href, type Locale, type PageKey } from "@/lib/i18n";
 import { waHref } from "@/lib/whatsapp";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
-import TiyoouwMark from "./TiyoouwMark";
+import TiyoouwCredit from "./TiyoouwCredit";
 import { BehanceIcon, InstagramIcon, MailIcon, WaIcon } from "./Icons";
 
 const PAGES: PageKey[] = ["home", "work", "shop", "custom", "about"];
@@ -40,9 +40,7 @@ export default function Footer({ locale, c, current }: { locale: Locale; c: Comm
       <div id="footer-bottom">
         <p>
           {f.copyright} · {f.websiteBy}{" "}
-          <a className="f-tiyo" href="https://tiyoouw.com" target="_blank" rel="noopener">
-            <TiyoouwMark hover="eyes" /> tiyoouw.com
-          </a>
+          <TiyoouwCredit className="f-tiyo"><span>tiyoouw.com</span></TiyoouwCredit>
         </p>
         <p className="label" style={{ fontSize: 11 }}>{f.place}</p>
       </div>

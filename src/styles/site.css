@@ -17,8 +17,15 @@ tiyoouw-mark{display:block;color:var(--ink)}
 /* tiyoouw mark as tall as the Kinetic badge (the mark fills ~84% of its box) */
 #ld-tiyo{width:150px;opacity:0;animation:ld-in-r .6s var(--ease) .36s forwards}
 #ld-collab{gap:12px}
-.f-tiyo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:600}
-.f-tiyo tiyoouw-mark{width:28px}
+/* tiyoouw credit (TiyoouwCredit.tsx): looping mark, eyes on hover */
+.tcredit{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;color:var(--ink);font-weight:600;vertical-align:middle}
+.tcredit tiyoouw-mark{flex:none;transition:transform .25s var(--ease)}
+.tcredit span{position:relative;transition:color .15s}
+.tcredit span::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.tcredit:hover span,.tcredit:focus-visible span,.tcredit.is-peek span{color:var(--red)}
+.tcredit:hover span::after,.tcredit:focus-visible span::after{transform:scaleX(1)}
+.tcredit:hover tiyoouw-mark,.tcredit:focus-visible tiyoouw-mark{transform:scale(1.12)}
+.f-tiyo tiyoouw-mark{width:40px}
 
 /* one markup for both layouts: hide what belongs to the other one */
 @media (max-width:1023px){

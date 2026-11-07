@@ -1,4 +1,4 @@
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import { forwardRef, type DetailedHTMLProps, type HTMLAttributes } from "react";
 
 type MarkAttrs = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
   motion?: "none" | "intro" | "hinge" | "slide" | "punch" | "snap";
@@ -19,6 +19,7 @@ declare module "react" {
 }
 
 /** Tiyo's studio mark (web component from /tiyoouw-mark.js, loaded once in the layout). */
-export default function TiyoouwMark(props: MarkAttrs) {
-  return <tiyoouw-mark label="tiyoouw" {...props} />;
-}
+const TiyoouwMark = forwardRef<HTMLElement, MarkAttrs>(function TiyoouwMark(props, ref) {
+  return <tiyoouw-mark label="tiyoouw" {...props} ref={ref} />;
+});
+export default TiyoouwMark;

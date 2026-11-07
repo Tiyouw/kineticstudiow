@@ -10,7 +10,7 @@ import Process from "@/components/Process";
 import Clients from "@/components/Clients";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
-import TiyoouwMark from "@/components/TiyoouwMark";
+import TiyoouwCredit from "@/components/TiyoouwCredit";
 import { ArrowIcon, RegMark } from "@/components/Icons";
 
 type Props = { params: Promise<{ lang: Locale }> };
@@ -105,10 +105,7 @@ export default async function AboutPage({ params }: Props) {
               ))}
             </ul>
             <p id="about-credits">
-              <a href="https://tiyoouw.com" target="_blank" rel="noopener">
-                <TiyoouwMark hover="eyes" />
-                <span>{a.creditsLabel} <b>{a.creditsName}</b> (tiyoouw.com)</span>
-              </a>
+              <TiyoouwCredit><span>{a.creditsLabel} <b>{a.creditsName}</b> (tiyoouw.com)</span></TiyoouwCredit>
             </p>
           </div>
         </section>
