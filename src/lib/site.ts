@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { locales, type Locale } from "./i18n";
 
 /** The public address. Vercel also serves *.vercel.app; canonical tags point search engines here. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://kineticstudiow.my.id").replace(/\/$/, "");
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.kineticstudiow.my.id").replace(/\/$/, "");
 
 export const SOCIAL = {
   instagram: "https://instagram.com/kinetic.studiow",
