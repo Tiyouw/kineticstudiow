@@ -105,3 +105,11 @@ tiyoouw-mark{display:block;color:var(--ink)}
   #nav-links{gap:0}
   #nav-links a{padding:0 8px;letter-spacing:.08em}
 }
+
+/* scroll reveal (ScrollReveal.tsx): items rise in, in reading order, when their section enters */
+.js-rv .rv{opacity:0;transform:translate3d(0,28px,0);transition:opacity .5s ease-out,transform .7s var(--ease);transition-delay:calc(var(--rv-i,0) * 80ms)}
+.js-rv .in-view .rv{opacity:1;transform:none}
+.js-rv .rv-sec:not(.in-view) *{animation-play-state:paused!important}
+/* inside a revealed section, the timed effects start from the moment it enters */
+.js-rv .rv-sec{--pd:.35s!important;--sd:.7s!important}
+.js-rv .rv-sec .stamp{--sd:.7s!important}
