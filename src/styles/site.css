@@ -113,3 +113,8 @@ tiyoouw-mark{display:block;color:var(--ink)}
 /* inside a revealed section, the timed effects start from the moment it enters */
 .js-rv .rv-sec{--pd:.35s!important;--sd:.7s!important}
 .js-rv .rv-sec .stamp{--sd:.7s!important}
+
+/* language switch (LangSwap.tsx): entrances jump to their end, reveals don't replay; loops keep going */
+.no-anim *,.no-anim *::before,.no-anim *::after{animation-delay:-30s!important}
+.no-anim .rv{transition:none!important}
+.no-anim #loader{display:none}

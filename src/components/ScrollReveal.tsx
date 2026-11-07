@@ -49,7 +49,9 @@ export default function ScrollReveal() {
         el.classList.add("rv");
         el.style.setProperty("--rv-i", String(Math.min(i++, 7)));
       });
-      io.observe(s);
+      // after a language switch everything is shown as it was, without replaying
+      if (root.classList.contains("no-anim")) s.classList.add("in-view");
+      else io.observe(s);
     }
     return () => io.disconnect();
   }, [pathname]);

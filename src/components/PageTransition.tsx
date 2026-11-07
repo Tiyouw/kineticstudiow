@@ -34,7 +34,7 @@ export default function PageTransition() {
     const onClick = (e: MouseEvent) => {
       if (busy.current || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as Element | null)?.closest?.("a");
-      if (!a || !a.href || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
+      if (!a || !a.href || (a.target && a.target !== "_self") || a.hasAttribute("download") || a.hasAttribute("hreflang")) return;
       const url = new URL(a.href, window.location.href);
       if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

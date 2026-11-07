@@ -8,6 +8,7 @@ import Nav from "@/components/Nav";
 import WaFloat from "@/components/WaFloat";
 import PageTransition from "@/components/PageTransition";
 import ScrollReveal from "@/components/ScrollReveal";
+import LangSwap from "@/components/LangSwap";
 import "@/styles/kinetic.css";
 import "@/styles/site.css";
 
@@ -54,6 +55,7 @@ export default async function LangLayout({ children, params }: { children: React
           <WaFloat locale={locale} label={c.waFloat} />
         </div>
         <PageTransition />
+        <LangSwap />
         <ScrollReveal />
         <Script src="/tiyoouw-mark.js" strategy="beforeInteractive" />
       </body>
