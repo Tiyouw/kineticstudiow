@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 import type { Project } from "@/content";
 import type { CommonDict } from "@/i18n/common";
-import { img } from "@/lib/img";
 
 export function TileInner({ w, locale, c, lazy }: { w: Project; locale: Locale; c: CommonDict; lazy?: boolean }) {
   const cat = c.categories[w.category];
@@ -10,7 +9,7 @@ export function TileInner({ w, locale, c, lazy }: { w: Project; locale: Locale; 
     <>
       <div className={`tile-art ${w.tone}`}>
         <span className="tile-no">{w.id}</span>
-        <img {...img(w.image, "(min-width: 1024px) 600px, 80vw")} loading={lazy ? "lazy" : undefined} alt={w.real ? w.title[locale] : locale === "id" ? "Gambar placeholder" : "Placeholder art"} />
+        <img src={w.image} loading={lazy ? "lazy" : undefined} alt={w.real ? w.title[locale] : locale === "id" ? "Gambar placeholder" : "Placeholder art"} />
       </div>
       <div className="tile-cap">
         <strong>{w.title[locale]}</strong>

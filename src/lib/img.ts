@@ -6,8 +6,10 @@
  *   The PNGs stay for share cards and JSON-LD, which need PNG.
  * - Sanity images are resized by its CDN (w=..., auto=format already gives WebP/AVIF).
  *
- * Keep `sizes` at least as wide as the image ever renders: images without a CSS width
- * take their layout width from it.
+ * Only for images whose CSS sets their width or height (hero art, wordmarks, the product
+ * picture). With srcset the browser derives the image's natural size from `sizes`, so an
+ * image sized by its natural size (tiles, tickets, thumbnails: max-height + width:auto)
+ * would render at a different size. Those keep their plain src.
  */
 export function img(src: string, sizes: string): { src: string; srcSet?: string; sizes?: string } {
   if (src.startsWith("/assets/") && src.endsWith(".png")) {

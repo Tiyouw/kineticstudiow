@@ -28,7 +28,7 @@ export default function Gallery({ views, no, ph, aria, stamp }: {
         <div id="thumbs" role="group" aria-label={aria} style={{ gridTemplateColumns: `repeat(${Math.min(views.length, 4)},1fr)` }}>
           {views.map((x, i) => (
             <button key={i} type="button" className="thumb" aria-pressed={i === v} aria-label={x.aria} onClick={() => setV(i)}>
-              <span className={`tb ${x.tone}`}><img {...img(x.src, "(min-width: 1024px) 230px, 150px")} alt="" /></span>
+              <span className={`tb ${x.tone}`}><img src={x.src} alt="" /></span>
               {x.label}
             </button>
           ))}
