@@ -3,7 +3,7 @@ import { getCopy, getWaLinks } from "@/content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
-import { href, isLocale, type Locale } from "@/lib/i18n";
+import { defaultLocale, href, isLocale, type Locale } from "@/lib/i18n";
 import Footer from "@/components/Footer";
 import { ArrowIcon, WaIcon } from "@/components/Icons";
 
@@ -14,7 +14,7 @@ const d = (s: string) => ({ ["--d" as string]: s });
 export default async function NotFound() {
   const w = await getWaLinks();
   const h = (await headers()).get("x-locale") ?? "";
-  const locale: Locale = isLocale(h) ? h : "id";
+  const locale: Locale = isLocale(h) ? h : defaultLocale;
   const c = (await getCopy("common", locale));
   const t = (await getCopy("notfound", locale));
   return (

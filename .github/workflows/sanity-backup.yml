@@ -1,0 +1,31 @@
+name: Sanity backup
+
+# Weekly copy of the CMS content (documents + images), kept as a workflow artifact for 90 days.
+# Restore: download the artifact, then
+#   SANITY_AUTH_TOKEN=<write token> npx sanity dataset import kinetic-sanity-<date>.tar.gz production --replace
+on:
+  schedule:
+    - cron: "0 20 * * 0" # Sunday 20:00 UTC = Monday 03:00 WIB
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Export dataset
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
+        run: |
+          echo "DATE=$(date -u +%F)" >> "$GITHUB_ENV"
+          npx sanity dataset export production "kinetic-sanity-$(date -u +%F).tar.gz" --no-drafts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sanity-${{ env.DATE }}
+          path: kinetic-sanity-*.tar.gz
+          retention-days: 90

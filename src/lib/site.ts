@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { locales, type Locale } from "./i18n";
+import { defaultLocale, locales, type Locale } from "./i18n";
 
 /** The public address. Vercel also serves *.vercel.app; canonical tags point search engines here. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.kineticstudiow.my.id").replace(/\/$/, "");
@@ -14,7 +14,7 @@ export const SOCIAL = {
 export function alternates(locale: Locale, path: string): Metadata["alternates"] {
   const languages: Record<string, string> = {};
   for (const l of locales) languages[l] = `/${l}${path}`;
-  languages["x-default"] = `/id${path}`;
+  languages["x-default"] = `/${defaultLocale}${path}`;
   return { canonical: `/${locale}${path}`, languages };
 }
 
