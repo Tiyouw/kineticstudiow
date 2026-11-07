@@ -125,3 +125,38 @@ tiyoouw-mark{display:block;color:var(--ink)}
 .no-anim *,.no-anim *::before,.no-anim *::after{animation-delay:-30s!important}
 .no-anim .rv{transition:none!important}
 .no-anim #loader{display:none}
+
+/* quick nav (Nav.tsx): hidden while scrolling down, slides in on a small scroll up past the first screen */
+#quicknav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--paper) var(--grain);border-bottom:2px solid var(--ink);box-shadow:0 4px 0 rgba(19,43,80,.12);transform:translate3d(0,-110%,0);transition:transform .35s var(--ease);will-change:transform}
+#quicknav.show{transform:none}
+.qn-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;padding:0 16px}
+.qn-logo img{height:34px;width:auto}
+.qn-links{display:none}
+.qn-actions{display:flex;align-items:center;gap:10px}
+.qn-actions .lang a{min-height:36px;min-width:40px}
+.qn-wa{display:none!important}
+.qn-menu{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:2px;background:var(--red);color:var(--chalk);cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.qn-menu:active{transform:translate(3px,3px);box-shadow:none}
+@media (min-width:1024px){
+  .qn-in{max-width:1200px;margin:0 auto;padding:0 48px;box-sizing:content-box;height:68px}
+  .qn-links{display:flex;gap:4px}
+  .qn-links a{position:relative;display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
+  .qn-links a span{color:var(--red);font-size:11px}
+  .qn-links a::after{content:"";position:absolute;left:10px;right:10px;bottom:6px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .2s var(--ease)}
+  .qn-links a:hover::after,.qn-links a[aria-current="page"]::after{transform:scaleX(1)}
+  .qn-wa{display:inline-flex!important;min-height:44px;padding:0 16px;font-size:13px}
+  .qn-menu{display:none}
+}
+@media (min-width:1024px) and (max-width:1296px){
+  .qn-in{padding:0 32px}
+  .qn-links a{padding:0 6px;letter-spacing:.08em}
+}
+
+/* back to top: floats above the WhatsApp button once the first screen is behind */
+#to-top{position:fixed;right:24px;bottom:calc(max(20px,env(safe-area-inset-bottom)) + 68px);z-index:65;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--chalk);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;opacity:0;transform:translate3d(0,16px,0) scale(.8);pointer-events:none;transition:opacity .25s ease-out,transform .35s var(--ease),box-shadow .12s}
+#to-top.show{opacity:1;transform:none;pointer-events:auto}
+#to-top:hover{background:var(--paper-2)}
+#to-top:hover svg{animation:tt-hop .5s var(--ease)}
+#to-top:active{box-shadow:none;transform:translate(3px,3px)}
+@keyframes tt-hop{40%{transform:translateY(-4px)}}
+@media (min-width:1024px){#to-top{right:36px;bottom:104px}}

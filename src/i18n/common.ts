@@ -13,6 +13,7 @@ const common = {
     whatsapp: "WhatsApp",
     menuFoot: "Jember, East Java · @kinetic.studiow",
     waFloat: "Chat on WhatsApp",
+    toTop: "Back to top",
     bubble: { yourMessage: "Your message", to: "to Kinetic Studiow", opensWith: "Opens with this message", meta: "WhatsApp" },
     loader: { name: "Kinetic Studiow × tiyoouw.com", credit: "Brand by Kinetic · Website by" },
     cta: {
@@ -72,6 +73,7 @@ const common = {
     whatsapp: "WhatsApp",
     menuFoot: "Jember, Jawa Timur · @kinetic.studiow",
     waFloat: "Chat di WhatsApp",
+    toTop: "Kembali ke atas",
     bubble: { yourMessage: "Pesanmu", to: "ke Kinetic Studiow", opensWith: "Terbuka dengan pesan ini", meta: "WhatsApp" },
     loader: { name: "Kinetic Studiow × tiyoouw.com", credit: "Brand oleh Kinetic · Website oleh" },
     cta: {
