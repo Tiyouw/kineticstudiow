@@ -2,9 +2,7 @@ import "@/styles/pages/work.css";
 import type { Metadata } from "next";
 import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
-import { getCommon } from "@/i18n/common";
-import { getWork } from "@/i18n/pages/work";
-import { getProjects } from "@/content";
+import { getProjects, getCopy } from "@/content";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 import WorkBrowser from "@/components/work/WorkBrowser";
@@ -13,13 +11,13 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getWork(lang).metaTitle, description: getWork(lang).lede, alternates: alternates(lang, "/work") };
+  return { title: (await getCopy("work", lang)).metaTitle, description: (await getCopy("work", lang)).lede, alternates: alternates(lang, "/work") };
 }
 
 export default async function WorkPage({ params }: Props) {
   const { lang: locale } = await params;
-  const c = getCommon(locale);
-  const w = getWork(locale);
+  const c = (await getCopy("common", locale));
+  const w = (await getCopy("work", locale));
   const projects = await getProjects();
 
   return (

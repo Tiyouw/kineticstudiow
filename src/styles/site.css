@@ -160,3 +160,7 @@ tiyoouw-mark{display:block;color:var(--ink)}
 #to-top:active{box-shadow:none;transform:translate(3px,3px)}
 @keyframes tt-hop{40%{transform:translateY(-4px)}}
 @media (min-width:1024px){#to-top{right:36px;bottom:104px}}
+
+/* real client logos from the CMS: one ink, sized to the lettered marks */
+.mk-logo{display:inline-flex;align-items:center}
+.mk-logo img{height:44px;width:auto;max-width:160px;object-fit:contain;filter:brightness(0) invert(1);opacity:.9}

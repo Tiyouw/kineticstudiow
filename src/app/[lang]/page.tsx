@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { SITE_URL, SOCIAL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
 import { href, type Locale } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
-import { getCommon } from "@/i18n/common";
-import { getHome } from "@/i18n/pages/home";
-import { getClientMarks, getProducts, getProjects, getTestimonials } from "@/content";
+import { getClientMarks, getProducts, getProjects, getTestimonials, getCopy, getWaLinks } from "@/content";
 import Loader from "@/components/Loader";
 import Clients from "@/components/Clients";
 import Services from "@/components/Services";
@@ -20,7 +17,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: { absolute: `Kinetic Studiow · ${getHome(lang).metaTitle}` }, alternates: alternates(lang, "") };
+  return { title: { absolute: `Kinetic Studiow · ${(await getCopy("home", lang)).metaTitle}` }, alternates: alternates(lang, "") };
 }
 
 function Ring({ text }: { text: string }) {
@@ -39,9 +36,10 @@ function Ring({ text }: { text: string }) {
 const d = (s: string) => ({ ["--d" as string]: s });
 
 export default async function HomePage({ params }: Props) {
+  const w = await getWaLinks();
   const { lang: locale } = await params;
-  const c = getCommon(locale);
-  const h = getHome(locale);
+  const c = (await getCopy("common", locale));
+  const h = (await getCopy("home", locale));
   const [projects, products, marks, quotes] = await Promise.all([getProjects(), getProducts(), getClientMarks(), getTestimonials()]);
   const shopPicks = ["012", "013", "014", "015"].map((no) => products.find((p) => p.no === no)!).filter(Boolean);
   const workHref = href(locale, "work");
@@ -62,7 +60,7 @@ export default async function HomePage({ params }: Props) {
     address: { "@type": "PostalAddress", addressLocality: "Jember", addressRegion: "Jawa Timur", addressCountry: "ID" },
     areaServed: "Worldwide",
     knowsAbout: ["Mascot design", "Brand identity", "Custom lettering", "Merch graphics", "Vintage illustration"],
-    sameAs: [SOCIAL.instagram, SOCIAL.behance, waHref("general", locale)],
+    sameAs: [SOCIAL.instagram, SOCIAL.behance, w.href("general", locale)],
   };
 
   return (
@@ -80,7 +78,7 @@ export default async function HomePage({ params }: Props) {
               </h1>
               <p id="hero-sub" className="hx" style={d("2.75s")}>{h.sub}</p>
               <div id="hero-ctas">
-                <a id="hero-cta-primary" className="btn btn-red hx" style={d("2.85s")} href={waHref("general", locale)} target="_blank" rel="noopener"><WaIcon /> {h.ctaPrimary}</a>
+                <a id="hero-cta-primary" className="btn btn-red hx" style={d("2.85s")} href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> {h.ctaPrimary}</a>
                 <Link id="hero-cta-secondary" className="btn btn-line hx" style={d("2.92s")} href={workHref}>{h.ctaSecondary}</Link>
               </div>
             </div>

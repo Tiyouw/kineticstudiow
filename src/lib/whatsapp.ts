@@ -1,6 +1,5 @@
 import type { Locale } from "./i18n";
 
-export const WA_NUMBER = "6285156487036";
 
 export type WaKind = "general" | "order" | "ask" | "project" | "custom";
 
@@ -43,14 +42,22 @@ const T: Record<WaKind, Record<Locale, string>> = {
   },
 };
 
+export interface WaConfig {
+  number: string;
+  templates: Record<WaKind, Record<Locale, string>>;
+}
+
+/** The defaults in code. The number and templates edited in the Studio (getWa) replace them. */
+export const DEFAULT_WA: WaConfig = { number: "6285156487036", templates: T };
+
 /** The prefilled message. Empty placeholders become "-". */
-export function waText(kind: WaKind, locale: Locale, data: WaData = {}): string {
-  return T[kind][locale].replace(/\{(\w+)\}/g, (_, k: keyof WaData) => {
+export function waText(kind: WaKind, locale: Locale, data: WaData = {}, cfg: WaConfig = DEFAULT_WA): string {
+  return cfg.templates[kind][locale].replace(/\{(\w+)\}/g, (_, k: keyof WaData) => {
     const v = data[k];
     return v === undefined || v === "" ? "-" : String(v);
   });
 }
 
-export function waHref(kind: WaKind, locale: Locale, data?: WaData): string {
-  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText(kind, locale, data))}`;
+export function waHref(kind: WaKind, locale: Locale, data?: WaData, cfg: WaConfig = DEFAULT_WA): string {
+  return `https://wa.me/${cfg.number}?text=${encodeURIComponent(waText(kind, locale, data, cfg))}`;
 }

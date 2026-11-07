@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { getCopy, getWa } from "@/content";
+import WaProvider from "@/components/WaProvider";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { Anton, Barlow } from "next/font/google";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
-import { getCommon } from "@/i18n/common";
 import { SITE_URL } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
@@ -47,18 +48,20 @@ export default async function LangLayout({ children, params }: { children: React
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const locale = lang as Locale;
-  const c = getCommon(locale);
+  const [c, wa] = await Promise.all([getCopy("common", locale), getWa()]);
   return (
     <html lang={locale} className={`${anton.variable} ${barlow.variable}`} suppressHydrationWarning>
       <body>
         <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
           <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves={2} seed={7} /><feDisplacementMap in="SourceGraphic" scale={1.6} /></filter>
         </svg>
+        <WaProvider cfg={wa}>
         <div id="page">
           <Nav locale={locale} c={c} />
           {children}
           <WaFloat locale={locale} label={c.waFloat} />
         </div>
+        </WaProvider>
         <PageTransition />
         <LangSwap />
         <ScrollReveal />

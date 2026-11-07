@@ -51,3 +51,5 @@ const work = {
 
 export type WorkDict = (typeof work)["en"];
 export const getWork = (l: Locale): WorkDict => work[l];
+
+export default work;

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
-import { waHref, waText } from "@/lib/whatsapp";
+import { useWa } from "@/components/WaProvider";
 import type { CustomDict, Option } from "@/i18n/pages/custom";
 import Bubble from "@/components/Bubble";
 import { CheckIcon, WaIcon } from "@/components/Icons";
@@ -50,6 +50,7 @@ function Chips({ group, opts, value, multi, onChange }: {
 
 /** The brief form and its live WhatsApp preview (two grid children of #brief .wrap). */
 export default function BriefForm({ locale, t, bubble }: { locale: Locale; t: CustomDict; bubble: BubbleLabels }) {
+  const wa_ = useWa();
   const [s, setS] = useState<State>(EMPTY);
   const [typing, setTyping] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -125,8 +126,8 @@ export default function BriefForm({ locale, t, bubble }: { locale: Locale; t: Cu
       <aside id="preview" aria-label={t.preview.aria}>
         <p className="eyebrow">{t.preview.eyebrow}</p>
         <h2 className="disp rough">{t.preview.title}</h2>
-        <Bubble live typing={typing} text={waText("custom", locale, fields)} head={bubble.head} to={bubble.to} meta={bubble.meta} />
-        <a id="send" className="btn btn-red" href={waHref("custom", locale, fields)} target="_blank" rel="noopener"><WaIcon /> {t.preview.send}</a>
+        <Bubble live typing={typing} text={wa_.text("custom", locale, fields)} head={bubble.head} to={bubble.to} meta={bubble.meta} />
+        <a id="send" className="btn btn-red" href={wa_.href("custom", locale, fields)} target="_blank" rel="noopener"><WaIcon /> {t.preview.send}</a>
         <p id="preview-note">{t.preview.note}</p>
       </aside>
     </>

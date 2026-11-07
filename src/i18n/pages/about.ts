@@ -53,3 +53,5 @@ const about = {
 
 export type AboutDict = (typeof about)["en"];
 export const getAbout = (l: Locale): AboutDict => about[l];
+
+export default about;

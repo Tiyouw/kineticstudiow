@@ -2,9 +2,7 @@ import "@/styles/pages/shop.css";
 import type { Metadata } from "next";
 import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
-import { getCommon } from "@/i18n/common";
-import { getShop } from "@/i18n/pages/shop";
-import { getProducts } from "@/content";
+import { getProducts, getCopy } from "@/content";
 import Ticket from "@/components/Ticket";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
@@ -14,7 +12,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  const s = getShop(lang);
+  const s = (await getCopy("shop", lang));
   return { title: s.metaTitle, description: s.lede, alternates: alternates(lang, "/shop") };
 }
 
@@ -22,8 +20,8 @@ const d = (s: string) => ({ ["--d" as string]: s });
 
 export default async function ShopPage({ params }: Props) {
   const { lang: locale } = await params;
-  const c = getCommon(locale);
-  const s = getShop(locale);
+  const c = (await getCopy("common", locale));
+  const s = (await getCopy("shop", locale));
   const products = await getProducts();
   const total = products.length;
   const word = (n: number) => (n === 1 ? s.one : s.many);

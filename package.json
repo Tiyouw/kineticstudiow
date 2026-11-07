@@ -9,10 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@sanity/client": "^7.28.0",
+    "@sanity/image-url": "^1.2.0",
     "@vercel/analytics": "^1.6.1",
     "next": "15.5.29",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "next-sanity": "^11.6.13",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sanity": "^5.31.2",
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

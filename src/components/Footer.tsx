@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { getWaLinks } from "@/content";
 import { href, type Locale, type PageKey } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import TiyoouwCredit from "./TiyoouwCredit";
@@ -8,7 +8,8 @@ import { BehanceIcon, InstagramIcon, MailIcon, WaIcon } from "./Icons";
 
 const PAGES: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
-export default function Footer({ locale, c, current }: { locale: Locale; c: CommonDict; current?: PageKey }) {
+export default async function Footer({ locale, c, current }: { locale: Locale; c: CommonDict; current?: PageKey }) {
+  const w = await getWaLinks();
   const f = c.footer;
   return (
     <footer id="footer">
@@ -24,7 +25,7 @@ export default function Footer({ locale, c, current }: { locale: Locale; c: Comm
             <li><a href="https://instagram.com/kinetic.studiow" target="_blank" rel="noopener"><InstagramIcon /> Instagram<span>@kinetic.studiow</span></a></li>
             <li><a href="https://behance.net/kineticstd" target="_blank" rel="noopener"><BehanceIcon /> Behance<span>kineticstd</span></a></li>
             <li><a href="mailto:kineticcreative666@gmail.com"><MailIcon /> {f.email}<span>kineticcreative666@gmail.com</span></a></li>
-            <li><a href={waHref("general", locale)} target="_blank" rel="noopener"><WaIcon /> WhatsApp<span>{f.chatToOrder}</span></a></li>
+            <li><a href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> WhatsApp<span>{f.chatToOrder}</span></a></li>
           </ul>
         </div>
         <div id="footer-site">

@@ -11,6 +11,12 @@ export async function anton() {
 
 /** A public/ file as a data URL (the card renders without fetching the site). */
 export async function asset(src: string) {
+  if (/^https?:/.test(src)) {
+    // a Sanity image: ask for a PNG the card renderer can read
+    const url = src.replace(/auto=format/, "fm=png").replace(/w=\d+/, "w=900");
+    const buf = Buffer.from(await (await fetch(url)).arrayBuffer());
+    return `data:image/png;base64,${buf.toString("base64")}`;
+  }
   const buf = await readFile(join(process.cwd(), "public", src));
   return `data:image/png;base64,${buf.toString("base64")}`;
 }

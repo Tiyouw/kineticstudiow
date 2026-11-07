@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- assets are pre-sized brand PNGs, plain <img> per the site brief */
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
+import { useWa } from "@/components/WaProvider";
 import type { Project, WorkCategory } from "@/content/types";
 import type { CommonDict } from "@/i18n/common";
 import type { WorkDict } from "@/i18n/pages/work";
@@ -23,6 +23,7 @@ const FOCUSABLE = 'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"]
 export default function WorkBrowser({ projects, locale, c, w }: {
   projects: Project[]; locale: Locale; c: CommonDict; w: WorkDict;
 }) {
+  const wa_ = useWa();
   const [filter, setFilter] = useState<Filter>("all");
   const [run, setRun] = useState(0);
   const [openIdx, setOpenIdx] = useState<number | null>(null);
@@ -146,7 +147,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
             </dl>
             <p id="sheet-desc">{p.description[locale]}</p>
             {p.real ? null : <span className="tag" id="sheet-ph">{w.sheet.descPh}</span>}
-            <a className="btn btn-red" id="sheet-cta" href={waHref("project", locale, { project: waProject })} target="_blank" rel="noopener">
+            <a className="btn btn-red" id="sheet-cta" href={wa_.href("project", locale, { project: waProject })} target="_blank" rel="noopener">
               <WaIcon /> {w.sheet.cta}
             </a>
           </div>

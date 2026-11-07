@@ -38,6 +38,8 @@ export interface ClientMark {
   name: string;
   /** style variant from the design: mk-1 … mk-6 */
   variant: 1 | 2 | 3 | 4 | 5 | 6;
+  /** a real logo image; replaces the lettered placeholder */
+  logo?: string;
 }
 
 export interface Testimonial {

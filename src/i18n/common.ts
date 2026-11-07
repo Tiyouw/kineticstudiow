@@ -126,3 +126,5 @@ const common = {
 
 export type CommonDict = (typeof common)["en"];
 export const getCommon = (locale: Locale): CommonDict => common[locale];
+
+export default common;

@@ -1,11 +1,9 @@
 import "@/styles/pages/notfound.css";
+import { getCopy, getWaLinks } from "@/content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { href, isLocale, type Locale } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
-import { getCommon } from "@/i18n/common";
-import { getNotFound } from "@/i18n/pages/notfound";
 import Footer from "@/components/Footer";
 import { ArrowIcon, WaIcon } from "@/components/Icons";
 
@@ -14,10 +12,11 @@ export const metadata: Metadata = { title: "404", robots: { index: false } };
 const d = (s: string) => ({ ["--d" as string]: s });
 
 export default async function NotFound() {
+  const w = await getWaLinks();
   const h = (await headers()).get("x-locale") ?? "";
   const locale: Locale = isLocale(h) ? h : "id";
-  const c = getCommon(locale);
-  const t = getNotFound(locale);
+  const c = (await getCopy("common", locale));
+  const t = (await getCopy("notfound", locale));
   return (
     <>
       <main>
@@ -32,7 +31,7 @@ export default async function NotFound() {
               <div className="nf-ctas hx" style={d(".6s")}>
                 <Link className="btn btn-red" href={href(locale, "home")}>{t.home}</Link>
                 <Link className="btn btn-line" href={href(locale, "shop")}>{t.shop} <ArrowIcon /></Link>
-                <a className="btn btn-line" href={waHref("general", locale)} target="_blank" rel="noopener"><WaIcon /> {t.ask}</a>
+                <a className="btn btn-line" href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> {t.ask}</a>
               </div>
             </div>
             <div className="nf-art">

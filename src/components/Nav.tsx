@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { href, type Locale, type PageKey } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
+import { useWa } from "@/components/WaProvider";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import { CloseIcon, MenuIcon, WaIcon } from "./Icons";
@@ -22,6 +22,7 @@ export function currentPage(pathname: string): PageKey {
 export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
   const pathname = usePathname() || "";
   const page = currentPage(pathname);
+  const wa_ = useWa();
   const [open, setOpen] = useState(false);
   const [quick, setQuick] = useState(false); // compact bar, shown when scrolling up past the first screen
   const [past, setPast] = useState(false); // past the first screen: back-to-top shows
@@ -62,7 +63,7 @@ export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
   const cur = (k: PageKey) => (page === k ? ({ "aria-current": "page" } as const) : {});
-  const wa = waHref("general", locale);
+  const wa = wa_.href("general", locale);
 
   return (
     <header id="nav">

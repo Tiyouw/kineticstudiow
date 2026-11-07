@@ -26,3 +26,5 @@ const notfound = {
 } satisfies Record<Locale, unknown>;
 
 export const getNotFound = (l: Locale) => notfound[l];
+
+export default notfound;

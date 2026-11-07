@@ -60,3 +60,5 @@ const home = {
 };
 
 export const getHome = (l: Locale) => home[l];
+
+export default home;

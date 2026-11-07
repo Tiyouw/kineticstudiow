@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { productHref, type Locale } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
-import { formatIdr, formatUsd, type Product } from "@/content";
+import { formatIdr, formatUsd, type Product, getWaLinks } from "@/content";
 import type { CommonDict } from "@/i18n/common";
 
 /** Premade mascot as a ticket stub. `stampDelay` sets when the SOLD stamp slams in (CSS --sd). */
-export default function Ticket({ p, locale, c, stampDelay }: { p: Product; locale: Locale; c: CommonDict; stampDelay?: string }) {
+export default async function Ticket({ p, locale, c, stampDelay }: { p: Product; locale: Locale; c: CommonDict; stampDelay?: string }) {
+  const w = await getWaLinks();
   const link = productHref(locale, p.slug);
   const price = formatIdr(p.priceIdr);
   const t = c.product;
@@ -25,7 +25,7 @@ export default function Ticket({ p, locale, c, stampDelay }: { p: Product; local
         {p.sold ? (
           <span className="btn tk-btn tk-gone" aria-disabled="true">{t.gone}</span>
         ) : (
-          <a className="btn btn-red tk-btn" href={waHref("order", locale, { no: p.no, name: p.name, price })} target="_blank" rel="noopener">{t.order}</a>
+          <a className="btn btn-red tk-btn" href={w.href("order", locale, { no: p.no, name: p.name, price })} target="_blank" rel="noopener">{t.order}</a>
         )}
       </div>
       <div className="tk-stub"><span className="tk-admit">{t.admit}</span><span className="tk-seat">{t.seat}<b>{p.no}</b></span></div>

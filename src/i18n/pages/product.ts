@@ -66,3 +66,5 @@ export const getProductDict = (l: Locale): ProductDict => product[l];
 
 /** "{name}" style fill-in. */
 export const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
+
+export default product;

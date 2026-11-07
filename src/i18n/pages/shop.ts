@@ -59,3 +59,5 @@ const shop = {
 
 export type ShopDict = (typeof shop)["en"];
 export const getShop = (l: Locale): ShopDict => shop[l];
+
+export default shop;

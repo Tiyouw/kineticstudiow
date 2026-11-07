@@ -2,6 +2,7 @@ import type { ClientMark } from "@/content";
 import type { CommonDict } from "@/i18n/common";
 
 function Mark({ m, hidden }: { m: ClientMark; hidden?: boolean }) {
+  if (m.logo) return <span className="mk mk-logo" aria-hidden={hidden || undefined}><img src={m.logo} alt={hidden ? "" : m.name} /></span>;
   const inner = m.variant === 6 ? (<>{m.name.split(" ")[0]}<b>{m.name.split(" ").slice(1).join(" ")}</b></>) : m.name;
   return <span className={`mk mk-${m.variant}`} aria-hidden={hidden || undefined}>{inner}</span>;
 }

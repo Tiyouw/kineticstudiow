@@ -16,4 +16,4 @@ export function middleware(req: NextRequest) {
   return NextResponse.redirect(url);
 }
 
-export const config = { matcher: ["/((?!_next|assets|api|favicon.ico|tiyoouw-mark.js|robots.txt|sitemap.xml|.*opengraph-image.*|.*\\.(?:png|jpg|jpeg|svg|webp|ico|js|css|txt|xml)$).*)"] };
+export const config = { matcher: ["/((?!_next|assets|api|favicon.ico|tiyoouw-mark.js|robots.txt|sitemap.xml|studio|.*opengraph-image.*|.*\\.(?:png|jpg|jpeg|svg|webp|ico|js|css|txt|xml)$).*)"] };

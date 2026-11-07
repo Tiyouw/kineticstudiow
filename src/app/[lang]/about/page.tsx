@@ -2,10 +2,7 @@ import "@/styles/pages/about.css";
 import type { Metadata } from "next";
 import { alternates } from "@/lib/site";
 import { href, type Locale } from "@/lib/i18n";
-import { waHref } from "@/lib/whatsapp";
-import { getCommon } from "@/i18n/common";
-import { getAbout } from "@/i18n/pages/about";
-import { getClientMarks } from "@/content";
+import { getClientMarks, getCopy, getWaLinks } from "@/content";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
 import Clients from "@/components/Clients";
@@ -18,7 +15,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getAbout(lang).metaTitle, alternates: alternates(lang, "/about") };
+  return { title: (await getCopy("about", lang)).metaTitle, alternates: alternates(lang, "/about") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });
@@ -30,16 +27,17 @@ const CameraIcon = () => (
 );
 
 export default async function AboutPage({ params }: Props) {
+  const w = await getWaLinks();
   const { lang: locale } = await params;
-  const c = getCommon(locale);
-  const a = getAbout(locale);
+  const c = (await getCopy("common", locale));
+  const a = (await getCopy("about", locale));
   const marks = await getClientMarks();
 
   const contacts = [
     { k: "Instagram", v: "@kinetic.studiow", h: "https://instagram.com/kinetic.studiow", ext: true },
     { k: "Behance", v: "kineticstd", h: "https://behance.net/kineticstd", ext: true },
     { k: a.email, v: "kineticcreative666@gmail.com", h: "mailto:kineticcreative666@gmail.com", ext: false },
-    { k: "WhatsApp", v: a.waValue, h: waHref("general", locale), ext: true },
+    { k: "WhatsApp", v: a.waValue, h: w.href("general", locale), ext: true },
   ];
 
   return (

@@ -4,10 +4,8 @@ import { SITE_URL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { href, locales, type Locale } from "@/lib/i18n";
-import { waHref, waText } from "@/lib/whatsapp";
-import { getCommon } from "@/i18n/common";
-import { fill, getProductDict } from "@/i18n/pages/product";
-import { formatIdr, formatUsd, getProduct, getProducts } from "@/content";
+import { fill } from "@/i18n/pages/product";
+import { formatIdr, formatUsd, getProduct, getProducts, getCopy, getWaLinks } from "@/content";
 import Ticket from "@/components/Ticket";
 import Bubble from "@/components/Bubble";
 import CtaBand from "@/components/CtaBand";
@@ -17,7 +15,8 @@ import Gallery, { type View } from "@/components/shop/Gallery";
 
 type Props = { params: Promise<{ lang: Locale; slug: string }> };
 
-export const dynamicParams = false;
+// products added in the Studio get their page on first visit
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, slug } = await params;
   const p = await getProduct(slug);
   if (!p) return {};
-  const t = getProductDict(lang);
+  const t = (await getCopy("product", lang));
   const name = titleCase(p.name);
   return {
     title: `#${p.no} ${name} · ${t.bandL}`,
@@ -43,11 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const d = (s: string) => ({ ["--d" as string]: s });
 
 export default async function ProductPage({ params }: Props) {
+  const w = await getWaLinks();
   const { lang: locale, slug } = await params;
   const p = await getProduct(slug);
   if (!p) notFound();
-  const c = getCommon(locale);
-  const t = getProductDict(locale);
+  const c = (await getCopy("common", locale));
+  const t = (await getCopy("product", locale));
   const all = await getProducts();
   const name = titleCase(p.name);
   const price = formatIdr(p.priceIdr);
@@ -115,9 +115,9 @@ export default async function ProductPage({ params }: Props) {
                   {p.sold ? (
                     <span className="btn tk-gone" aria-disabled="true">{c.product.gone}</span>
                   ) : (
-                    <a className="btn btn-red" href={waHref("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
+                    <a className="btn btn-red" href={w.href("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
                   )}
-                  <a className="btn btn-line" href={waHref("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
+                  <a className="btn btn-line" href={w.href("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
                 </div>
                 {p.sold ? (
                   <div id="p-sold" className="hx" style={d("1.05s")}>
@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: Props) {
                     <Link className="link" href={href(locale, "custom")}>{t.soldCta} <ArrowIcon /></Link>
                   </div>
                 ) : (
-                  <Bubble text={waText("order", locale, wa)} head={t.orderMsg} to={c.bubble.to} meta={c.bubble.meta} />
+                  <Bubble text={w.text("order", locale, wa)} head={t.orderMsg} to={c.bubble.to} meta={c.bubble.meta} />
                 )}
               </div>
               <div className="tk-stub"><span className="tk-admit">{c.product.admit}</span><span className="tk-seat">{c.product.seat}<b>{p.no}</b></span></div>

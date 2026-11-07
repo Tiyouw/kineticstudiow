@@ -1,9 +1,8 @@
 import "@/styles/pages/custom.css";
+import { getCopy } from "@/content";
 import type { Metadata } from "next";
 import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
-import { getCommon } from "@/i18n/common";
-import { getCustom } from "@/i18n/pages/custom";
 import Process from "@/components/Process";
 import Footer from "@/components/Footer";
 import BriefForm from "@/components/custom/BriefForm";
@@ -13,15 +12,15 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getCustom(lang).metaTitle, description: getCustom(lang).lede, alternates: alternates(lang, "/custom-order") };
+  return { title: (await getCopy("custom", lang)).metaTitle, description: (await getCopy("custom", lang)).lede, alternates: alternates(lang, "/custom-order") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });
 
 export default async function CustomOrderPage({ params }: Props) {
   const { lang: locale } = await params;
-  const c = getCommon(locale);
-  const t = getCustom(locale);
+  const c = (await getCopy("common", locale));
+  const t = (await getCopy("custom", locale));
 
   return (
     <>

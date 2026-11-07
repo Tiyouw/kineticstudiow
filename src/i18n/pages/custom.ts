@@ -165,3 +165,5 @@ const custom = {
 
 export type CustomDict = (typeof custom)["en"];
 export const getCustom = (l: Locale): CustomDict => custom[l];
+
+export default custom;

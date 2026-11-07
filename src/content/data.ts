@@ -1,6 +1,6 @@
 import type { ClientMark, Product, Project, Testimonial } from "./types";
 
-/* Placeholder content until the CMS lands. Images are brand-asset stand-ins. */
+/* The placeholder content that scripts/seed-sanity.ts put into the CMS. The site reads Sanity, not this file. */
 
 const A = (f: string) => `/assets/${f}`;
 
