@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, SOCIAL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
 import { href, type Locale } from "@/lib/i18n";
 import { waHref } from "@/lib/whatsapp";
@@ -19,7 +20,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: { absolute: `Kinetic Studiow · ${getHome(lang).metaTitle}` }, alternates: { canonical: `/${lang}` } };
+  return { title: { absolute: `Kinetic Studiow · ${getHome(lang).metaTitle}` }, alternates: alternates(lang, "") };
 }
 
 function Ring({ text }: { text: string }) {
@@ -45,8 +46,28 @@ export default async function HomePage({ params }: Props) {
   const shopPicks = ["012", "013", "014", "015"].map((no) => products.find((p) => p.no === no)!).filter(Boolean);
   const workHref = href(locale, "work");
 
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": `${SITE_URL}/#studio`,
+    name: "Kinetic Studiow",
+    url: `${SITE_URL}/${locale}`,
+    logo: `${SITE_URL}/assets/badge-full-filled.png`,
+    image: `${SITE_URL}/assets/mascot-full-filled.png`,
+    description: locale === "id"
+      ? "Studio ilustrasi di Jember: desain maskot kartun retro, identitas brand, lettering, dan grafis merch. Order lewat WhatsApp."
+      : "Illustration studio in Jember, Indonesia: retro cartoon mascots, brand identity, lettering and merch graphics. Order on WhatsApp.",
+    email: SOCIAL.email,
+    telephone: "+6285156487036",
+    address: { "@type": "PostalAddress", addressLocality: "Jember", addressRegion: "Jawa Timur", addressCountry: "ID" },
+    areaServed: "Worldwide",
+    knowsAbout: ["Mascot design", "Brand identity", "Custom lettering", "Merch graphics", "Vintage illustration"],
+    sameAs: [SOCIAL.instagram, SOCIAL.behance, waHref("general", locale)],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(ld)} />
       <Loader c={c} />
       <main>
         <section id="hero">

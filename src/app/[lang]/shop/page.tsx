@@ -1,5 +1,6 @@
 import "@/styles/pages/shop.css";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getShop } from "@/i18n/pages/shop";
@@ -14,7 +15,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   const s = getShop(lang);
-  return { title: s.metaTitle, description: s.lede, alternates: { canonical: `/${lang}/shop` } };
+  return { title: s.metaTitle, description: s.lede, alternates: alternates(lang, "/shop") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });

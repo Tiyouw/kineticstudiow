@@ -4,6 +4,8 @@ import Script from "next/script";
 import { Anton, Barlow } from "next/font/google";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
+import { SITE_URL } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import WaFloat from "@/components/WaFloat";
 import PageTransition from "@/components/PageTransition";
@@ -19,7 +21,6 @@ export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kineticstudiow.vercel.app";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -30,8 +31,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: id
       ? "Maskot kartun retro dan branding, digambar tangan di Jember, Jawa Timur. Order lewat WhatsApp."
       : "Retro cartoon mascots and branding, hand-drawn in Jember, East Java. Order on WhatsApp.",
-    alternates: { languages: { id: "/id", en: "/en" } },
-    openGraph: { siteName: "Kinetic Studiow", images: ["/assets/badge-full-filled.png"], locale: id ? "id_ID" : "en_US" },
+    keywords: id
+      ? ["desain maskot", "jasa maskot", "ilustrasi retro", "maskot brand", "logo vintage", "lettering", "desain merch", "ilustrator Jember", "Kinetic Studiow"]
+      : ["mascot design", "retro cartoon mascot", "vintage logo", "brand mascot", "custom lettering", "merch graphics", "illustrator Indonesia", "Kinetic Studiow"],
+    openGraph: { type: "website", siteName: "Kinetic Studiow", locale: id ? "id_ID" : "en_US", alternateLocale: id ? "en_US" : "id_ID" },
+    twitter: { card: "summary_large_image" },
+    ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } } : {}),
     icons: { icon: "/assets/mascot-head-circle-filled.png" },
   };
 }
@@ -58,6 +63,7 @@ export default async function LangLayout({ children, params }: { children: React
         <LangSwap />
         <ScrollReveal />
         <Script src="/tiyoouw-mark.js" strategy="beforeInteractive" />
+        <Analytics />
       </body>
     </html>
   );

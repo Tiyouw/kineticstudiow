@@ -1,5 +1,6 @@
 import "@/styles/pages/work.css";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getWork } from "@/i18n/pages/work";
@@ -12,7 +13,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getWork(lang).metaTitle, alternates: { canonical: `/${lang}/work` } };
+  return { title: getWork(lang).metaTitle, description: getWork(lang).lede, alternates: alternates(lang, "/work") };
 }
 
 export default async function WorkPage({ params }: Props) {

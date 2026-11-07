@@ -1,5 +1,6 @@
 import "@/styles/pages/about.css";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { href, type Locale } from "@/lib/i18n";
 import { waHref } from "@/lib/whatsapp";
 import { getCommon } from "@/i18n/common";
@@ -17,7 +18,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getAbout(lang).metaTitle, alternates: { canonical: href(lang, "about") } };
+  return { title: getAbout(lang).metaTitle, alternates: alternates(lang, "/about") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });

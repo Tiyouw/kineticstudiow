@@ -1,5 +1,6 @@
 import "@/styles/pages/product.css";
 import type { Metadata } from "next";
+import { SITE_URL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { href, locales, type Locale } from "@/lib/i18n";
@@ -35,8 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `#${p.no} ${name} · ${t.bandL}`,
     description: fill(p.sold ? t.soldOnce : t.once, { name }),
-    alternates: { canonical: `/${lang}/shop/${p.slug}` },
-    openGraph: { images: [p.image] },
+    alternates: alternates(lang, `/shop/${p.slug}`),
   };
 }
 
@@ -66,8 +66,27 @@ export default async function ProductPage({ params }: Props) {
     aria: fill(t.showView, { n: i + 1 }),
   }));
 
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `#${p.no} ${name}`,
+    sku: p.no,
+    image: [p.image, ...p.gallery].map((src) => SITE_URL + src),
+    description: fill(p.sold ? t.soldOnce : t.once, { name }),
+    brand: { "@type": "Brand", name: "Kinetic Studiow" },
+    offers: {
+      "@type": "Offer",
+      url: `${SITE_URL}/${locale}/shop/${p.slug}`,
+      priceCurrency: "IDR",
+      price: p.priceIdr,
+      availability: p.sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      seller: { "@id": `${SITE_URL}/#studio` },
+    },
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(ld)} />
       <main>
         <nav id="crumbs" aria-label={t.crumbsAria}>
           <div className="wrap">

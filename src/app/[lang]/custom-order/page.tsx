@@ -1,5 +1,6 @@
 import "@/styles/pages/custom.css";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import type { Locale } from "@/lib/i18n";
 import { getCommon } from "@/i18n/common";
 import { getCustom } from "@/i18n/pages/custom";
@@ -12,7 +13,7 @@ type Props = { params: Promise<{ lang: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  return { title: getCustom(lang).metaTitle, alternates: { canonical: `/${lang}/custom-order` } };
+  return { title: getCustom(lang).metaTitle, description: getCustom(lang).lede, alternates: alternates(lang, "/custom-order") };
 }
 
 const d = (s: string) => ({ ["--d" as string]: s });
