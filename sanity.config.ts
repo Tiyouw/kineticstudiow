@@ -4,6 +4,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schemaTypes, copyTypes, SINGLETONS } from "./src/sanity/schemas";
+import Guide from "./src/sanity/Guide";
 
 export default defineConfig({
   name: "kinetic",
@@ -24,6 +25,8 @@ export default defineConfig({
       title: "Konten",
       structure: (S) =>
         S.list().title("Konten Kinetic").items([
+          S.listItem().title("Panduan").id("panduan").child(S.component(Guide).id("panduan-pane").title("Panduan")),
+          S.divider(),
           S.documentTypeListItem("product").title("Produk (maskot premade)"),
           S.documentTypeListItem("project").title("Karya"),
           S.documentTypeListItem("testimonial").title("Testimoni"),

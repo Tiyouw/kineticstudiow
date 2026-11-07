@@ -7,7 +7,7 @@ import { href, isLocale, type Locale } from "@/lib/i18n";
 import Footer from "@/components/Footer";
 import { ArrowIcon, WaIcon } from "@/components/Icons";
 
-export const metadata: Metadata = { title: "404", robots: { index: false } };
+export const metadata: Metadata = { robots: { index: false } };
 
 const d = (s: string) => ({ ["--d" as string]: s });
 
@@ -19,6 +19,7 @@ export default async function NotFound() {
   const t = (await getCopy("notfound", locale));
   return (
     <>
+      <title>{`404 · ${t.metaTitle} · Kinetic Studiow`}</title>
       <main>
         <section id="nf">
           <div className="wrap nf-in">

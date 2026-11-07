@@ -10,13 +10,17 @@ import { CloseIcon, MenuIcon, WaIcon } from "./Icons";
 
 const ITEMS: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
-export function currentPage(pathname: string): PageKey {
-  const seg = pathname.split("/")[2] ?? "";
-  if (seg === "work") return "work";
+/** The nav item for a path, or null on paths that aren't a site page (the 404). */
+export function currentPage(pathname: string): PageKey | null {
+  const parts = pathname.split("/").filter(Boolean);
+  const seg = parts[1] ?? "";
+  if (seg === "") return "home";
   if (seg === "shop") return "shop";
+  if (parts.length > 2) return null;
+  if (seg === "work") return "work";
   if (seg === "custom-order") return "custom";
   if (seg === "about") return "about";
-  return "home";
+  return null;
 }
 
 export default function Nav({ locale, c }: { locale: Locale; c: CommonDict }) {
