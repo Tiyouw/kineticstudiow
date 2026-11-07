@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { COPY_TITLES, DICTS, type CopyKey } from "@/i18n/dicts";
 import { copyFields } from "../copy";
 import { QUESTIONS } from "@/lib/fatwaQuestions";
+import SharePanel from "../SharePanel";
 
 const L = (name: string, title: string, long = false, required = false) =>
   defineField({
@@ -129,6 +130,8 @@ export const post = defineType({
       fields: [richText("en", "English"), { ...richText("id", "Indonesia"), description: "Opsional. Kosong = pakai versi English." }],
     }),
     defineField({ name: "caption", title: "Caption media sosial", type: "text", rows: 4, validation: (r) => r.max(500), description: "Teks pendek untuk Threads/X (maks. 500 karakter). Link ke tulisan ditambahkan otomatis." }),
+    // nothing is stored here: the field only shows the share buttons and ready-to-paste captions
+    defineField({ name: "share", title: "Bagikan", type: "string", readOnly: true, components: { input: SharePanel }, description: "Buka X, Threads, dan lainnya dengan caption dan link sudah terisi, atau copy caption-nya." }),
     defineField({ name: "related", title: "Terkait dengan", type: "reference", to: [{ type: "product" }, { type: "project" }], description: "Opsional: maskot atau karya yang dibahas. Tampil sebagai kartu di bawah tulisan." }),
     defineField({ name: "shareThreads", title: "Kirim ke Threads", type: "boolean", initialValue: false, description: "Belum aktif: akan menyala setelah akun Threads tersambung." }),
     defineField({ name: "shareX", title: "Kirim ke X (nanti)", type: "boolean", initialValue: false, description: "Belum aktif." }),
