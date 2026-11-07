@@ -22,6 +22,7 @@ export type WorkCategory = "mascot" | "brand" | "lettering" | "merch";
 
 export interface Project {
   id: string; // "01"
+  slug: string; // its page: /<lang>/work/<slug>
   title: L10n;
   category: WorkCategory;
   year: L10n;

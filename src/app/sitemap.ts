@@ -1,13 +1,14 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
-import { getProducts } from "@/content";
+import { getProducts, getProjects } from "@/content";
 
 const PAGES = ["", "/work", "/shop", "/custom-order", "/about"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const products = await getProducts();
-  const paths = [...PAGES, ...products.map((p) => `/shop/${p.slug}`)];
+  const [products, projects] = await Promise.all([getProducts(), getProjects()]);
+  // placeholder projects are noindex, so they stay out until the real work is in
+  const paths = [...PAGES, ...products.map((p) => `/shop/${p.slug}`), ...projects.filter((p) => p.real).map((p) => `/work/${p.slug}`)];
   return paths.flatMap((path) =>
     locales.map((l) => ({
       url: `${SITE_URL}/${l}${path}`,

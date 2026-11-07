@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL, SOCIAL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
-import { href, type Locale } from "@/lib/i18n";
+import { href, projectHref, type Locale } from "@/lib/i18n";
 import { getClientMarks, getProducts, getProjects, getTestimonials, getCopy, getWaLinks } from "@/content";
 import Loader from "@/components/Loader";
 import Clients from "@/components/Clients";
@@ -108,7 +108,7 @@ export default async function HomePage({ params }: Props) {
               <Link className="link only-d" href={workHref}>{h.seeAllWork} <ArrowIcon /></Link>
             </div>
             <div id="work-row">
-              {projects.slice(0, 5).map((w) => <Tile key={w.id} w={w} locale={locale} c={c} href={workHref} />)}
+              {projects.slice(0, 5).map((w) => <Tile key={w.id} w={w} locale={locale} c={c} href={projectHref(locale, w.slug)} />)}
             </div>
             <Link id="work-more" className="link only-m" href={workHref}>{h.seeAllWork} <ArrowIcon /></Link>
           </div>

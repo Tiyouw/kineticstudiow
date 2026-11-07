@@ -38,16 +38,35 @@ export async function getProduct(slug: string): Promise<Product | null> {
 
 export const getProjects = cache(async (): Promise<Project[]> => {
   const rows = await sanityFetch<Raw<Project>[]>(
-    groq`*[_type == "project"] | order(id asc) { id, title, category, year, client, services, description, ${IMG("image")}, ${GALLERY}, "tone": coalesce(tone, ""), "real": coalesce(real, true) }`,
+    groq`*[_type == "project"] | order(id asc) { id, "slug": slug.current, title, category, year, client, services, description, ${IMG("image")}, ${GALLERY}, "tone": coalesce(tone, ""), "real": coalesce(real, true) }`,
   );
   const l = (v: unknown) => ({ id: "", en: "", ...(v as object) });
+  const taken = new Set<string>();
   return rows.map((p) => ({
     ...p,
+    slug: uniqueSlug(p.slug || slugify(l(p.title).en || l(p.title).id) || `project-${p.id}`, p.id, taken),
     title: l(p.title), year: l(p.year), client: l(p.client), services: l(p.services), description: l(p.description),
     image: p.image ?? "/assets/badge-full.png",
     gallery: p.gallery.length ? p.gallery : [p.image ?? "/assets/badge-full.png"],
   }));
 });
+
+/** One project by its page address. */
+export async function getProject(slug: string) {
+  return (await getProjects()).find((p) => p.slug === slug) ?? null;
+}
+
+/** "Kinetic Brand Identity!" -> "kinetic-brand-identity" */
+function slugify(s: string) {
+  return s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+}
+
+/** Two projects can't share an address: a repeat gets its order number appended. */
+function uniqueSlug(s: string, id: string, taken: Set<string>) {
+  const out = taken.has(s) ? `${s}-${id}` : s;
+  taken.add(out);
+  return out;
+}
 
 export const getClientMarks = cache(async (): Promise<ClientMark[]> => {
   const rows = await sanityFetch<(ClientMark & { logo: string | null })[]>(

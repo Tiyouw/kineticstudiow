@@ -21,6 +21,10 @@ export function href(locale: Locale, page: PageKey): string {
   return `/${locale}${PATHS[page]}`;
 }
 
+export function projectHref(locale: Locale, slug: string): string {
+  return `/${locale}/work/${slug}`;
+}
+
 export function productHref(locale: Locale, slug: string): string {
   return `/${locale}/shop/${slug}`;
 }

@@ -23,7 +23,7 @@ const dph = {
   en: "Description placeholder: the brief, the character, and where it lives.",
 };
 
-export const projects: Project[] = [
+export const projects: Omit<Project, "slug">[] = [
   {
     id: "01", category: "brand", real: true, image: A("badge-full.png"), tone: "",
     title: { id: "Identitas brand Kinetic", en: "Kinetic brand identity" },

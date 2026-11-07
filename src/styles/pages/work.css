@@ -30,3 +30,8 @@
   #proj-grid.is-filtered .big .tile-art img{max-height:220px}
   #proj-grid.is-filtered .big .tile-cap strong{font-size:20px}
 }
+
+/* under the sheet's button: email (English) and the project's own page */
+#sheet-links{display:flex;flex-wrap:wrap;gap:4px 20px;margin:4px 0 0}
+#sheet-links .mail-alt{margin-top:8px}
+@media (max-width:1023px){ #sheet-links{order:3;flex:none} }

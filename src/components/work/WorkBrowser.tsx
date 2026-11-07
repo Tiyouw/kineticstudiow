@@ -1,13 +1,14 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- assets are pre-sized brand PNGs, plain <img> per the site brief */
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Locale } from "@/lib/i18n";
+import Link from "next/link";
+import { href, projectHref, type Locale } from "@/lib/i18n";
 import { useWa } from "@/components/WaProvider";
 import type { Project, WorkCategory } from "@/content/types";
 import type { CommonDict } from "@/i18n/common";
 import type { WorkDict } from "@/i18n/pages/work";
 import { TileInner } from "@/components/Tile";
-import { CheckIcon, CloseIcon, WaIcon } from "@/components/Icons";
+import { ArrowIcon, CheckIcon, CloseIcon, MailIcon, WaIcon } from "@/components/Icons";
 
 type Filter = "all" | WorkCategory;
 const FILTERS: Filter[] = ["all", "mascot", "brand", "lettering", "merch"];
@@ -28,17 +29,26 @@ export default function WorkBrowser({ projects, locale, c, w }: {
   const [run, setRun] = useState(0);
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [shown, setShown] = useState(0); // last opened project, kept while the sheet animates out
-  const lastTile = useRef<HTMLButtonElement | null>(null);
+  const lastTile = useRef<HTMLAnchorElement | null>(null);
   const panel = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const isOpen = openIdx !== null;
 
   const pick = (f: Filter) => { setFilter(f); setRun((r) => r + 1); };
 
+  // the sheet gives each project its own address (/work/<slug>), so it can be shared; closing returns to /work
   const close = useCallback(() => {
     setOpenIdx(null);
+    if (location.pathname !== href(locale, "work")) history.replaceState(history.state, "", href(locale, "work"));
     lastTile.current?.focus({ preventScroll: true });
-  }, []);
+  }, [locale]);
+
+  const open = (i: number, el: HTMLAnchorElement) => {
+    lastTile.current = el;
+    setShown(i);
+    setOpenIdx(i);
+    history.replaceState(history.state, "", projectHref(locale, projects[i].slug));
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -101,19 +111,24 @@ export default function WorkBrowser({ projects, locale, c, w }: {
               const on = filter === "all" || pr.category === filter;
               const k = on ? n++ : 0;
               return (
-                <button
+                <a
                   key={on ? `${pr.id}-${run}` : pr.id}
-                  type="button"
+                  href={projectHref(locale, pr.slug)}
                   className={"tile" + sizeOf(i) + (on && run > 0 ? " in" : "")}
                   id={`work-${pr.id}`}
                   data-cat={pr.category}
                   hidden={!on}
                   style={on && run > 0 ? { animationDelay: `${k * 40}ms` } : undefined}
                   aria-haspopup="dialog"
-                  onClick={(e) => { lastTile.current = e.currentTarget; setShown(i); setOpenIdx(i); }}
+                  onClick={(e) => {
+                    // a new tab or window still gets the full page; a plain click opens the sheet
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                    e.preventDefault();
+                    open(i, e.currentTarget);
+                  }}
                 >
                   <TileInner w={pr} locale={locale} c={c} lazy={i >= 4} />
-                </button>
+                </a>
               );
             })}
           </div>
@@ -150,6 +165,10 @@ export default function WorkBrowser({ projects, locale, c, w }: {
             <a className="btn btn-red" id="sheet-cta" href={wa_.href("project", locale, { project: waProject })} target="_blank" rel="noopener">
               <WaIcon /> {w.sheet.cta}
             </a>
+            <p id="sheet-links">
+              {locale === "en" ? <a className="mail-alt" href={wa_.mail("project", locale, { project: waProject })}><MailIcon /> {c.emailInstead}</a> : null}
+              <Link className="mail-alt" href={projectHref(locale, p.slug)}>{w.sheet.open} <ArrowIcon /></Link>
+            </p>
           </div>
           <div id="sheet-gal">
             {p.gallery.slice(0, 3).map((g, k) => (

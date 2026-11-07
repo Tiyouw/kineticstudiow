@@ -56,6 +56,7 @@ export const project = defineType({
   fields: [
     defineField({ name: "id", title: "Urutan", type: "string", description: "Dua digit: 01 tampil paling depan.", validation: (r) => r.required() }),
     L("title", "Judul", false, true),
+    defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 60 }, description: "Bagian akhir link karya, misalnya burger-bros. Klik Generate. Kosong = dibuat otomatis dari judul." }),
     defineField({ name: "category", title: "Kategori", type: "string", options: { list: CATEGORIES, layout: "radio" }, validation: (r) => r.required() }),
     L("year", "Tahun"),
     L("client", "Klien"),

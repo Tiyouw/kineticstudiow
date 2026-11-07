@@ -1,0 +1,32 @@
+/* One project's own page (/work/<slug>): the sheet's content, laid out as a page. */
+#project{padding-top:24px}
+.pj-grid{display:grid;gap:24px}
+.pj-cover{position:relative;display:grid;place-items:center;min-height:300px;border:2px solid var(--ink);background-color:var(--paper);box-shadow:6px 6px 0 var(--ink);overflow:hidden}
+.pj-cover::before{content:"";position:absolute;inset:0;background-image:var(--dots);background-size:6px 6px;opacity:.22}
+.pj-cover.art-ink::before,.pj-cover.art-red::before{background-image:radial-gradient(circle,var(--chalk) 1px,transparent 1.4px);opacity:.16}
+.pj-cover img{position:relative;max-height:260px;max-width:85%;width:auto}
+.pj-info h1{font-size:48px;line-height:.95;margin:8px 0 0}
+.pj-meta{display:grid;grid-template-columns:110px 1fr;margin:20px 0 0;border-top:2px solid var(--ink)}
+.pj-meta dt,.pj-meta dd{margin:0;padding:8px 0;border-bottom:2px dotted var(--ink);font-size:15px}
+.pj-meta dt{font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;padding-top:11px}
+.pj-desc{margin:16px 0 8px;font-size:17px;line-height:1.55}
+.pj-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:20px}
+.pj-actions .mail-alt{margin-top:0}
+.pj-gal{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px}
+.pj-gal figure{margin:0;display:grid;place-items:center;aspect-ratio:1;border:2px solid var(--ink);background:var(--chalk);padding:12px}
+.pj-gal figure.art-ink{background:var(--ink)}
+.pj-gal img{max-height:100%;max-width:100%;width:auto;object-fit:contain}
+#pj-more .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.pj-more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px}
+.pj-more-grid .tile:nth-child(3){display:none}
+
+@media (min-width:1024px){
+  #project{padding-top:40px}
+  .pj-grid{grid-template-columns:7fr 5fr;gap:48px;align-items:start}
+  .pj-cover{min-height:520px}
+  .pj-cover img{max-height:440px}
+  .pj-info h1{font-size:72px}
+  .pj-gal{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+  .pj-more-grid{grid-template-columns:repeat(3,1fr);gap:24px}
+  .pj-more-grid .tile:nth-child(3){display:flex}
+}
