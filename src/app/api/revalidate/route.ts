@@ -5,6 +5,10 @@ import { locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { pingIndexNow } from "@/lib/indexnow";
 import sitemap from "@/app/sitemap";
+import { publishPending } from "@/lib/threads";
+
+// leaves time for Threads to process images after a Journal post is published
+export const maxDuration = 300;
 
 type Body = { _type?: string; slug?: { current?: string } };
 
@@ -26,6 +30,9 @@ export async function POST(req: NextRequest) {
           ? locales.flatMap((l) => [`${SITE_URL}/${l}/journal/${slug}`, `${SITE_URL}/${l}/journal`])
           : (await sitemap()).map((e) => e.url);
     await pingIndexNow(urls);
+    // Journal entries ticked "Kirim ke Threads" go out once published; the daily cron retries any that fail.
+    // Run on every webhook, not only post ones: the payload may not carry _type.
+    await publishPending().catch((e) => console.error("Threads", e));
   });
 
   return NextResponse.json({ revalidated: true, type: body?._type ?? null, now: Date.now() });

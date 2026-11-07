@@ -6,6 +6,7 @@ import { defineDocuments, defineLocations, presentationTool, type DocumentLocati
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schemaTypes, copyTypes, SINGLETONS } from "./src/sanity/schemas";
 import Guide from "./src/sanity/Guide";
+import ThreadsPane from "./src/sanity/ThreadsPane";
 import PreviewPane from "./src/sanity/PreviewPane";
 import { DICTS } from "./src/i18n/dicts";
 
@@ -84,6 +85,7 @@ export default defineConfig({
           S.documentTypeListItem("testimonial").title("Testimoni"),
           S.documentTypeListItem("clientMark").title("Logo klien"),
           S.documentTypeListItem("post").title("Journal"),
+          S.listItem().title("Threads").id("threads").child(S.component(ThreadsPane).id("threads-pane").title("Threads")),
           S.divider(),
           S.listItem().title("WhatsApp & kontak").id("settings").child(S.document().schemaType("settings").documentId("settings").views([S.view.form().title("Edit"), S.view.component(PreviewPane).title("Pratinjau")])),
           S.listItem().title("Teks halaman").child(

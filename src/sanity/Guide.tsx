@@ -44,7 +44,7 @@ const SECTIONS: { title: string; steps: string[] }[] = [
       "Tulis Isi tulisan. Bisa tebal, miring, dan link. Versi Indonesia boleh kosong, nanti memakai versi English.",
       "Opsional: pilih maskot atau karya di Terkait dengan, supaya kartunya muncul di bawah tulisan.",
       "Setelah Publish, buka kolom Bagikan: tombol Post ke X, Threads, LinkedIn, Facebook, WhatsApp, dan Pinterest membuka kotak posting dengan caption dan link sudah terisi. Tinggal tambahkan foto (tombol Unduh foto sampul) lalu kirim. Untuk Instagram, pakai Copy caption Instagram.",
-      "Centang Kirim ke Threads belum aktif: nanti dinyalakan setelah akun Threads tersambung.",
+      "Mau otomatis ke Threads? Isi Caption media sosial dan centang Kirim ke Threads (opsional: Teruskan ke Instagram Story). Begitu di-Publish, tulisan terkirim dalam satu sampai dua menit, dan Status Threads menunjukkan link serta angka views/likes-nya. Akun Threads disambungkan sekali di menu Threads.",
       "Klik Publish. Halaman Journal muncul di footer situs begitu ada tulisan pertama.",
     ],
   },
