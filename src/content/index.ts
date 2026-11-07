@@ -9,7 +9,7 @@ import { mergeCopy } from "@/sanity/copy";
 import { DICTS, type Copy, type CopyKey } from "@/i18n/dicts";
 import type { Locale } from "@/lib/i18n";
 import { DEFAULT_WA, mailHref, waHref, waText, type WaConfig, type WaData, type WaKind } from "@/lib/whatsapp";
-import type { ClientMark, Product, Project, Testimonial } from "./types";
+import type { ClientMark, Post, Product, Project, Testimonial } from "./types";
 
 export * from "./types";
 
@@ -67,6 +67,30 @@ function uniqueSlug(s: string, id: string, taken: Set<string>) {
   taken.add(out);
   return out;
 }
+
+const POST = groq`{
+  "slug": slug.current, title, publishedAt, ${IMG("cover")}, ${GALLERY},
+  "body": { "en": coalesce(body.en, []), "id": coalesce(body.id, []) },
+  "caption": coalesce(caption, ""),
+  "related": related->{ "kind": _type, "slug": slug.current, "name": select(_type == "product" => { "en": name, "id": name }, title), "image": image.asset->url + "?auto=format&fit=max&w=900" }
+}`;
+
+/** Journal posts, newest first. Posts dated in the future wait until their date (within the hourly refresh). */
+export const getPosts = cache(async (): Promise<Post[]> => {
+  const rows = await sanityFetch<(Omit<Post, "title"> & { title: Partial<L10nLike> | null })[]>(
+    groq`*[_type == "post" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) ${POST}`,
+  );
+  return rows.map((p) => {
+    const en = p.title?.en ?? "";
+    return { ...p, title: { en, id: p.title?.id || en }, cover: p.cover ?? "/assets/badge-full.png", related: p.related?.slug ? p.related : null };
+  });
+});
+
+export async function getPost(slug: string): Promise<Post | null> {
+  return (await getPosts()).find((p) => p.slug === slug) ?? null;
+}
+
+type L10nLike = { en: string; id: string };
 
 export const getClientMarks = cache(async (): Promise<ClientMark[]> => {
   const rows = await sanityFetch<(ClientMark & { logo: string | null })[]>(

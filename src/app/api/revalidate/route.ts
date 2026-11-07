@@ -17,11 +17,14 @@ export async function POST(req: NextRequest) {
   revalidateTag("sanity");
 
   after(async () => {
-    const slug = body?._type === "product" ? body.slug?.current : undefined;
-    // a product: its page and the lists that show it; anything else may show on any page
-    const urls = slug
-      ? locales.flatMap((l) => [`${SITE_URL}/${l}/shop/${slug}`, `${SITE_URL}/${l}/shop`, `${SITE_URL}/${l}`])
-      : (await sitemap()).map((e) => e.url);
+    const slug = body?.slug?.current;
+    // a product or a Journal post: its page and the lists that show it; anything else may show on any page
+    const urls =
+      body?._type === "product" && slug
+        ? locales.flatMap((l) => [`${SITE_URL}/${l}/shop/${slug}`, `${SITE_URL}/${l}/shop`, `${SITE_URL}/${l}`])
+        : body?._type === "post" && slug
+          ? locales.flatMap((l) => [`${SITE_URL}/${l}/journal/${slug}`, `${SITE_URL}/${l}/journal`])
+          : (await sitemap()).map((e) => e.url);
     await pingIndexNow(urls);
   });
 

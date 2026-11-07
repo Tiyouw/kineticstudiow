@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getWaLinks } from "@/content";
+import { getPosts, getWaLinks } from "@/content";
 import { href, type Locale, type PageKey } from "@/lib/i18n";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
@@ -10,7 +10,7 @@ import { img } from "@/lib/img";
 const PAGES: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
 export default async function Footer({ locale, c, current }: { locale: Locale; c: CommonDict; current?: PageKey }) {
-  const w = await getWaLinks();
+  const [w, posts] = await Promise.all([getWaLinks(), getPosts()]);
   const f = c.footer;
   return (
     <footer id="footer">
@@ -35,6 +35,8 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
             {PAGES.map((k) => (
               <li key={k}><Link href={href(locale, k)} aria-current={current === k ? "page" : undefined}>{c.nav[k]}</Link></li>
             ))}
+            {/* the Journal joins the list once it has a post */}
+            {posts.length ? <li><Link href={`/${locale}/journal`}>{f.journal}</Link></li> : null}
           </ul>
           <div className="f-lang"><LangSwitch locale={locale} label={c.language} id="footer-lang" /></div>
         </div>
@@ -44,7 +46,7 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
           {f.copyright} · {f.websiteBy}{" "}
           <TiyoouwCredit className="f-tiyo"><span>tiyoouw.com</span></TiyoouwCredit>
         </p>
-        <p className="label" style={{ fontSize: 11 }}>{f.place}</p>
+        <p className="label" style={{ fontSize: 11 }}>{f.place} · <Link className="f-privacy" href={`/${locale}/privacy`}>{f.privacy}</Link></p>
       </div>
     </footer>
   );

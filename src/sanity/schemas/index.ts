@@ -95,6 +95,61 @@ export const clientMark = defineType({
   preview: { select: { title: "name", media: "logo" } },
 });
 
+/** Simple rich text for Journal posts: paragraphs, bold/italic and links. */
+const richText = (name: string, title: string) =>
+  defineField({
+    name, title, type: "array",
+    of: [defineArrayMember({
+      type: "block",
+      styles: [{ title: "Paragraf", value: "normal" }],
+      lists: [],
+      marks: {
+        decorators: [{ title: "Tebal", value: "strong" }, { title: "Miring", value: "em" }],
+        annotations: [defineArrayMember({ name: "link", title: "Link", type: "object", fields: [defineField({ name: "href", title: "Alamat", type: "url", validation: (r) => r.uri({ scheme: ["http", "https", "mailto"], allowRelative: true }) })] })],
+      },
+    })],
+  });
+
+export const post = defineType({
+  name: "post", title: "Journal", type: "document",
+  fields: [
+    defineField({
+      name: "title", title: "Judul", type: "object", options: { columns: 2 },
+      fields: [
+        defineField({ name: "en", title: "English", type: "string", validation: (r) => r.required() }),
+        defineField({ name: "id", title: "Indonesia", type: "string", description: "Opsional. Kosong = pakai judul English." }),
+      ],
+    }),
+    defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 80 }, description: "Klik Generate. Jadi bagian link: /journal/judul-tulisan", validation: (r) => r.required() }),
+    defineField({ name: "publishedAt", title: "Tanggal terbit", type: "datetime", initialValue: () => new Date().toISOString(), validation: (r) => r.required() }),
+    img("cover", "Foto sampul", true),
+    defineField({ name: "gallery", title: "Galeri", type: "array", of: [defineArrayMember({ type: "image", options: { hotspot: true } })], validation: (r) => r.max(10), description: "Maksimal 10 foto." }),
+    defineField({
+      name: "body", title: "Isi tulisan", type: "object",
+      fields: [richText("en", "English"), { ...richText("id", "Indonesia"), description: "Opsional. Kosong = pakai versi English." }],
+    }),
+    defineField({ name: "caption", title: "Caption media sosial", type: "text", rows: 4, validation: (r) => r.max(500), description: "Teks pendek untuk Threads/X (maks. 500 karakter). Link ke tulisan ditambahkan otomatis." }),
+    defineField({ name: "related", title: "Terkait dengan", type: "reference", to: [{ type: "product" }, { type: "project" }], description: "Opsional: maskot atau karya yang dibahas. Tampil sebagai kartu di bawah tulisan." }),
+    defineField({ name: "shareThreads", title: "Kirim ke Threads", type: "boolean", initialValue: false, description: "Belum aktif: akan menyala setelah akun Threads tersambung." }),
+    defineField({ name: "shareX", title: "Kirim ke X (nanti)", type: "boolean", initialValue: false, description: "Belum aktif." }),
+    defineField({
+      name: "social", title: "Status posting media sosial", type: "object", readOnly: true, options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({ name: "threadsId", title: "ID Threads", type: "string" }),
+        defineField({ name: "threadsUrl", title: "Link Threads", type: "url" }),
+        defineField({ name: "xId", title: "ID X", type: "string" }),
+        defineField({ name: "xUrl", title: "Link X", type: "url" }),
+        defineField({ name: "sharedAt", title: "Dikirim pada", type: "datetime" }),
+      ],
+    }),
+  ],
+  orderings: [{ title: "Terbaru", name: "newest", by: [{ field: "publishedAt", direction: "desc" }] }],
+  preview: {
+    select: { title: "title.en", date: "publishedAt", media: "cover" },
+    prepare: ({ title, date, media }) => ({ title: title ?? "(tanpa judul)", subtitle: date ? new Date(date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Belum diberi tanggal", media }),
+  },
+});
+
 const WA_KINDS: { name: string; title: string; vars: string }[] = [
   { name: "general", title: "Chat umum", vars: "" },
   { name: "order", title: "Beli maskot premade", vars: "{no} {name} {price}" },
@@ -143,5 +198,5 @@ const fatwaAnswers = defineType({
   preview: { prepare: () => ({ title: "Jawaban kuesioner" }) },
 });
 
-export const schemaTypes = [product, project, testimonial, clientMark, settings, fatwaAnswers, ...copyTypes];
+export const schemaTypes = [product, project, testimonial, clientMark, post, settings, fatwaAnswers, ...copyTypes];
 export const SINGLETONS = ["settings", "fatwaAnswers", ...copyTypes.map((t) => t.name)];

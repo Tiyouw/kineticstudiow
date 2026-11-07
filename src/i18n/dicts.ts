@@ -7,9 +7,11 @@ import custom from "./pages/custom";
 import about from "./pages/about";
 import notfound from "./pages/notfound";
 import faq from "./pages/faq";
+import journal from "./pages/journal";
+import privacy from "./pages/privacy";
 
 /** Every dictionary, in code. They are the defaults: text edited in the CMS replaces them field by field. */
-export const DICTS = { common, home, work, shop, product, custom, about, faq, notfound };
+export const DICTS = { common, home, work, shop, product, custom, about, faq, journal, privacy, notfound };
 export type CopyKey = keyof typeof DICTS;
 export type Copy<K extends CopyKey> = (typeof DICTS)[K]["en"];
 
@@ -23,5 +25,7 @@ export const COPY_TITLES: Record<CopyKey, string> = {
   custom: "Pesan custom",
   about: "Tentang",
   faq: "FAQ",
+  journal: "Journal",
+  privacy: "Kebijakan privasi",
   notfound: "Halaman 404",
 };

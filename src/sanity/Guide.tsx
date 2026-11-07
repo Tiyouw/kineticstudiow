@@ -37,6 +37,17 @@ const SECTIONS: { title: string; steps: string[] }[] = [
     ],
   },
   {
+    title: "Tulis di Journal",
+    steps: [
+      "Buka Journal, klik + di atas daftar.",
+      "Isi Judul (English wajib, Indonesia boleh kosong), klik Generate di Alamat halaman, lalu pilih Foto sampul.",
+      "Tulis Isi tulisan. Bisa tebal, miring, dan link. Versi Indonesia boleh kosong, nanti memakai versi English.",
+      "Opsional: pilih maskot atau karya di Terkait dengan, supaya kartunya muncul di bawah tulisan.",
+      "Caption media sosial dan centang Kirim ke Threads belum aktif: nanti dinyalakan setelah akun Threads tersambung.",
+      "Klik Publish. Halaman Journal muncul di footer situs begitu ada tulisan pertama.",
+    ],
+  },
+  {
     title: "Edit teks halaman",
     steps: [
       "Buka Teks halaman, lalu pilih halamannya (Beranda, Toko, Tentang, dan lainnya).",

@@ -19,6 +19,8 @@ const COPY_PATHS: Record<string, { title: string; path: string }> = {
   custom: { title: "Pesan custom", path: "/custom-order" },
   about: { title: "Tentang", path: "/about" },
   faq: { title: "FAQ", path: "/faq" },
+  journal: { title: "Journal", path: "/journal" },
+  privacy: { title: "Kebijakan privasi", path: "/privacy" },
 };
 
 const both = (title: string, path: string) => [
@@ -39,6 +41,10 @@ const locations: DocumentLocationResolvers = {
     resolve: (doc) => ({
       locations: [...(doc?.slug ? both(doc.title ?? "Karya", `/work/${doc.slug}`) : []), ...both("Karya", "/work"), ...both("Beranda", "")],
     }),
+  }),
+  post: defineLocations({
+    select: { title: "title.en", slug: "slug.current" },
+    resolve: (doc) => ({ locations: [...(doc?.slug ? both(doc.title ?? "Tulisan", `/journal/${doc.slug}`) : []), ...both("Journal", "/journal")] }),
   }),
   testimonial: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
   clientMark: defineLocations({ message: "Tampil di Beranda", locations: both("Beranda", "") }),
@@ -77,6 +83,7 @@ export default defineConfig({
           S.documentTypeListItem("project").title("Karya"),
           S.documentTypeListItem("testimonial").title("Testimoni"),
           S.documentTypeListItem("clientMark").title("Logo klien"),
+          S.documentTypeListItem("post").title("Journal"),
           S.divider(),
           S.listItem().title("WhatsApp & kontak").id("settings").child(S.document().schemaType("settings").documentId("settings").views([S.view.form().title("Edit"), S.view.component(PreviewPane).title("Pratinjau")])),
           S.listItem().title("Teks halaman").child(
@@ -92,6 +99,7 @@ export default defineConfig({
         mainDocuments: defineDocuments([
           { route: "/:lang/shop/:slug", filter: `_type == "product" && slug.current == $slug` },
           { route: "/:lang/work/:slug", filter: `_type == "project" && slug.current == $slug` },
+          { route: "/:lang/journal/:slug", filter: `_type == "post" && slug.current == $slug` },
         ]),
         locations,
       },

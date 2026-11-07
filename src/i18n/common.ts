@@ -33,6 +33,8 @@ const common = {
       websiteBy: "Website by",
       place: "Jember, East Java",
       badgeAlt: "Kinetic Studiow badge",
+      journal: "Journal",
+      privacy: "Privacy",
     },
     product: {
       premade: "Premade",
@@ -94,6 +96,8 @@ const common = {
       websiteBy: "Website oleh",
       place: "Jember, Jawa Timur",
       badgeAlt: "Badge Kinetic Studiow",
+      journal: "Journal",
+      privacy: "Privasi",
     },
     product: {
       premade: "Premade",

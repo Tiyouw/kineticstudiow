@@ -48,3 +48,18 @@ export interface Testimonial {
   who: L10n;
   isPlaceholder: boolean;
 }
+
+/** A Journal post. Body is Portable Text; the Indonesian side may be empty (falls back to English). */
+export interface Post {
+  slug: string;
+  title: L10n;
+  publishedAt: string; // ISO date
+  cover: string;
+  gallery: string[];
+  body: { en: PortableBlock[]; id: PortableBlock[] };
+  caption: string;
+  related: { kind: "product" | "project"; slug: string; name: L10n; image: string | null } | null;
+}
+
+/** Portable Text block, kept loose here so this file has no Sanity dependency. */
+export type PortableBlock = { _type: string; _key: string; [k: string]: unknown };

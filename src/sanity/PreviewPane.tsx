@@ -10,13 +10,14 @@ import { Box, Button, Card, Flex, Text } from "@sanity/ui";
 
 type Props = { document: { displayed: Partial<SanityDocument> & Record<string, unknown> }; schemaType: { name: string } };
 
-const COPY: Record<string, string> = { common: "", home: "", work: "/work", shop: "/shop", product: "/shop", custom: "/custom-order", about: "/about", faq: "/faq", notfound: "/halaman-tidak-ada" };
+const COPY: Record<string, string> = { common: "", home: "", work: "/work", shop: "/shop", product: "/shop", custom: "/custom-order", about: "/about", faq: "/faq", journal: "/journal", privacy: "/privacy", notfound: "/halaman-tidak-ada" };
 
 /** The page (after /en or /id) a document shows on. */
 function pathOf(type: string, doc: Record<string, unknown>): string {
   const slug = (doc.slug as { current?: string } | undefined)?.current;
   if (type === "product") return slug ? `/shop/${slug}` : "/shop";
   if (type === "project") return slug ? `/work/${slug}` : "/work";
+  if (type === "post") return slug ? `/journal/${slug}` : "/journal";
   if (type === "settings") return "/custom-order";
   if (type.startsWith("copy_")) return COPY[type.slice(5)] ?? "";
   return ""; // testimonials, client logos: Home
