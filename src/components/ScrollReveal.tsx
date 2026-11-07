@@ -28,8 +28,13 @@ export default function ScrollReveal() {
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          e.target.classList.add("in-view");
-          io.unobserve(e.target);
+          // reveal this one and anything above it (a fast fling can skip a section)
+          const idx = sections.indexOf(e.target as HTMLElement);
+          for (const s of sections.slice(0, idx + 1)) {
+            if (s.classList.contains("in-view")) continue;
+            s.classList.add("in-view");
+            io.unobserve(s);
+          }
         }
       },
       { rootMargin: "0px 0px -12% 0px", threshold: 0.08 },
