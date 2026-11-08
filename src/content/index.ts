@@ -78,7 +78,7 @@ const POST = groq`{
 /** Journal posts, newest first. Posts dated in the future wait until their date (within the hourly refresh). */
 export const getPosts = cache(async (): Promise<Post[]> => {
   const rows = await sanityFetch<(Omit<Post, "title"> & { title: Partial<L10nLike> | null })[]>(
-    groq`*[_type == "post" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) ${POST}`,
+    groq`*[_type == "post" && coalesce(kind, "article") == "article" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) ${POST}`,
   );
   return rows.map((p) => {
     const en = p.title?.en ?? "";

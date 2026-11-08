@@ -7,7 +7,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { SITE_URL } from "./site";
-import { imageUrl, threadsText } from "@/sanity/share";
+import { imageUrl, threadsText, trimTo } from "@/sanity/share";
 
 const GRAPH = "https://graph.threads.com";
 const API = `${GRAPH}/v1.0`;
@@ -123,7 +123,7 @@ export async function refreshAll() {
 export type ThreadsShare = { _key: string; account: string; username?: string; id?: string; url?: string; sharedAt?: string; error?: string; igStoryStatus?: string; removedAt?: string };
 
 type PendingPost = {
-  _id: string; _rev: string; slug?: string; title?: { en?: string }; caption?: string; publishedAt?: string; shareIgStory?: boolean;
+  _id: string; _rev: string; slug?: string; kind?: string; link?: string; promoSold?: boolean; title?: { en?: string }; caption?: string; publishedAt?: string; shareIgStory?: boolean;
   cover?: string; gallery?: string[]; threadsAccounts?: string[]; social?: { threadsLock?: string; threads?: ThreadsShare[] };
 };
 
@@ -141,8 +141,10 @@ async function waitReady(id: string, token: string) {
 }
 
 async function postOne(p: PendingPost, a: { token: string; userId: string }) {
-  const url = `${SITE_URL}/en/journal/${p.slug}`;
-  const text = threadsText(p.caption?.trim() || p.title?.en || "", url);
+  // a Journal article links to its page; a Threads-only post to its optional link
+  const url = p.kind === "short" ? p.link?.trim() : `${SITE_URL}/en/journal/${p.slug}`;
+  const caption = p.caption?.trim() || p.title?.en || "";
+  const text = url ? threadsText(caption, url) : trimTo(caption, 500);
   const images = [p.cover, ...(p.gallery ?? [])].map((ref) => imageUrl(ref, projectId, dataset, 1440)).filter((u): u is string => !!u).slice(0, 10);
   const base = `${API}/${a.userId}/threads`;
   // also as a Story on the Instagram account linked to Threads (Meta: crossreshare_to_ig; the Threads post goes out even if this fails)
@@ -178,12 +180,13 @@ export async function publishPending() {
   const accounts = new Map((await getAccounts()).filter((a) => a.token).map((a) => [a.userId, a]));
   if (!accounts.size) return { skipped: "no accounts" };
   const posts = await db.fetch<PendingPost[]>(
-    `*[_type == "post" && count(threadsAccounts) > 0 && !(_id in path("drafts.**")) && defined(slug.current) && publishedAt <= now()]{
-      _id, _rev, "slug": slug.current, title, caption, publishedAt, shareIgStory, threadsAccounts, "cover": cover.asset._ref, "gallery": gallery[].asset._ref, social
+    `*[_type == "post" && count(threadsAccounts) > 0 && !(_id in path("drafts.**")) && (defined(slug.current) || kind == "short") && publishedAt <= now()]{
+      _id, _rev, "slug": slug.current, kind, link, "promoSold": promoFor->sold, title, caption, publishedAt, shareIgStory, threadsAccounts, "cover": cover.asset._ref, "gallery": gallery[].asset._ref, social
     }`,
   );
   let posted = 0, failed = 0;
   for (const p of posts) {
+    if (p.promoSold) continue; // a promo for a mascot that sold in the meantime: don't send it
     const reached = new Set((p.social?.threads ?? []).filter((t) => t.id).map((t) => t.account));
     const todo = (p.threadsAccounts ?? []).filter((id) => !reached.has(id) && accounts.has(id));
     if (!todo.length) continue;

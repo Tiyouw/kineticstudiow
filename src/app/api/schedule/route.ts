@@ -6,6 +6,7 @@ import { locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { pingIndexNow } from "@/lib/indexnow";
 import { publishPending } from "@/lib/threads";
+import { syncPromos } from "@/lib/promo";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest) {
   const now = new Date().toISOString();
   const last = (await db.fetch<string | null>(`*[_id == $id][0].lastRun`, { id: STATE })) ?? new Date(Date.now() - 60 * 60_000).toISOString();
   const due = await db.fetch<string[]>(
-    `*[_type == "post" && !(_id in path("drafts.**")) && defined(slug.current) && publishedAt > $last && publishedAt <= $now].slug.current`,
+    `*[_type == "post" && coalesce(kind, "article") == "article" && !(_id in path("drafts.**")) && defined(slug.current) && publishedAt > $last && publishedAt <= $now].slug.current`,
     { last, now },
   );
   if (due.length) {
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
   }
   await db.createIfNotExists({ _id: STATE, _type: "scheduleState" });
   await db.patch(STATE).set({ lastRun: now }).commit();
+  await syncPromos().catch((e) => console.error("promo", e));
   const threads = await publishPending().catch((e) => ({ error: e instanceof Error ? e.message : String(e) }));
   return NextResponse.json({ due, threads });
 }

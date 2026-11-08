@@ -113,11 +113,19 @@ const richText = (name: string, title: string) =>
     })],
   });
 
+const isShort = ({ document }: { document?: Record<string, unknown> }) => document?.kind === "short";
+
 export const post = defineType({
   name: "post", title: "Journal", type: "document",
   fields: [
     defineField({
+      name: "kind", title: "Jenis", type: "string", initialValue: "article",
+      options: { list: [{ title: "Tulisan Journal (halaman di situs)", value: "article" }, { title: "Post Threads saja", value: "short" }], layout: "radio" },
+      description: "Post Threads saja tidak punya halaman di situs: hanya caption + foto yang dikirim ke Threads (bisa dijadwalkan juga).",
+    }),
+    defineField({
       name: "title", title: "Judul", type: "object", options: { columns: 2 },
+      description: "Untuk Post Threads saja: nama internal di Agenda, tidak ikut terkirim.",
       fields: [
         defineField({ name: "en", title: "English", type: "string", validation: (r) => r.required() }),
         defineField({ name: "id", title: "Indonesia", type: "string", description: "Opsional. Kosong = pakai judul English." }),
@@ -130,18 +138,24 @@ export const post = defineType({
       hidden: ({ document }) => !!document?._id && !String(document._id).startsWith("drafts."),
     }),
     defineField({ name: "ideaNotes", title: "Catatan ide", type: "text", rows: 3, description: "Catatan pribadi (tidak tampil di situs)." }),
-    defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 80 }, description: "Klik Generate. Jadi bagian link: /journal/judul-tulisan", validation: (r) => r.required() }),
+    defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 80 }, description: "Klik Generate. Jadi bagian link: /journal/judul-tulisan", hidden: isShort,
+      validation: (r) => r.custom((v: { current?: string } | undefined, ctx) => (ctx.document?.kind === "short" || v?.current ? true : "Wajib untuk tulisan Journal")) }),
     defineField({ name: "publishedAt", title: "Tanggal terbit", type: "datetime", initialValue: () => new Date().toISOString(), validation: (r) => r.required(), description: "Mau dijadwalkan? Isi tanggal & jam nanti, lalu Publish. Tulisan tersembunyi sampai waktunya, lalu tampil di situs (dan terkirim ke Threads) dalam ±15 menit setelahnya. Lihat semua jadwal di menu Agenda." }),
-    img("cover", "Foto sampul", true),
+    defineField({ name: "cover", title: "Foto sampul", type: "image", options: { hotspot: true },
+      validation: (r) => r.custom((v: { asset?: unknown } | undefined, ctx) => (ctx.document?.kind === "short" || v?.asset ? true : "Wajib untuk tulisan Journal")) }),
     defineField({ name: "gallery", title: "Galeri", type: "array", of: [defineArrayMember({ type: "image", options: { hotspot: true } })], validation: (r) => r.max(10), description: "Maksimal 10 foto." }),
     defineField({
-      name: "body", title: "Isi tulisan", type: "object",
+      name: "body", title: "Isi tulisan", type: "object", hidden: isShort,
       fields: [richText("en", "English"), { ...richText("id", "Indonesia"), description: "Opsional. Kosong = pakai versi English." }],
     }),
-    defineField({ name: "caption", title: "Caption media sosial", type: "text", rows: 4, validation: (r) => r.max(500), description: "Teks pendek untuk Threads/X (maks. 500 karakter). Link ke tulisan ditambahkan otomatis." }),
+    defineField({ name: "caption", title: "Caption media sosial", type: "text", rows: 4,
+      validation: (r) => r.max(500).custom((v: string | undefined, ctx) => (ctx.document?.kind !== "short" || v?.trim() ? true : "Wajib untuk Post Threads saja")),
+      description: "Teks pendek untuk Threads/X (maks. 500 karakter). Link ke tulisan (atau Link di bawah) ditambahkan otomatis." }),
+    defineField({ name: "link", title: "Link (opsional)", type: "url", hidden: (c) => !isShort(c), description: "Ditambahkan di akhir post Threads, misalnya halaman maskot di toko." }),
+    defineField({ name: "promoFor", title: "Promo untuk maskot", type: "reference", weak: true, to: [{ type: "product" }], readOnly: true, hidden: ({ document }) => !document?.promoFor, description: "Dibuat otomatis saat maskot premade baru terbit. Tidak dikirim kalau maskotnya sudah terjual." }),
     // nothing is stored here: the field only shows the share buttons and ready-to-paste captions
-    defineField({ name: "share", title: "Bagikan", type: "string", readOnly: true, components: { input: SharePanel }, description: "Buka X, Threads, dan lainnya dengan caption dan link sudah terisi, atau copy caption-nya." }),
-    defineField({ name: "related", title: "Terkait dengan", type: "reference", to: [{ type: "product" }, { type: "project" }], description: "Opsional: maskot atau karya yang dibahas. Tampil sebagai kartu di bawah tulisan." }),
+    defineField({ name: "share", title: "Bagikan", type: "string", readOnly: true, hidden: isShort, components: { input: SharePanel }, description: "Buka X, Threads, dan lainnya dengan caption dan link sudah terisi, atau copy caption-nya." }),
+    defineField({ name: "related", title: "Terkait dengan", hidden: isShort, type: "reference", to: [{ type: "product" }, { type: "project" }], description: "Opsional: maskot atau karya yang dibahas. Tampil sebagai kartu di bawah tulisan." }),
     defineField({
       name: "threadsAccounts", title: "Kirim ke Threads", type: "array", of: [defineArrayMember({ type: "string" })],
       components: { input: ThreadsAccountsInput },
@@ -180,9 +194,9 @@ export const post = defineType({
   ],
   orderings: [{ title: "Terbaru", name: "newest", by: [{ field: "publishedAt", direction: "desc" }] }],
   preview: {
-    select: { title: "title.en", date: "publishedAt", media: "cover" },
-    prepare: ({ title, date, media }) => ({
-      title: title ?? "(tanpa judul)",
+    select: { title: "title.en", date: "publishedAt", media: "cover", kind: "kind" },
+    prepare: ({ title, date, media, kind }) => ({
+      title: `${kind === "short" ? "[Threads] " : ""}${title ?? "(tanpa judul)"}`,
       subtitle: date
         ? `${new Date(date) > new Date() ? "Terjadwal " : ""}${new Date(date).toLocaleString("id-ID", { day: "numeric", month: "long", year: "numeric", ...(new Date(date) > new Date() ? { hour: "2-digit", minute: "2-digit" } : {}) })}`
         : "Belum diberi tanggal",

@@ -14,6 +14,7 @@ export const STAGE: Record<Stage, { label: string; color: string; hint: string }
 export type Doc = {
   _id: string; _type: "post"; _rev?: string; title?: { en?: string; id?: string }; slug?: { current?: string }; publishedAt?: string;
   cover?: { asset?: { _ref?: string } }; threadsAccounts?: string[]; caption?: string; stage?: string; ideaNotes?: string;
+  kind?: string; link?: string; promoFor?: { _ref?: string }; promoSold?: boolean;
   social?: { threads?: { id?: string }[] };
   [k: string]: unknown;
 };
@@ -21,9 +22,10 @@ export type Doc = {
 export type Item = {
   id: string; title: string; date?: Date; stage: Stage; changed: boolean; cover?: string; notes?: string;
   threads: number; shared: number; hasDraft: boolean; hasPublished: boolean; doc: Doc;
+  short: boolean; promo: boolean; promoSold: boolean;
 };
 
-export const QUERY = `*[_type == "post"]`;
+export const QUERY = `*[_type == "post"]{ ..., "promoSold": promoFor->sold }`;
 
 export function merge(rows: Doc[]): Item[] {
   const by = new Map<string, { draft?: Doc; pub?: Doc }>();
@@ -44,6 +46,7 @@ export function merge(rows: Doc[]): Item[] {
       title: r.title?.en?.trim() || "(tanpa judul)",
       date: r.publishedAt && stage !== "idea" ? new Date(r.publishedAt) : undefined,
       cover: r.cover?.asset?._ref, notes: r.ideaNotes,
+      short: r.kind === "short", promo: !!r.promoFor?._ref, promoSold: !!r.promoSold,
       threads: r.threadsAccounts?.length ?? 0, shared: (pub?.social?.threads ?? []).filter((t) => t.id).length,
     };
   });
@@ -97,7 +100,8 @@ export function nextFreeSlot(slots: Slot[], items: Item[], ignoreId?: string) {
 export function missing(doc: Doc): string[] {
   const m: string[] = [];
   if (!doc.title?.en?.trim()) m.push("Judul (English)");
-  if (!doc.cover?.asset?._ref) m.push("Foto sampul");
+  if (doc.kind === "short") { if (!doc.caption?.trim()) m.push("Caption"); }
+  else if (!doc.cover?.asset?._ref) m.push("Foto sampul");
   return m;
 }
 
@@ -125,8 +129,9 @@ export async function publishAt(client: SanityClient, it: Item, at: Date) {
   if (need.length) throw new Error(`Masih kurang: ${need.join(", ")}. Buka tulisannya untuk melengkapi.`);
   const { _rev, _createdAt, _updatedAt, ...rest } = src as Doc & { _createdAt?: string; _updatedAt?: string };
   void _rev; void _createdAt; void _updatedAt;
-  const slug = src.slug?.current || (await freeSlug(client, src.title!.en!, it.id));
-  const doc = { ...rest, _id: it.id, _type: "post" as const, slug: { _type: "slug", current: slug }, publishedAt: at.toISOString() };
+  const slug = it.short ? undefined : src.slug?.current || (await freeSlug(client, src.title!.en!, it.id));
+  const doc = { ...rest, _id: it.id, _type: "post" as const, ...(slug ? { slug: { _type: "slug", current: slug } } : {}), publishedAt: at.toISOString() };
+  delete (doc as Record<string, unknown>).promoSold;
   delete (doc as Record<string, unknown>).stage;
   const tx = client.transaction().createOrReplace(doc);
   if (it.hasDraft) tx.delete(`drafts.${it.id}`);
@@ -148,10 +153,12 @@ export async function setDate(client: SanityClient, it: Item, at: Date) {
 }
 
 /** A new draft from the quick-add box. */
-export async function createPost(client: SanityClient, f: { title: string; stage: "idea" | "draft" | "ready"; at?: Date; notes?: string; accounts: string[] }) {
+export type NewPost = { title: string; kind: "article" | "short"; stage: "idea" | "draft" | "ready"; at?: Date; notes?: string; caption?: string; accounts: string[] };
+export async function createPost(client: SanityClient, f: NewPost) {
   const id = crypto.randomUUID();
   await client.create({
-    _id: `drafts.${id}`, _type: "post", stage: f.stage,
+    _id: `drafts.${id}`, _type: "post", stage: f.stage, kind: f.kind,
+    ...(f.caption?.trim() ? { caption: f.caption.trim() } : {}),
     title: { en: f.title.trim() },
     ...(f.at && f.stage !== "idea" ? { publishedAt: f.at.toISOString() } : {}),
     ...(f.notes?.trim() ? { ideaNotes: f.notes.trim() } : {}),

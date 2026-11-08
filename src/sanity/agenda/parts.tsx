@@ -6,7 +6,7 @@ import { Badge, Box, Button, Card, Checkbox, Dialog, Flex, Menu, MenuButton, Men
 import { AddIcon, CalendarIcon, EllipsisHorizontalIcon, TrashIcon } from "@sanity/icons";
 import { dataset, projectId } from "../env";
 import { imageUrl } from "../share";
-import { DAY_NAMES, STAGE, fmtFull, fromLocalInput, nextFreeSlot, slotsOn, takenAt, toLocalInput, type Item, type Slot, type Stage } from "./model";
+import { DAY_NAMES, STAGE, fmtFull, type NewPost, fromLocalInput, nextFreeSlot, slotsOn, takenAt, toLocalInput, type Item, type Slot, type Stage } from "./model";
 
 /* ---------- small pieces ---------- */
 
@@ -40,8 +40,10 @@ export function ItemCard({ it, onAct, draggable, compact, hasSlots }: { it: Item
               <Text size={0} muted textOverflow="ellipsis">
                 {it.stage === "idea" ? (it.notes || "Ide") : it.date ? fmtFull(it.date) : "Belum diberi tanggal"}
               </Text>
-              {it.changed || it.threads ? (
+              {it.changed || it.threads || it.short ? (
                 <Flex gap={1} wrap="wrap">
+                  {it.promo ? <Badge tone="primary" fontSize={0}>Promo</Badge> : it.short ? <Badge fontSize={0}>Threads saja</Badge> : null}
+                  {it.promoSold ? <Badge tone="critical" fontSize={0}>Maskot terjual, tidak dikirim</Badge> : null}
                   {it.changed ? <Badge tone="caution" fontSize={0}>Perubahan belum di-Publish</Badge> : null}
                   {it.threads ? <Badge tone={it.shared >= it.threads ? "positive" : "primary"} fontSize={0}>Threads {it.shared}/{it.threads}</Badge> : null}
                 </Flex>
@@ -133,9 +135,11 @@ type Account = { id: string; username?: string };
 
 export function QuickAdd({ at, slots, items, onClose, onSave }: {
   at?: Date; slots: Slot[]; items: Item[]; onClose: () => void;
-  onSave: (f: { title: string; stage: "idea" | "draft" | "ready"; at?: Date; notes?: string; accounts: string[] }, open: boolean) => Promise<void>;
+  onSave: (f: NewPost, open: boolean) => Promise<void>;
 }) {
   const [title, setTitle] = useState("");
+  const [kind, setKind] = useState<"article" | "short">("article");
+  const [caption, setCaption] = useState("");
   const [stage, setStage] = useState<"idea" | "draft" | "ready">(at ? "draft" : "idea");
   const [when, setWhen] = useState(at ? toLocalInput(at) : "");
   const [notes, setNotes] = useState("");
@@ -150,7 +154,7 @@ export function QuickAdd({ at, slots, items, onClose, onSave }: {
   const save = async (open: boolean) => {
     if (!title.trim()) return;
     setBusy(true);
-    try { await onSave({ title, stage, at: stage === "idea" ? undefined : fromLocalInput(when), notes, accounts: picked }, open); } finally { setBusy(false); }
+    try { await onSave({ title, kind, stage, at: stage === "idea" ? undefined : fromLocalInput(when), notes, caption: kind === "short" ? caption : undefined, accounts: picked }, open); } finally { setBusy(false); }
   };
 
   return (
@@ -164,7 +168,17 @@ export function QuickAdd({ at, slots, items, onClose, onSave }: {
     >
       <Box padding={4}>
         <Stack space={4}>
-          <Field label="Judul (English)" hint="Bisa diubah nanti.">
+          <Field label="Jenis">
+            <Flex gap={4} wrap="wrap">
+              {([["article", "Tulisan Journal"], ["short", "Post Threads saja"]] as const).map(([k, l]) => (
+                <Flex key={k} as="label" align="center" gap={2} style={{ cursor: "pointer" }}>
+                  <Radio checked={kind === k} onChange={() => setKind(k)} name="agenda-kind" />
+                  <Text size={1}>{l}</Text>
+                </Flex>
+              ))}
+            </Flex>
+          </Field>
+          <Field label={kind === "short" ? "Nama (hanya di Agenda)" : "Judul (English)"} hint="Bisa diubah nanti.">
             <TextInput autoFocus value={title} onChange={(e) => setTitle(e.currentTarget.value)} placeholder="Misalnya: Behind the mascot: Kopi Kakek" />
           </Field>
           <Field label="Tahap">
@@ -177,6 +191,11 @@ export function QuickAdd({ at, slots, items, onClose, onSave }: {
               ))}
             </Flex>
           </Field>
+          {kind === "short" && stage !== "idea" ? (
+            <Field label="Caption" hint={`${caption.length}/500. Foto dan link bisa ditambahkan di form.`}>
+              <TextArea rows={4} value={caption} maxLength={500} onChange={(e) => setCaption(e.currentTarget.value)} />
+            </Field>
+          ) : null}
           {stage === "idea" ? (
             <Field label="Catatan" hint="Tidak tampil di situs.">
               <TextArea rows={3} value={notes} onChange={(e) => setNotes(e.currentTarget.value)} placeholder="Poin-poin, referensi, foto yang mau dipakai…" />
