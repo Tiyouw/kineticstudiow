@@ -30,6 +30,12 @@ export function igText(caption: string, tags: string) {
   return [caption.trim(), "Link di bio.", tags.trim()].filter(Boolean).join("\n\n");
 }
 
+/** TikTok: captions up to 2200; links don't click there either, so point to the bio. */
+export const TIKTOK_UPLOAD = "https://www.tiktok.com/tiktokstudio/upload";
+export function tiktokText(caption: string, tags: string) {
+  return trimTo([caption.trim(), "Link di bio.", tags.trim()].filter(Boolean).join("\n\n"), 2200);
+}
+
 const q = encodeURIComponent;
 
 export function shareLinks(caption: string, url: string, image?: string) {

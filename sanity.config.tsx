@@ -8,6 +8,8 @@ import { schemaTypes, copyTypes, SINGLETONS } from "./src/sanity/schemas";
 import Guide from "./src/sanity/Guide";
 import ThreadsPane from "./src/sanity/ThreadsPane";
 import PreviewPane from "./src/sanity/PreviewPane";
+import Agenda from "./src/sanity/Agenda";
+import { CalendarIcon } from "@sanity/icons";
 import { DICTS } from "./src/i18n/dicts";
 
 /** Where each copy dictionary shows on the site (path after the language). */
@@ -59,6 +61,9 @@ export default defineConfig({
   name: "kinetic",
   title: "Kinetic Studiow",
   basePath: "/studio",
+  // the green mascot: tells the Studio apart from the site at a glance
+  icon: () => <img src="/assets/studio-icon-64.png" alt="" width={25} height={25} style={{ display: "block", borderRadius: "50%" }} />,
+  tools: (prev) => [...prev, { name: "agenda", title: "Agenda", icon: CalendarIcon, component: Agenda }],
   projectId,
   dataset,
   schema: {

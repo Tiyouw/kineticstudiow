@@ -43,6 +43,8 @@ The Sanity CLI needs Node 20.19+ / 22 (`npx -y node@22 node_modules/sanity/bin/s
 | `src/lib/img.ts` | srcset helper for the WebP brand art in `public/assets/` |
 | `scripts/seed-sanity.ts` | one-time seed of the CMS from `data.ts` (uses `createIfNotExists`) |
 | `.github/workflows/sanity-backup.yml` | weekly CMS backup |
+| `.github/workflows/schedule.yml` | every 15 min: scheduled Journal posts go live + to Threads (calls `/api/schedule`) |
+| `src/sanity/Agenda.tsx` | Studio "Agenda" tool: Journal calendar (drag to reschedule) and kanban |
 
 ## How content flows
 
@@ -71,6 +73,8 @@ Credentials live in Tiyo's enowX vault (by name) or in Vercel env vars, never in
 
 Env vars (Vercel, production + preview): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
 `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `SANITY_REVALIDATE_SECRET`, `SANITY_STUDIO_*`, `SANITY_API_*`.
+Threads/scheduling: `THREADS_APP_ID`, `THREADS_APP_SECRET`, `CRON_SECRET` (Vercel daily cron), `SCHEDULE_SECRET`
+(also a GitHub Actions secret: the 15-minute schedule workflow; Vercel Hobby crons run only daily).
 Optional: `NEXT_PUBLIC_SITE_URL` (overrides the canonical domain), `NEXT_PUBLIC_GSC_VERIFICATION`.
 
 DNS (Cloudflare, both **DNS only**, not proxied):

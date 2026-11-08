@@ -37,6 +37,7 @@ export default async function AboutPage({ params }: Props) {
 
   const contacts = [
     { k: "Instagram", v: "@kinetic.studiow", h: "https://instagram.com/kinetic.studiow", ext: true },
+    { k: "TikTok", v: "@kinetic.studiow", h: "https://www.tiktok.com/@kinetic.studiow", ext: true },
     { k: "Behance", v: "kineticstd", h: "https://behance.net/kineticstd", ext: true },
     { k: a.email, v: "hello@kineticstudiow.my.id", h: "mailto:hello@kineticstudiow.my.id", ext: false },
     { k: "WhatsApp", v: a.waValue, h: w.href("general", locale), ext: true },

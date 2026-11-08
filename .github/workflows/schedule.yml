@@ -1,0 +1,16 @@
+name: Scheduled posts
+
+# Every 15 minutes: Journal posts whose "Tanggal terbit" has come show on the site and go to Threads.
+# GitHub may start scheduled runs a few minutes late. Secret: SCHEDULE_SECRET (same value as on Vercel).
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - run: |
+          curl -fsS --max-time 300 -H "Authorization: Bearer ${{ secrets.SCHEDULE_SECRET }}" https://www.kineticstudiow.my.id/api/schedule

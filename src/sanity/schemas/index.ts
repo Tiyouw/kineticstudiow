@@ -124,7 +124,7 @@ export const post = defineType({
       ],
     }),
     defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 80 }, description: "Klik Generate. Jadi bagian link: /journal/judul-tulisan", validation: (r) => r.required() }),
-    defineField({ name: "publishedAt", title: "Tanggal terbit", type: "datetime", initialValue: () => new Date().toISOString(), validation: (r) => r.required() }),
+    defineField({ name: "publishedAt", title: "Tanggal terbit", type: "datetime", initialValue: () => new Date().toISOString(), validation: (r) => r.required(), description: "Mau dijadwalkan? Isi tanggal & jam nanti, lalu Publish. Tulisan tersembunyi sampai waktunya, lalu tampil di situs (dan terkirim ke Threads) dalam ±15 menit setelahnya. Lihat semua jadwal di menu Agenda." }),
     img("cover", "Foto sampul", true),
     defineField({ name: "gallery", title: "Galeri", type: "array", of: [defineArrayMember({ type: "image", options: { hotspot: true } })], validation: (r) => r.max(10), description: "Maksimal 10 foto." }),
     defineField({
@@ -174,7 +174,13 @@ export const post = defineType({
   orderings: [{ title: "Terbaru", name: "newest", by: [{ field: "publishedAt", direction: "desc" }] }],
   preview: {
     select: { title: "title.en", date: "publishedAt", media: "cover" },
-    prepare: ({ title, date, media }) => ({ title: title ?? "(tanpa judul)", subtitle: date ? new Date(date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Belum diberi tanggal", media }),
+    prepare: ({ title, date, media }) => ({
+      title: title ?? "(tanpa judul)",
+      subtitle: date
+        ? `${new Date(date) > new Date() ? "Terjadwal " : ""}${new Date(date).toLocaleString("id-ID", { day: "numeric", month: "long", year: "numeric", ...(new Date(date) > new Date() ? { hour: "2-digit", minute: "2-digit" } : {}) })}`
+        : "Belum diberi tanggal",
+      media,
+    }),
   },
 });
 

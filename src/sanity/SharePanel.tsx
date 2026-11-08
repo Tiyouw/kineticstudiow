@@ -9,7 +9,7 @@ import { useEditState, useFormValue } from "sanity";
 import { Box, Button, Card, Flex, Stack, Text, TextInput } from "@sanity/ui";
 import { SITE_URL } from "@/lib/site";
 import { dataset, projectId } from "./env";
-import { DEFAULT_TAGS, THREADS_LIMIT, X_LIMIT, igText, imageUrl, shareLinks, threadsText, xCount, xText } from "./share";
+import { DEFAULT_TAGS, THREADS_LIMIT, X_LIMIT, igText, imageUrl, TIKTOK_UPLOAD, tiktokText, shareLinks, threadsText, xCount, xText } from "./share";
 
 function CopyRow({ label, text, count, limit }: { label: string; text: string; count: number; limit?: number }) {
   const [done, setDone] = useState(false);
@@ -59,6 +59,7 @@ export default function SharePanel() {
   const x = xText(caption);
   const th = threadsText(caption, url);
   const ig = igText(caption, tags);
+  const tt = tiktokText(caption, tags);
   const published = !!edit.published;
   const changed = published && !!edit.draft;
 
@@ -91,8 +92,10 @@ export default function SharePanel() {
         <CopyRow label="X (link ikut di belakang)" text={`${x} ${url}`} count={xCount(x)} limit={X_LIMIT} />
         <CopyRow label="Threads" text={th} count={th.length} limit={THREADS_LIMIT} />
         <CopyRow label="Instagram" text={ig} count={ig.length} limit={2200} />
+        <CopyRow label="TikTok (mode foto: unduh sampul di bawah, lalu upload)" text={tt} count={tt.length} limit={2200} />
+        <Flex><Button as="a" href={TIKTOK_UPLOAD} target="_blank" rel="noopener" mode="ghost" fontSize={1} text="Buka upload TikTok" /></Flex>
         <Stack space={2}>
-          <Text size={1} muted>Hashtag untuk Instagram (boleh diubah, tidak disimpan):</Text>
+          <Text size={1} muted>Hashtag untuk Instagram dan TikTok (boleh diubah, tidak disimpan):</Text>
           <TextInput fontSize={1} value={tags} onChange={(e) => setTags(e.currentTarget.value)} />
         </Stack>
       </Stack>
