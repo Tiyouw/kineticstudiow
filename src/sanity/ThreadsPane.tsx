@@ -1,6 +1,6 @@
 "use client";
 /** Studio → Threads: the connected Threads accounts, add another, or disconnect one. */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import { useClient } from "sanity";
 import { Box, Button, Card, Flex, Heading, Stack, Text } from "@sanity/ui";
 import type { ThreadsAccountStatus } from "./ThreadsAccountsInput";
@@ -24,7 +24,18 @@ export default function ThreadsPane() {
     if (q.get("ok")) setFlash({ tone: "positive", text: `Tersambung${q.get("user") ? ` sebagai @${q.get("user")}` : ""}.` });
     else if (q.get("error")) setFlash({ tone: "critical", text: q.get("error") ?? "Gagal menyambungkan." });
     load();
+    // the account may be connected in another tab (see connect below): refresh when the editor comes back
+    window.addEventListener("focus", load);
+    return () => window.removeEventListener("focus", load);
   }, [load]);
+
+  // Threads refuses to load inside a frame, and the Studio is often opened framed in the sanity.io dashboard:
+  // there, open the login in a new tab instead of inside the frame
+  const connect = (e: MouseEvent) => {
+    if (window.top === window.self) return;
+    e.preventDefault();
+    window.open("/api/threads/connect", "_blank", "noopener");
+  };
 
   const disconnect = async (a: ThreadsAccountStatus) => {
     if (!window.confirm(`Putuskan @${a.username ?? a.id}? Tulisan baru tidak akan dikirim ke akun ini lagi. Post yang sudah terkirim tetap ada di Threads.`)) return;
@@ -72,7 +83,7 @@ export default function ThreadsPane() {
                 </Card>
               )) : <Card padding={4} radius={2} border tone="caution"><Text>Belum ada akun Threads tersambung.</Text></Card>}
               <Box>
-                <Button as="a" href="/api/threads/connect" tone="primary" text={s.accounts.length ? "Tambah akun Threads" : "Sambungkan Threads"} />
+                <Button as="a" href="/api/threads/connect" onClick={connect} tone="primary" text={s.accounts.length ? "Tambah akun Threads" : "Sambungkan Threads"} />
               </Box>
             </Stack>
           )}
