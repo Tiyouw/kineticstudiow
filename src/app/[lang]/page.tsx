@@ -79,7 +79,8 @@ export default async function HomePage({ params }: Props) {
                 {h.titleD.map((l, i) => <span key={l} className="ln hx" style={d(`${(2.3 + i * 0.08).toFixed(2)}s`)}>{l}</span>)}
               </h1>
               <p id="hero-sub" className="hx" style={d("2.75s")}>{h.sub}</p>
-              <div id="hero-ctas">
+              {/* data-nosnippet: Google glued the button labels onto the search snippet ("Bikin maskotmuLihat karya") */}
+              <div id="hero-ctas" data-nosnippet>
                 <a id="hero-cta-primary" className="btn btn-red hx" style={d("2.85s")} href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> {h.ctaPrimary}</a>
                 <Link id="hero-cta-secondary" className="btn btn-line hx" style={d("2.92s")} href={workHref}>{h.ctaSecondary}</Link>
               </div>
