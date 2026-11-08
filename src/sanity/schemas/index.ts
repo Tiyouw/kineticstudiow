@@ -123,6 +123,13 @@ export const post = defineType({
         defineField({ name: "id", title: "Indonesia", type: "string", description: "Opsional. Kosong = pakai judul English." }),
       ],
     }),
+    defineField({
+      name: "stage", title: "Tahap (Agenda)", type: "string", initialValue: "draft",
+      options: { list: [{ title: "Ide", value: "idea" }, { title: "Draf", value: "draft" }, { title: "Siap terbit", value: "ready" }], layout: "radio", direction: "horizontal" },
+      description: "Hanya untuk papan Agenda, tidak tampil di situs. Setelah di-Publish, tulisan otomatis masuk Terjadwal/Terbit.",
+      hidden: ({ document }) => !!document?._id && !String(document._id).startsWith("drafts."),
+    }),
+    defineField({ name: "ideaNotes", title: "Catatan ide", type: "text", rows: 3, description: "Catatan pribadi (tidak tampil di situs)." }),
     defineField({ name: "slug", title: "Alamat halaman", type: "slug", options: { source: "title.en", maxLength: 80 }, description: "Klik Generate. Jadi bagian link: /journal/judul-tulisan", validation: (r) => r.required() }),
     defineField({ name: "publishedAt", title: "Tanggal terbit", type: "datetime", initialValue: () => new Date().toISOString(), validation: (r) => r.required(), description: "Mau dijadwalkan? Isi tanggal & jam nanti, lalu Publish. Tulisan tersembunyi sampai waktunya, lalu tampil di situs (dan terkirim ke Threads) dalam ±15 menit setelahnya. Lihat semua jadwal di menu Agenda." }),
     img("cover", "Foto sampul", true),
@@ -232,5 +239,22 @@ const fatwaAnswers = defineType({
   preview: { prepare: () => ({ title: "Jawaban kuesioner" }) },
 });
 
-export const schemaTypes = [product, project, testimonial, clientMark, post, settings, fatwaAnswers, ...copyTypes];
-export const SINGLETONS = ["settings", "fatwaAnswers", ...copyTypes.map((t) => t.name)];
+/** Agenda's fixed posting slots ("tiap Selasa 09.00"), edited from the Agenda tool. */
+const agendaSettings = defineType({
+  name: "agendaSettings", title: "Pengaturan Agenda", type: "document",
+  fields: [
+    defineField({
+      name: "slots", title: "Slot posting", type: "array",
+      of: [defineArrayMember({
+        type: "object", name: "slot",
+        fields: [
+          defineField({ name: "day", title: "Hari (0 = Minggu)", type: "number", validation: (r) => r.min(0).max(6).integer() }),
+          defineField({ name: "time", title: "Jam (HH:MM)", type: "string", validation: (r) => r.regex(/^\d{2}:\d{2}$/) }),
+        ],
+      })],
+    }),
+  ],
+});
+
+export const schemaTypes = [product, project, testimonial, clientMark, post, settings, fatwaAnswers, agendaSettings, ...copyTypes];
+export const SINGLETONS = ["settings", "fatwaAnswers", "agendaSettings", ...copyTypes.map((t) => t.name)];

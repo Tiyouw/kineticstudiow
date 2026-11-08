@@ -8,7 +8,7 @@ import { schemaTypes, copyTypes, SINGLETONS } from "./src/sanity/schemas";
 import Guide from "./src/sanity/Guide";
 import ThreadsPane from "./src/sanity/ThreadsPane";
 import PreviewPane from "./src/sanity/PreviewPane";
-import Agenda from "./src/sanity/Agenda";
+import Agenda from "./src/sanity/agenda/Agenda";
 import { CalendarIcon } from "@sanity/icons";
 import { DICTS } from "./src/i18n/dicts";
 
