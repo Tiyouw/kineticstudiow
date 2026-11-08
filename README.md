@@ -44,7 +44,9 @@ The Sanity CLI needs Node 20.19+ / 22 (`npx -y node@22 node_modules/sanity/bin/s
 | `scripts/seed-sanity.ts` | one-time seed of the CMS from `data.ts` (uses `createIfNotExists`) |
 | `.github/workflows/sanity-backup.yml` | weekly CMS backup |
 | `.github/workflows/schedule.yml` | every 15 min: scheduled Journal posts go live + to Threads (calls `/api/schedule`) |
-| `src/sanity/Agenda.tsx` | Studio "Agenda" tool: Journal calendar (drag to reschedule) and kanban |
+| `src/sanity/stats/Stats.tsx`, `src/app/api/stats/` | Studio "Statistik" tool: visitors (Cloudflare Web Analytics), WhatsApp/email clicks, Threads insights |
+| `src/components/TrackClicks.tsx`, `src/app/api/track/` | counts WhatsApp/email CTA clicks (kind via `data-track`, mascot via `data-slug`) into private `secrets.stats.<day>` docs |
+| `src/sanity/agenda/` | Studio "Agenda" tool: list, calendar and kanban, quick add, slots and queue |
 
 ## How content flows
 
@@ -75,6 +77,9 @@ Env vars (Vercel, production + preview): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_
 `SANITY_API_READ_TOKEN`, `SANITY_API_WRITE_TOKEN`, `SANITY_REVALIDATE_SECRET`, `SANITY_STUDIO_*`, `SANITY_API_*`.
 Threads/scheduling: `THREADS_APP_ID`, `THREADS_APP_SECRET`, `CRON_SECRET` (Vercel daily cron), `SCHEDULE_SECRET`
 (also a GitHub Actions secret: the 15-minute schedule workflow; Vercel Hobby crons run only daily).
+Statistik (visitors): `CLOUDFLARE_ANALYTICS_TOKEN` (Account Analytics: Read), `CLOUDFLARE_ACCOUNT_ID`, `CF_SITE_TAG`
+(server, for the GraphQL query) and `NEXT_PUBLIC_CF_BEACON_TOKEN` (the public beacon token from Cloudflare → Web Analytics;
+the beacon script loads only when it is set). Without them the Statistik tool shows clicks and Threads only.
 Optional: `NEXT_PUBLIC_SITE_URL` (overrides the canonical domain), `NEXT_PUBLIC_GSC_VERIFICATION`.
 
 DNS (Cloudflare, both **DNS only**, not proxied):

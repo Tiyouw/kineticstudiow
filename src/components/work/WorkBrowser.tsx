@@ -163,7 +163,7 @@ export default function WorkBrowser({ projects, locale, c, w }: {
             </dl>
             <p id="sheet-desc">{p.description[locale]}</p>
             {p.real ? null : <span className="tag" id="sheet-ph">{w.sheet.descPh}</span>}
-            <a className="btn btn-red" id="sheet-cta" href={wa_.href("project", locale, { project: waProject })} target="_blank" rel="noopener">
+            <a className="btn btn-red" id="sheet-cta" data-track="project" href={wa_.href("project", locale, { project: waProject })} target="_blank" rel="noopener">
               <WaIcon /> {w.sheet.cta}
             </a>
             <p id="sheet-links">

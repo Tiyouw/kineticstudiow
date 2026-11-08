@@ -298,3 +298,39 @@ export function parseSignedRequest(sr: string | null): { user_id?: string | numb
     return null;
   }
 }
+
+/* ---------- account statistics for the Studio's Statistik tool ---------- */
+
+type InsightRow = { name: string; values?: { value: number }[]; total_value?: { value: number } };
+const total = (m?: InsightRow) => m?.total_value?.value ?? (m?.values ?? []).reduce((s, v) => s + (v.value ?? 0), 0);
+
+/** Per connected account, the last `days` days: views, likes, replies, reposts, quotes, followers and best posts. */
+export async function accountStats(days: number) {
+  const until = Math.floor(Date.now() / 1000);
+  const since = Math.max(until - days * 86_400, 1712991600); // Threads keeps account insights from 13 April 2024
+  const out = [];
+  for (const a of await getAccounts()) {
+    if (!a.token) continue;
+    const row: { username?: string; followers?: number; views: number; likes: number; replies: number; reposts: number; quotes: number; error?: string; topPosts: { url?: string; text: string; views: number; likes: number; at?: string }[] } =
+      { username: a.username, views: 0, likes: 0, replies: 0, reposts: 0, quotes: 0, topPosts: [] };
+    try {
+      const r = await call<{ data: InsightRow[] }>("GET", `${API}/${a.userId}/threads_insights`, { metric: "views,likes,replies,reposts,quotes", since: String(since), until: String(until), access_token: a.token });
+      const by = new Map(r.data.map((m) => [m.name, m]));
+      Object.assign(row, { views: total(by.get("views")), likes: total(by.get("likes")), replies: total(by.get("replies")), reposts: total(by.get("reposts")), quotes: total(by.get("quotes")) });
+      const f = await call<{ data: InsightRow[] }>("GET", `${API}/${a.userId}/threads_insights`, { metric: "followers_count", access_token: a.token }).catch(() => null);
+      row.followers = f ? total(f.data[0]) : undefined;
+      const posts = await call<{ data: { id: string; text?: string; permalink?: string; timestamp?: string }[] }>("GET", `${API}/${a.userId}/threads`, { fields: "id,text,permalink,timestamp", since: String(since), limit: "15", access_token: a.token });
+      const scored = [];
+      for (const p of posts.data) {
+        const ins = await call<{ data: InsightRow[] }>("GET", `${API}/${p.id}/insights`, { metric: "views,likes", access_token: a.token }).catch(() => null);
+        const m = new Map((ins?.data ?? []).map((x) => [x.name, x]));
+        scored.push({ url: p.permalink, text: (p.text ?? "").slice(0, 120), views: total(m.get("views")), likes: total(m.get("likes")), at: p.timestamp });
+      }
+      row.topPosts = scored.sort((x, y) => y.views - x.views).slice(0, 5);
+    } catch (e) {
+      row.error = e instanceof Error ? e.message : String(e);
+    }
+    out.push(row);
+  }
+  return out;
+}

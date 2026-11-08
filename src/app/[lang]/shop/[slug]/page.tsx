@@ -117,10 +117,10 @@ export default async function ProductPage({ params }: Props) {
                   {p.sold ? (
                     <span className="btn tk-gone" aria-disabled="true">{c.product.gone}</span>
                   ) : (
-                    <a className="btn btn-red" href={w.href("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
+                    <a className="btn btn-red" data-track="order" data-slug={p.slug} href={w.href("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
                   )}
-                  <a className="btn btn-line" href={w.href("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
-                  {locale === "en" ? <a className="mail-alt" href={w.mail(p.sold ? "general" : "order", locale, wa)}><MailIcon /> {c.emailInstead}</a> : null}
+                  <a className="btn btn-line" data-track="ask" data-slug={p.slug} href={w.href("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
+                  {locale === "en" ? <a className="mail-alt" data-slug={p.slug} href={w.mail(p.sold ? "general" : "order", locale, wa)}><MailIcon /> {c.emailInstead}</a> : null}
                 </div>
                 {p.sold ? (
                   <div id="p-sold" className="hx" style={d("1.05s")}>

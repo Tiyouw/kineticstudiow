@@ -9,7 +9,8 @@ import Guide from "./src/sanity/Guide";
 import ThreadsPane from "./src/sanity/ThreadsPane";
 import PreviewPane from "./src/sanity/PreviewPane";
 import Agenda from "./src/sanity/agenda/Agenda";
-import { CalendarIcon } from "@sanity/icons";
+import { CalendarIcon, ChartUpwardIcon } from "@sanity/icons";
+import Stats from "./src/sanity/stats/Stats";
 import { DICTS } from "./src/i18n/dicts";
 
 /** Where each copy dictionary shows on the site (path after the language). */
@@ -63,7 +64,7 @@ export default defineConfig({
   basePath: "/studio",
   // the green mascot: tells the Studio apart from the site at a glance
   icon: () => <img src="/assets/studio-icon-64.png" alt="" width={25} height={25} style={{ display: "block", borderRadius: "50%" }} />,
-  tools: (prev) => [...prev, { name: "agenda", title: "Agenda", icon: CalendarIcon, component: Agenda }],
+  tools: (prev) => [...prev, { name: "agenda", title: "Agenda", icon: CalendarIcon, component: Agenda }, { name: "statistik", title: "Statistik", icon: ChartUpwardIcon, component: Stats }],
   projectId,
   dataset,
   schema: {

@@ -14,6 +14,7 @@ import WaFloat from "@/components/WaFloat";
 import PageTransition from "@/components/PageTransition";
 import ScrollReveal from "@/components/ScrollReveal";
 import LangSwap from "@/components/LangSwap";
+import TrackClicks from "@/components/TrackClicks";
 import "@/styles/kinetic.css";
 import "@/styles/site.css";
 
@@ -69,6 +70,11 @@ export default async function LangLayout({ children, params }: { children: React
         <ScrollReveal />
         <Script src="/tiyoouw-mark.js" strategy="beforeInteractive" />
         <Analytics />
+        <TrackClicks locale={locale} />
+        {/* Cloudflare Web Analytics (cookie-free visitor counts for the Studio's Statistik): on once the token is set */}
+        {process.env.NEXT_PUBLIC_CF_BEACON_TOKEN ? (
+          <Script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN })} strategy="afterInteractive" />
+        ) : null}
         {draft ? (
           <>
             {/* Pratinjau in the Studio: refreshes on every edit; the link leaves draft mode */}

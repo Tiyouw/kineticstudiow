@@ -127,7 +127,7 @@ export default function BriefForm({ locale, t, bubble }: { locale: Locale; t: Cu
         <p className="eyebrow">{t.preview.eyebrow}</p>
         <h2 className="disp rough">{t.preview.title}</h2>
         <Bubble live typing={typing} text={wa_.text("custom", locale, fields)} head={bubble.head} to={bubble.to} meta={bubble.meta} />
-        <a id="send" className="btn btn-red" href={wa_.href("custom", locale, fields)} target="_blank" rel="noopener"><WaIcon /> {t.preview.send}</a>
+        <a id="send" className="btn btn-red" data-track="custom" href={wa_.href("custom", locale, fields)} target="_blank" rel="noopener"><WaIcon /> {t.preview.send}</a>
         {locale === "en" ? <a id="send-mail" className="mail-alt" href={wa_.mail("custom", locale, fields)}><MailIcon /> {t.preview.mail}</a> : null}
         <p id="preview-note">{t.preview.note}</p>
       </aside>

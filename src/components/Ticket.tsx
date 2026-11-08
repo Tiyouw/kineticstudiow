@@ -25,7 +25,7 @@ export default async function Ticket({ p, locale, c, stampDelay }: { p: Product;
         {p.sold ? (
           <span className="btn tk-btn tk-gone" aria-disabled="true">{t.gone}</span>
         ) : (
-          <a className="btn btn-red tk-btn" href={w.href("order", locale, { no: p.no, name: p.name, price: pr.main })} target="_blank" rel="noopener">{t.order}</a>
+          <a className="btn btn-red tk-btn" data-track="order" data-slug={p.slug} href={w.href("order", locale, { no: p.no, name: p.name, price: pr.main })} target="_blank" rel="noopener">{t.order}</a>
         )}
       </div>
       <div className="tk-stub"><span className="tk-admit">{t.admit}</span><span className="tk-seat">{t.seat}<b>{p.no}</b></span></div>

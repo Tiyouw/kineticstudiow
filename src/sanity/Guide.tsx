@@ -76,6 +76,7 @@ const SECTIONS: { title: string; steps: string[] }[] = [
 ];
 
 const TIPS = [
+  "Menu Statistik (paling atas, di HP lewat ☰): berapa orang membuka situs, dari negara mana, halaman apa yang paling dilihat, berapa kali tombol WhatsApp/email ditekan (dan maskot mana yang paling diminati), serta angka Threads. Pilih 7, 30, atau 90 hari.",
   "Selalu klik Publish. Selama masih draft, perubahan belum tampil di situs.",
   "Setelah Publish, situs ikut berubah dalam beberapa detik. Kalau belum, refresh halamannya.",
   "Mau lihat hasilnya sebelum Publish? Di setiap dokumen ada tab Pratinjau di sebelah Edit. Biar berdampingan: klik ⋯ di kanan atas dokumen → Split pane right, lalu pilih Pratinjau di panel kanan. Perubahan yang belum di-Publish ikut tampil, pengunjung tetap melihat versi lama sampai kamu klik Publish.",

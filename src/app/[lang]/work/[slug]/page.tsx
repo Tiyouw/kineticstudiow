@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: Props) {
               <p className="pj-desc hx" style={d(".44s")}>{p.description[locale]}</p>
               {p.real ? null : <span className="tag">{w.sheet.descPh}</span>}
               <div className="pj-actions hx" style={d(".52s")}>
-                <a className="btn btn-red" href={wa.href("project", locale, { project: waProject })} target="_blank" rel="noopener"><WaIcon /> {w.sheet.cta}</a>
+                <a className="btn btn-red" data-track="project" href={wa.href("project", locale, { project: waProject })} target="_blank" rel="noopener"><WaIcon /> {w.sheet.cta}</a>
                 {locale === "en" ? <a className="mail-alt" href={wa.mail("project", locale, { project: waProject })}><MailIcon /> {c.emailInstead}</a> : null}
               </div>
             </div>
