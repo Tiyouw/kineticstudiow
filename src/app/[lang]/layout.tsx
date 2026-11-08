@@ -21,6 +21,9 @@ import "@/styles/site.css";
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
 const barlow = Barlow({ weight: ["400", "500", "600", "700", "800"], style: ["normal", "italic"], subsets: ["latin"], variable: "--font-barlow", display: "swap" });
 
+// only the known locales exist: anything else (e.g. /favicon.ico before it had a file) is a 404, not a crash
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
@@ -41,7 +44,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     openGraph: { type: "website", siteName: "Kinetic Studiow", locale: id ? "id_ID" : "en_US", alternateLocale: id ? "en_US" : "id_ID" },
     twitter: { card: "summary_large_image" },
     ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } } : {}),
-    icons: { icon: "/assets/mascot-head-circle-filled.png" },
+    icons: {
+      icon: [{ url: "/favicon.ico", sizes: "any" }, { url: "/icon-192.png", type: "image/png", sizes: "192x192" }, { url: "/icon-512.png", type: "image/png", sizes: "512x512" }],
+      apple: "/apple-touch-icon.png",
+    },
   };
 }
 
