@@ -62,6 +62,17 @@ export const SECTIONS: Section[] = [
     ],
   },
   {
+    title: "Media sosial",
+    intro: "Biar situs dan postingan otomatisnya nyambung ke akun yang memang kamu pakai.",
+    questions: [
+      { key: "mainSocial", kind: "multi", q: "Akun mana yang paling aktif kamu urus?", note: "Boleh pilih lebih dari satu", choices: ["Instagram", "TikTok", "Threads", "Pinterest", "X / Twitter", "Behance / Dribbble"] },
+      { key: "tiktokContent", kind: "multi", q: "Di TikTok biasanya posting apa?", choices: ["Video proses gambar (timelapse)", "Hasil jadi / showcase", "Behind the scenes", "Jarang posting di TikTok"] },
+      { key: "tiktokLink", kind: "one", q: "Akun TikTok boleh dipasang di situs?", choices: ["Boleh"], otherLabel: "Username TikTok (kalau beda dari @kineticstudiow)" },
+      { key: "pinterest", kind: "one", q: "Pinterest masih dipakai?", note: "Pin terakhir 30 April 2026, rutin tiap 4–5 hari jam 07.12", choices: ["Masih, pakai penjadwal", "Sudah jarang / berhenti", "Mau aktif lagi"], otherLabel: "Penjadwal yang dipakai (misal Tailwind, Later)" },
+      { key: "autoPost", kind: "multi", q: "Tulisan Journal di situs boleh otomatis diposting ke mana?", note: "Threads sudah siap; yang lain menyusul", choices: ["Threads Kinetic", "Instagram Story", "Jangan otomatis, aku posting sendiri"] },
+    ],
+  },
+  {
     title: "Tentang Kinetic",
     intro: "Buat halaman About. Yang belum siap, skip aja.",
     questions: [

@@ -11,5 +11,5 @@ export async function GET(req: NextRequest) {
     .filter((s) => /^\d{5,30}$/.test(s))
     .slice(0, 20);
   const data = isConfigured() ? await insights(ids).catch(() => ({})) : {};
-  return NextResponse.json(data, { headers: { "Cache-Control": "public, s-maxage=600, stale-while-revalidate=600" } });
+  return NextResponse.json(data, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=60" } });
 }

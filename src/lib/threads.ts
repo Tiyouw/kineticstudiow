@@ -69,9 +69,9 @@ export const forget = async (userId?: string) => {
 
 /* ---------- HTTP ---------- */
 
-async function call<T>(method: "GET" | "POST", url: string, params: Record<string, string>): Promise<T> {
+async function call<T>(method: "GET" | "POST" | "DELETE", url: string, params: Record<string, string>): Promise<T> {
   const body = new URLSearchParams(params);
-  const res = await fetch(method === "GET" ? `${url}?${body}` : url, {
+  const res = await fetch(method === "POST" ? url : `${url}?${body}`, {
     method,
     cache: "no-store",
     ...(method === "POST" ? { body, headers: { "Content-Type": "application/x-www-form-urlencoded" } } : {}),
@@ -119,8 +119,8 @@ export async function refreshAll() {
 
 /* ---------- publishing ---------- */
 
-/** One account's result for one Journal post, kept in post.social.threads. */
-export type ThreadsShare = { _key: string; account: string; username?: string; id?: string; url?: string; sharedAt?: string; error?: string; igStoryStatus?: string };
+/** One account's result for one Journal post, kept in post.social.threads. `removedAt`: taken down from the Studio. */
+export type ThreadsShare = { _key: string; account: string; username?: string; id?: string; url?: string; sharedAt?: string; error?: string; igStoryStatus?: string; removedAt?: string };
 
 type PendingPost = {
   _id: string; _rev: string; slug?: string; title?: { en?: string }; caption?: string; publishedAt?: string; shareIgStory?: boolean;
@@ -215,10 +215,50 @@ export async function publishPending() {
   return { posted, failed };
 }
 
+/* ---------- taking a post down, or sending it again (a typo: Threads posts can't be edited) ---------- */
+
+/** Threads' answer for media that was deleted (in the app, or never existed). */
+const isGone = (e: unknown) => /does not exist|Unsupported get request|Unsupported delete request/i.test(e instanceof Error ? e.message : String(e));
+
+async function deleteOnThreads(mediaId: string, token: string) {
+  try {
+    await call("DELETE", `${API}/${mediaId}`, { access_token: token });
+  } catch (e) {
+    if (!isGone(e)) throw e; // already deleted in the Threads app: nothing to do
+  }
+}
+
+type ShareRef = { postId: string; account: string };
+
+async function shareOf({ postId, account }: ShareRef) {
+  const r = await db.fetch<{ share?: ThreadsShare } | null>(`*[_id == $postId && _type == "post"][0]{ "share": social.threads[_key == $account][0] }`, { postId, account });
+  const token = (await getAccounts()).find((a) => a.userId === account)?.token;
+  return { share: r?.share, token };
+}
+
+/** Deletes the post from that Threads account (its Instagram Story goes with it) and marks it so it isn't sent again. */
+export async function takeDown(ref: ShareRef) {
+  const { share, token } = await shareOf(ref);
+  if (!share?.id) throw new Error("Belum ada post di akun ini.");
+  if (!token) throw new Error("Akun ini sudah tidak tersambung. Hapus post-nya langsung di Threads.");
+  await deleteOnThreads(share.id, token);
+  await db.patch(ref.postId).set({ [`social.threads[_key == "${ref.account}"].removedAt`]: new Date().toISOString() }).commit();
+}
+
+/** Deletes the old post (if still up), then sends the published version of the Journal entry again. */
+export async function resend(ref: ShareRef) {
+  const { share, token } = await shareOf(ref);
+  if (!token) throw new Error("Akun ini sudah tidak tersambung. Sambungkan lagi di menu Threads.");
+  if (share?.id && !share.removedAt) await deleteOnThreads(share.id, token);
+  await db.patch(ref.postId).unset([`social.threads[_key == "${ref.account}"]`]).commit();
+  return publishPending();
+}
+
 /* ---------- insights for posts already on Threads ---------- */
 
 const METRICS = ["views", "likes", "replies", "reposts", "quotes"];
 
+/** Numbers per media id; `{ gone: 1 }` for a post deleted in the Threads app. */
 export async function insights(ids: string[]) {
   if (!ids.length) return {};
   // only media this site posted, each read with the token of the account that posted it
@@ -232,8 +272,10 @@ export async function insights(ids: string[]) {
     try {
       const r = await call<{ data: { name: string; values?: { value: number }[] }[] }>("GET", `${API}/${id}/insights`, { metric: METRICS.join(","), access_token: token });
       out[id] = Object.fromEntries(r.data.map((m) => [m.name, m.values?.[0]?.value ?? 0]));
-    } catch {
-      /* a post deleted on Threads, or insights not ready yet */
+    } catch (e) {
+      // deleted in the Threads app? (otherwise insights just aren't ready yet)
+      if (isGone(e)) out[id] = { gone: 1 };
+      else await call("GET", `${API}/${id}`, { fields: "id", access_token: token }).catch((e2) => { if (isGone(e2)) out[id] = { gone: 1 }; });
     }
   }
   return out;

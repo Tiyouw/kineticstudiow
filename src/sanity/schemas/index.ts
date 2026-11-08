@@ -159,6 +159,7 @@ export const post = defineType({
               defineField({ name: "sharedAt", title: "Dikirim pada", type: "datetime" }),
               defineField({ name: "error", title: "Kendala", type: "string" }),
               defineField({ name: "igStoryStatus", title: "Instagram Story", type: "string" }),
+              defineField({ name: "removedAt", title: "Dihapus dari Threads pada", type: "datetime" }),
             ],
             preview: { select: { title: "username", subtitle: "url" }, prepare: ({ title, subtitle }) => ({ title: title ? `@${title}` : "Akun Threads", subtitle }) },
           })],
