@@ -2,7 +2,7 @@ import type { Locale } from "@/lib/i18n";
 import { getWaLinks } from "@/content";
 import type { CommonDict } from "@/i18n/common";
 import Bubble from "./Bubble";
-import { MailIcon, WaIcon } from "./Icons";
+import { WaIcon } from "./Icons";
 import { img } from "@/lib/img";
 
 export default async function CtaBand({ locale, c, title, sub, eyebrow }: {
@@ -19,7 +19,6 @@ export default async function CtaBand({ locale, c, title, sub, eyebrow }: {
           <h2 id="cta-title" className="disp rough">{title ?? c.cta.title}</h2>
           <p id="cta-sub">{sub ?? c.cta.sub}</p>
           <a id="cta-btn" className="btn btn-cream" href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> {c.chatWa}</a>
-          {locale === "en" ? <a id="cta-mail" className="mail-alt" href={w.mail("general", locale)}><MailIcon /> {c.emailInstead}</a> : null}
           <Bubble text={w.text("general", locale)} head={c.bubble.opensWith} to={c.bubble.to} meta={c.bubble.meta} />
         </div>
         <div id="cta-side">

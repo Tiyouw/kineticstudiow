@@ -38,6 +38,8 @@ export default async function AboutPage({ params }: Props) {
   const contacts = [
     { k: "Instagram", v: "@kinetic.studiow", h: "https://instagram.com/kinetic.studiow", ext: true },
     { k: "TikTok", v: "@kinetic.studiow", h: "https://www.tiktok.com/@kinetic.studiow", ext: true },
+    { k: "Threads", v: "@kinetic.studiow", h: "https://www.threads.com/@kinetic.studiow", ext: true },
+    { k: "Pinterest", v: "kineticstudiow", h: "https://www.pinterest.com/kineticstudiow/", ext: true },
     { k: "Behance", v: "kineticstd", h: "https://behance.net/kineticstd", ext: true },
     { k: a.email, v: "hello@kineticstudiow.my.id", h: "mailto:hello@kineticstudiow.my.id", ext: false },
     { k: "WhatsApp", v: a.waValue, h: w.href("general", locale), ext: true },
@@ -65,7 +67,8 @@ export default async function AboutPage({ params }: Props) {
                   </span>
                   {a.bioB}
                 </p>
-                <span className="tag hx" style={d("1s")}>{a.bioPh}</span>
+                {a.bioPh ? <span className="tag hx" style={d("1s")}>{a.bioPh}</span> : null}
+                {a.facts?.length ? <ul id="intro-facts" className="hx" style={d("1s")}>{a.facts.map((x) => <li key={x}>{x}</li>)}</ul> : null}
               </div>
               <div id="portrait">
                 <RegMark /><RegMark />

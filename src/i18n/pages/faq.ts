@@ -1,6 +1,5 @@
 /**
- * FAQ page. DRAFT: answers marked (?) in comments still need Fatwa's confirmation (questionnaire at /q/...).
- * The page stays noindex and unlinked until FAQ_LIVE in the FAQ page is true.
+ * FAQ page. Answers confirmed by Fatwa in the questionnaire (Nov 2026).
  */
 const faq = {
   en: {
@@ -15,27 +14,29 @@ const faq = {
       {
         title: "Custom mascots",
         items: [
-          { q: "How much does a custom mascot cost?", a: "Every brand is different, so the price depends on what you need: one mascot, a few poses, a full identity. Send the brief and you get a quote, usually within a day." },
-          { q: "How long does it take?", a: "Most mascots take two to four weeks from the first sketch to final files." },
-          { q: "How many revisions are included?", a: "Two rounds of revisions on the chosen sketch, then small tweaks on the final art." },
-          { q: "Which files will I get?", a: "Vector files (AI and SVG), PNGs on a transparent background and print-ready one-ink versions." },
-          { q: "Who owns the mascot?", a: "Once it's paid in full, your brand can use the mascot commercially: signage, packaging, social media and merch." },
+          { q: "How much does a custom mascot cost?", a: "Custom mascots start from $55 to $110, depending on the detail. Send the brief and you get an exact quote, usually within the hour." },
+          { q: "How long does it take?", a: "It depends on the project. You get an estimate once we've read your brief. Rush orders are possible for an extra fee." },
+          { q: "How many revisions are included?", a: "Three rounds of revisions." },
+          { q: "Which files will I get?", a: "PNG, JPG and PDF, plus the PSD or Procreate source file." },
+          { q: "Who owns the mascot?", a: "You do. Once it's paid in full, all rights to the custom design move to your brand." },
         ],
       },
       {
         title: "Premade mascots",
         items: [
           { q: "What does \"sold once\" mean?", a: "Each premade mascot is sold to one brand only. When it's bought, it leaves the shop and is never sold again." },
-          { q: "What comes with a premade mascot?", a: "Vector files (AI and SVG), transparent PNGs, full-colour and one-ink versions, and a name and colour tweak to fit your brand." },
-          { q: "How soon do I get the files?", a: "Shortly after payment is confirmed, once the name and colour tweak is done." },
+          { q: "What comes with a premade mascot?", a: "Vector files (AI and SVG), PNGs on a transparent background, and a free name and colour tweak to fit your brand." },
+          { q: "Can I change the mascot?", a: "The name and colours are adjusted for free. Your brand can use it on signage, packaging, social media and merch." },
+          { q: "How soon do I get the files?", a: "Within 24 hours of payment." },
         ],
       },
       {
         title: "Working together",
         items: [
-          { q: "Do you work with clients outside Indonesia?", a: "Yes. We work with brands anywhere, in English, on WhatsApp or by email." },
-          { q: "How do I pay from abroad?", a: "Half up front to start, the rest before the final files. International clients can pay by PayPal or Wise." },
-          { q: "How do I start?", a: "Fill in the custom order form, or send a message on WhatsApp or by email with your brand name, what you sell and where the mascot will be used." },
+          { q: "Do you work with clients outside Indonesia?", a: "Yes, with brands anywhere. Chat with us in English on WhatsApp." },
+          { q: "How do I pay?", a: "50% up front to start, the other 50% before the final files. Clients abroad can pay with Wise." },
+          { q: "How fast do you reply?", a: "Usually within an hour, often right away." },
+          { q: "How do I start?", a: "Fill in the custom order form, or send a WhatsApp message with your brand name, what you sell and where the mascot will be used." },
         ],
       },
     ],
@@ -53,27 +54,29 @@ const faq = {
       {
         title: "Maskot custom",
         items: [
-          { q: "Berapa harga maskot custom?", a: "Tiap brand beda kebutuhannya: satu maskot, beberapa pose, atau identitas lengkap. Kirim brief-nya dan kamu dapat penawaran, biasanya dalam sehari." },
-          { q: "Berapa lama pengerjaannya?", a: "Biasanya dua sampai empat minggu, dari sketsa pertama sampai file final." },
-          { q: "Dapat berapa kali revisi?", a: "Dua putaran revisi di sketsa yang kamu pilih, lalu penyesuaian kecil di artwork final." },
-          { q: "File apa saja yang aku dapat?", a: "File vektor (AI dan SVG), PNG dengan latar transparan, dan versi satu tinta yang siap cetak." },
-          { q: "Siapa pemilik maskotnya?", a: "Setelah lunas, brand kamu boleh memakai maskotnya untuk keperluan komersial: signage, kemasan, media sosial, dan merch." },
+          { q: "Berapa harga maskot custom?", a: "Mulai Rp 300.000 sampai Rp 500.000, tergantung detailnya. Kirim brief-nya dan kamu dapat harga pastinya, biasanya dalam sejam." },
+          { q: "Berapa lama pengerjaannya?", a: "Tergantung project. Perkiraannya kami kasih setelah baca brief-mu. Butuh cepat? Bisa rush order dengan biaya tambahan." },
+          { q: "Dapat berapa kali revisi?", a: "Tiga kali revisi." },
+          { q: "File apa saja yang aku dapat?", a: "PNG, JPG, dan PDF, plus file mentah PSD atau Procreate." },
+          { q: "Siapa pemilik maskotnya?", a: "Kamu. Setelah lunas, hak penuh desain custom pindah ke brand kamu." },
         ],
       },
       {
         title: "Maskot premade",
         items: [
           { q: "Apa maksudnya \"dijual sekali\"?", a: "Tiap maskot premade cuma dijual ke satu brand. Begitu dibeli, ia keluar dari toko dan tidak dijual lagi." },
-          { q: "Dapat apa saja kalau beli maskot premade?", a: "File vektor (AI dan SVG), PNG transparan, versi full colour dan satu tinta, plus penyesuaian nama dan warna biar pas sama brand kamu." },
-          { q: "Kapan file-nya dikirim?", a: "Tidak lama setelah pembayaran dikonfirmasi, begitu penyesuaian nama dan warnanya selesai." },
+          { q: "Dapat apa saja kalau beli maskot premade?", a: "File vektor (AI dan SVG), PNG dengan latar transparan, plus gratis ubah nama dan warna biar pas sama brand kamu." },
+          { q: "Maskotnya boleh diubah?", a: "Nama dan warnanya kami sesuaikan gratis. Brand kamu boleh memakainya untuk signage, kemasan, media sosial, dan merch." },
+          { q: "Kapan file-nya dikirim?", a: "Maksimal 1×24 jam setelah pembayaran." },
         ],
       },
       {
         title: "Kerja bareng",
         items: [
-          { q: "Melayani klien dari luar Indonesia?", a: "Bisa. Kami bekerja dengan brand dari mana saja, dalam bahasa Inggris, lewat WhatsApp atau email." },
-          { q: "Bayarnya gimana?", a: "Setengah di awal untuk mulai, sisanya sebelum file final dikirim. Lewat transfer bank, atau PayPal dan Wise untuk klien luar negeri." },
-          { q: "Mulainya dari mana?", a: "Isi form pesan custom, atau kirim pesan lewat WhatsApp atau email: nama brand, jualan apa, dan maskotnya mau dipakai di mana." },
+          { q: "Melayani klien dari luar Indonesia?", a: "Bisa, dari mana saja. Chat dalam bahasa Inggris lewat WhatsApp juga oke." },
+          { q: "Bayarnya gimana?", a: "DP 50% untuk mulai, 50% sisanya sebelum file final dikirim. Klien luar negeri bisa bayar lewat Wise." },
+          { q: "Balas chat-nya cepat?", a: "Biasanya kurang dari sejam, sering langsung dibalas." },
+          { q: "Mulainya dari mana?", a: "Isi form pesan custom, atau kirim pesan WhatsApp: nama brand, jualan apa, dan maskotnya mau dipakai di mana." },
         ],
       },
     ],

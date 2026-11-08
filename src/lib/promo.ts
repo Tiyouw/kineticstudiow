@@ -34,7 +34,8 @@ export async function syncPromos() {
       && !(_id in coalesce(*[_id == $done][0].ids, []))]{ _id, no, name, "slug": slug.current, priceUsd, priceIdr, "image": image.asset._ref }`,
     { since: SINCE, done: DONE },
   );
-  const accounts = await db.fetch<string[]>(`*[_type == "threadsAuth" && _id in path("secrets.threads.*") && defined(token)].userId`);
+  // Fatwa's choice: promos go to the Kinetic account only (the account is ticked in advance, nothing is sent until it's scheduled)
+  const accounts = await db.fetch<string[]>(`*[_type == "threadsAuth" && _id in path("secrets.threads.*") && defined(token) && lower(username) match "kinetic*"].userId`);
   for (const p of fresh) {
     await db.createIfNotExists({
       _id: `drafts.promo-${p._id}`, _type: "post", kind: "short", stage: "ready",

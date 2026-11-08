@@ -8,7 +8,7 @@ import type { Project, WorkCategory } from "@/content/types";
 import type { CommonDict } from "@/i18n/common";
 import type { WorkDict } from "@/i18n/pages/work";
 import { TileInner } from "@/components/Tile";
-import { ArrowIcon, CheckIcon, CloseIcon, MailIcon, WaIcon } from "@/components/Icons";
+import { ArrowIcon, CheckIcon, CloseIcon, WaIcon } from "@/components/Icons";
 
 type Filter = "all" | WorkCategory;
 const FILTERS: Filter[] = ["all", "mascot", "brand", "lettering", "merch"];
@@ -167,7 +167,6 @@ export default function WorkBrowser({ projects, locale, c, w }: {
               <WaIcon /> {w.sheet.cta}
             </a>
             <p id="sheet-links">
-              {locale === "en" ? <a className="mail-alt" href={wa_.mail("project", locale, { project: waProject })}><MailIcon /> {c.emailInstead}</a> : null}
               <Link className="mail-alt" href={projectHref(locale, p.slug)}>{w.sheet.open} <ArrowIcon /></Link>
             </p>
           </div>

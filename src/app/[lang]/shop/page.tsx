@@ -78,7 +78,7 @@ export default async function ShopPage({ params }: Props) {
             <div id="licence">
               <h3>{s.licenceTitle}</h3>
               <p>{s.licence}</p>
-              <span className="tag">{s.licencePh}</span>
+              {s.licencePh ? <span className="tag">{s.licencePh}</span> : null}
             </div>
           </div>
         </section>

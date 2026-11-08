@@ -52,7 +52,7 @@ const SECTIONS: { title: string; steps: string[] }[] = [
       "Menu Agenda (paling atas, di HP lewat ☰) punya tiga tampilan: Daftar (14 hari ke depan, cocok di HP), Kalender, dan Kanban (Ide → Draf → Siap → Terjadwal → Terbit).",
       "Di Agenda, tombol Tambah mencatat ide atau tulisan baru tanpa membuka form. Tombol ⋯ di tiap kartu: pindah tahap, Jadwalkan, Antrikan ke slot kosong, atau Terbitkan sekarang. Di komputer, kartu juga bisa digeser.",
       "Post Threads saja: di Jenis pilih Post Threads saja (atau di Agenda → Tambah). Isinya caption, foto, dan link opsional, tanpa halaman di situs. Bisa dijadwalkan seperti tulisan biasa.",
-      "Promo otomatis: setiap maskot premade baru di-Publish, Agenda menyiapkan post promo di kolom Siap (foto, nama, harga, link toko). Cek caption-nya, lalu Antrikan atau Jadwalkan. Kalau maskotnya keburu terjual, promo yang belum terkirim dibatalkan otomatis.",
+      "Promo otomatis: setiap maskot premade baru di-Publish, Agenda menyiapkan post promo di kolom Siap (foto, nama, harga, link toko). Akun Threads Kinetic sudah tercentang. Cek caption-nya, lalu Antrikan atau Jadwalkan. Kalau maskotnya keburu terjual, promo yang belum terkirim dibatalkan otomatis.",
       "Atur slot (ikon jam di Agenda): jadwal rutin, misalnya Selasa dan Jumat 09.00. Slot kosong tampil putus-putus, dan Antrikan otomatis mengisi slot kosong berikutnya.",
       "Typo setelah terkirim ke Threads? Post Threads tidak bisa diedit: perbaiki tulisannya, Publish, lalu klik Kirim ulang di Status Threads. Post lama dihapus dan diganti yang baru.",
     ],

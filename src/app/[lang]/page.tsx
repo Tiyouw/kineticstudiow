@@ -62,7 +62,7 @@ export default async function HomePage({ params }: Props) {
     address: { "@type": "PostalAddress", addressLocality: "Jember", addressRegion: "Jawa Timur", addressCountry: "ID" },
     areaServed: "Worldwide",
     knowsAbout: ["Mascot design", "Brand identity", "Custom lettering", "Merch graphics", "Vintage illustration"],
-    sameAs: [SOCIAL.instagram, SOCIAL.tiktok, SOCIAL.behance, w.href("general", locale)],
+    sameAs: [SOCIAL.instagram, SOCIAL.tiktok, SOCIAL.threads, SOCIAL.pinterest, SOCIAL.behance, w.href("general", locale)],
   };
 
   return (

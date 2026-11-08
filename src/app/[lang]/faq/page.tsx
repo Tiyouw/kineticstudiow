@@ -14,7 +14,7 @@ import { ArrowIcon } from "@/components/Icons";
  * The answers are drafts until Fatwa confirms them. While false the page is noindex, unlinked, out of the sitemap,
  * shows a "draft" tag on each answer and has no FAQPage data for search engines.
  */
-const FAQ_LIVE = false;
+const FAQ_LIVE = true;
 
 type Props = { params: Promise<{ lang: Locale }> };
 

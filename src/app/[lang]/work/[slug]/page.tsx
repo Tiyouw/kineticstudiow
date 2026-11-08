@@ -9,7 +9,7 @@ import { getCopy, getProject, getProjects, getWaLinks } from "@/content";
 import Tile from "@/components/Tile";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
-import { ArrowIcon, MailIcon, WaIcon } from "@/components/Icons";
+import { ArrowIcon, WaIcon } from "@/components/Icons";
 
 type Props = { params: Promise<{ lang: Locale; slug: string }> };
 
@@ -98,7 +98,6 @@ export default async function ProjectPage({ params }: Props) {
               {p.real ? null : <span className="tag">{w.sheet.descPh}</span>}
               <div className="pj-actions hx" style={d(".52s")}>
                 <a className="btn btn-red" data-track="project" href={wa.href("project", locale, { project: waProject })} target="_blank" rel="noopener"><WaIcon /> {w.sheet.cta}</a>
-                {locale === "en" ? <a className="mail-alt" href={wa.mail("project", locale, { project: waProject })}><MailIcon /> {c.emailInstead}</a> : null}
               </div>
             </div>
           </div>

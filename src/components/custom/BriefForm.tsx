@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import { useWa } from "@/components/WaProvider";
 import type { CustomDict, Option } from "@/i18n/pages/custom";
 import Bubble from "@/components/Bubble";
-import { CheckIcon, MailIcon, WaIcon } from "@/components/Icons";
+import { CheckIcon, WaIcon } from "@/components/Icons";
 
 type BubbleLabels = { head: string; to: string; meta: string };
 
@@ -112,7 +112,7 @@ export default function BriefForm({ locale, t, bubble }: { locale: Locale; t: Cu
           <Chips group="usage" opts={t.usage} value={s.usage} multi onChange={(v) => set("usage", v)} />
         </fieldset>
         <div className="field full">
-          <label htmlFor="f-budget">{f.budget} <small>{f.budgetNote}</small></label>
+          <label htmlFor="f-budget">{f.budget} {f.budgetNote ? <small>{f.budgetNote}</small> : null}</label>
           <select id="f-budget" name="budget" value={s.budget} onChange={(e) => set("budget", e.target.value)}>
             <option value="">{f.budgetPh}</option>
             {t.budgets.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
@@ -128,7 +128,6 @@ export default function BriefForm({ locale, t, bubble }: { locale: Locale; t: Cu
         <h2 className="disp rough">{t.preview.title}</h2>
         <Bubble live typing={typing} text={wa_.text("custom", locale, fields)} head={bubble.head} to={bubble.to} meta={bubble.meta} />
         <a id="send" className="btn btn-red" data-track="custom" href={wa_.href("custom", locale, fields)} target="_blank" rel="noopener"><WaIcon /> {t.preview.send}</a>
-        {locale === "en" ? <a id="send-mail" className="mail-alt" href={wa_.mail("custom", locale, fields)}><MailIcon /> {t.preview.mail}</a> : null}
         <p id="preview-note">{t.preview.note}</p>
       </aside>
     </>

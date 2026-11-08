@@ -10,7 +10,7 @@ import Ticket from "@/components/Ticket";
 import Bubble from "@/components/Bubble";
 import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
-import { ArrowIcon, CheckIcon, MailIcon, WaIcon } from "@/components/Icons";
+import { ArrowIcon, CheckIcon, WaIcon } from "@/components/Icons";
 import Gallery, { type View } from "@/components/shop/Gallery";
 
 type Props = { params: Promise<{ lang: Locale; slug: string }> };
@@ -120,7 +120,6 @@ export default async function ProductPage({ params }: Props) {
                     <a className="btn btn-red" data-track="order" data-slug={p.slug} href={w.href("order", locale, wa)} target="_blank" rel="noopener"><WaIcon /> {c.product.order}</a>
                   )}
                   <a className="btn btn-line" data-track="ask" data-slug={p.slug} href={w.href("ask", locale, wa)} target="_blank" rel="noopener">{t.ask}</a>
-                  {locale === "en" ? <a className="mail-alt" data-slug={p.slug} href={w.mail(p.sold ? "general" : "order", locale, wa)}><MailIcon /> {c.emailInstead}</a> : null}
                 </div>
                 {p.sold ? (
                   <div id="p-sold" className="hx" style={d("1.05s")}>
@@ -142,7 +141,7 @@ export default async function ProductPage({ params }: Props) {
               <p className="eyebrow">{t.getEyebrow}</p>
               <h2 className="disp h2 rough">{t.getTitle}</h2>
               <ul id="get-list">{t.gets.map((g) => <li key={g}><CheckIcon />{g}</li>)}</ul>
-              <span className="tag">{t.getPh}</span>
+              {t.getPh ? <span className="tag">{t.getPh}</span> : null}
             </div>
             <div id="once">
               <h3>{p.sold ? t.soldTitle : t.onceTitle}</h3>

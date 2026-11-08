@@ -3,7 +3,7 @@ import { locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { getPosts, getProducts, getProjects } from "@/content";
 
-const PAGES = ["", "/work", "/shop", "/custom-order", "/about", "/privacy"];
+const PAGES = ["", "/work", "/shop", "/custom-order", "/about", "/faq", "/privacy"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, projects, posts] = await Promise.all([getProducts(), getProjects(), getPosts()]);
