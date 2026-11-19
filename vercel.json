@@ -8,6 +8,17 @@
   ],
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?kineticstudiow\\.my\\.id"
+        }
+      ],
+      "destination": "https://www.kineticstudiow.com/",
+      "permanent": true
+    },
+    {
       "source": "/en",
       "has": [
         {
