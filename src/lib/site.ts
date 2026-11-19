@@ -10,7 +10,7 @@ export const SOCIAL = {
   threads: "https://www.threads.com/@kinetic.studiow",
   pinterest: "https://www.pinterest.com/kineticstudiow/",
   behance: "https://behance.net/kineticstd",
-  email: "hello@kineticstudiow.my.id",
+  email: "hello@kineticstudiow.com",
 };
 
 /** canonical + hreflang for a path without its locale ("" for home, "/shop", "/shop/x"). */
