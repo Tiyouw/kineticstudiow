@@ -3,8 +3,9 @@
 Portfolio + premade-mascot shop for **Kinetic Studiow** (Fatwa, retro cartoon mascot illustrator, Jember).
 Built by **tiyoouw** (Tiyo). Orders go to WhatsApp with prefilled messages; there is no checkout.
 
-- Live: https://www.kineticstudiow.my.id (the apex `kineticstudiow.my.id` redirects to `www`)
-- Editors: https://www.kineticstudiow.my.id/studio (Sanity Studio, Indonesian, with a "Panduan" guide pane)
+- Live: https://www.kineticstudiow.com (the apex `kineticstudiow.com` redirects to `www`). The old
+  `kineticstudiow.my.id` and `www.kineticstudiow.my.id` 308-redirect to `https://www.kineticstudiow.com`, keeping the path
+- Editors: https://www.kineticstudiow.com/studio (Sanity Studio, Indonesian, with a "Panduan" guide pane)
 - Repo: github.com/Tiyouw/kineticstudiow (public). A push to `main` deploys to production on Vercel.
 
 ## Stack
@@ -70,7 +71,7 @@ Credentials live in Tiyo's enowX vault (by name) or in Vercel env vars, never in
 | Vercel (project `kineticstudiow`) | hosting, env vars, analytics | vault `vercel` |
 | GitHub `Tiyouw/kineticstudiow` | code, Actions backup (secret `SANITY_READ_TOKEN`) | vault `github` |
 | Sanity `kineticstudiow-cms` (`yqf1n0yb`) | CMS. Members: Tiyo, Kinetic's Google account | sanity.io/manage |
-| Cloudflare (zone `kineticstudiow.my.id`) | DNS + Email Routing | vault `cloudflare-tiyo` |
+| Cloudflare (zones `kineticstudiow.com`, `kineticstudiow.my.id`) | DNS; Email Routing on `.my.id` only | vault `cloudflare-tiyo` |
 | Google Search Console | indexing (verified by DNS TXT) | Tiyo's Google account |
 
 Env vars (Vercel, production + preview): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
@@ -82,9 +83,10 @@ Statistik (visitors): `CLOUDFLARE_ANALYTICS_TOKEN` (Account Analytics: Read), `C
 the beacon script loads only when it is set). Without them the Statistik tool shows clicks and Threads only.
 Optional: `NEXT_PUBLIC_SITE_URL` (overrides the canonical domain), `NEXT_PUBLIC_GSC_VERIFICATION`.
 
-DNS (Cloudflare, both **DNS only**, not proxied):
-`A @ 216.198.79.1` and `CNAME www → <project>.vercel-dns-017.com`, plus Cloudflare Email Routing MX/SPF/DKIM
-and the Google verification TXT.
+DNS (Cloudflare, **DNS only**, not proxied), the same on both zones:
+`A @ 216.198.79.1` and `CNAME www → 428269f923c29648.vercel-dns-017.com`. `kineticstudiow.com` was bought at Spaceship
+(nameservers moved to Cloudflare, 2026-11-19). `kineticstudiow.my.id` also keeps Cloudflare Email Routing MX/SPF/DKIM,
+Mailgun (`mail.` subdomain) and the Google verification TXT: never delete them.
 
 Email: `hello@kineticstudiow.my.id` is a Cloudflare Email Routing rule forwarding to a Gmail inbox
 (forward only; replying *as* hello@ needs Gmail "Send mail as" with an SMTP service).
@@ -100,7 +102,10 @@ Restore: download the artifact, unzip it, then
 SANITY_AUTH_TOKEN=<a write/admin token> npx sanity dataset import kinetic-sanity-<date>.tar.gz production --replace
 ```
 
-## Moving to a new domain (e.g. .com)
+## Moving to a new domain
+
+Done for `kineticstudiow.com` on 2026-11-19 (steps 1–3 and 5 except the email; 4 and 6 are manual). The email stays
+`hello@kineticstudiow.my.id` until Email Routing is set up on the `.com` zone.
 
 1. Add the domain to the Vercel project; point its DNS at Vercel (DNS only).
 2. Set `NEXT_PUBLIC_SITE_URL=https://www.<new>` in Vercel and redeploy (or change the fallback in `src/lib/site.ts`).

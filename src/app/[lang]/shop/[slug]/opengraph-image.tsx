@@ -32,7 +32,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
           <div style={{ display: "flex", fontSize: 96, lineHeight: 1, marginTop: 14, textTransform: "uppercase" }}>{p?.name ?? "Kinetic Studiow"}</div>
           {p && <div style={{ display: "flex", fontSize: 54, marginTop: 26 }}>{prices(p, id ? "id" : "en").main}</div>}
           <div style={{ display: "flex", fontSize: 26, marginTop: 10, color: "#3B5680", letterSpacing: 1 }}>{id ? "Dijual sekali · Order via WhatsApp" : "Sold once · Order on WhatsApp"}</div>
-          <div style={{ display: "flex", marginTop: 34, alignSelf: "flex-start", background: C.ink, color: C.chalk, fontSize: 28, letterSpacing: 2, padding: "10px 22px" }}>KINETICSTUDIOW.MY.ID</div>
+          <div style={{ display: "flex", marginTop: 34, alignSelf: "flex-start", background: C.ink, color: C.chalk, fontSize: 28, letterSpacing: 2, padding: "10px 22px" }}>KINETICSTUDIOW.COM</div>
         </div>
       </div>
     ),

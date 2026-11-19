@@ -2,7 +2,7 @@
 /** The "Panduan" pane at the top of the Studio: how Fatwa edits the site. */
 import { Badge, Box, Card, Container, Flex, Heading, Stack, Text } from "@sanity/ui";
 
-const SITE = "https://www.kineticstudiow.my.id";
+const SITE = "https://www.kineticstudiow.com";
 
 const SECTIONS: { title: string; steps: string[] }[] = [
   {
