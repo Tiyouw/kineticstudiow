@@ -28,7 +28,7 @@ const COPY_PATHS: Record<string, { title: string; path: string }> = {
 };
 
 const both = (title: string, path: string) => [
-  { title: `${title} (EN)`, href: `/en${path}` },
+  { title: `${title} (EN)`, href: path || "/" },
   { title: `${title} (ID)`, href: `/id${path}` },
 ];
 
@@ -102,11 +102,14 @@ export default defineConfig({
     presentationTool({
       name: "pratinjau",
       title: "Pratinjau",
-      previewUrl: { initial: "/en", previewMode: { enable: "/api/draft-mode/enable", disable: "/api/draft-mode/disable" } },
+      previewUrl: { initial: "/", previewMode: { enable: "/api/draft-mode/enable", disable: "/api/draft-mode/disable" } },
       resolve: {
         mainDocuments: defineDocuments([
+          { route: "/shop/:slug", filter: `_type == "product" && slug.current == $slug` },
           { route: "/:lang/shop/:slug", filter: `_type == "product" && slug.current == $slug` },
+          { route: "/work/:slug", filter: `_type == "project" && slug.current == $slug` },
           { route: "/:lang/work/:slug", filter: `_type == "project" && slug.current == $slug` },
+          { route: "/journal/:slug", filter: `_type == "post" && slug.current == $slug` },
           { route: "/:lang/journal/:slug", filter: `_type == "post" && slug.current == $slug` },
         ]),
         locations,

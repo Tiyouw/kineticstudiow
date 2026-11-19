@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL, SOCIAL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
-import { href, projectHref, type Locale } from "@/lib/i18n";
+import { href, localePath, projectHref, type Locale } from "@/lib/i18n";
 import { getClientMarks, getProducts, getProjects, getTestimonials, getCopy, getWaLinks } from "@/content";
 import Loader from "@/components/Loader";
 import Clients from "@/components/Clients";
@@ -51,7 +51,7 @@ export default async function HomePage({ params }: Props) {
     "@type": "ProfessionalService",
     "@id": `${SITE_URL}/#studio`,
     name: "Kinetic Studiow",
-    url: `${SITE_URL}/${locale}`,
+    url: SITE_URL + localePath(locale),
     logo: `${SITE_URL}/assets/badge-full-filled.png`,
     image: `${SITE_URL}/assets/mascot-full-filled.png`,
     description: locale === "id"

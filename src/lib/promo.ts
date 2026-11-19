@@ -41,7 +41,7 @@ export async function syncPromos() {
       _id: `drafts.promo-${p._id}`, _type: "post", kind: "short", stage: "ready",
       title: { en: `Promo #${p.no ?? ""} ${p.name ?? ""}`.trim() },
       caption: promoCaption(p),
-      link: `${SITE_URL}/en/shop/${p.slug}`,
+      link: `${SITE_URL}/shop/${p.slug}`,
       ...(p.image ? { cover: { _type: "image", asset: { _type: "reference", _ref: p.image } } } : {}),
       promoFor: { _type: "reference", _ref: p._id, _weak: true },
       ...(accounts.length ? { threadsAccounts: accounts } : {}),

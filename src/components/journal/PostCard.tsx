@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Locale } from "@/lib/i18n";
+import { localePath, type Locale } from "@/lib/i18n";
 import type { Post } from "@/content";
 
 /** "8 November 2026" / "8 November 2026", in Jember's time zone. */
@@ -7,7 +7,7 @@ export function postDate(iso: string, locale: Locale) {
   return new Date(iso).toLocaleDateString(locale === "id" ? "id-ID" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" });
 }
 
-export const postHref = (locale: Locale, slug: string) => `/${locale}/journal/${slug}`;
+export const postHref = (locale: Locale, slug: string) => localePath(locale, `/journal/${slug}`);
 
 /** A Journal post as a tile: cover on top, title and date below (the work tiles' style). */
 export default function PostCard({ p, locale, lazy, featured }: { p: Post; locale: Locale; lazy?: boolean; featured?: boolean }) {

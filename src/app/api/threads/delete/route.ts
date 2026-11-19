@@ -10,5 +10,5 @@ export async function POST(req: NextRequest) {
   if (!data) return NextResponse.json({ message: "Invalid signed_request" }, { status: 400 });
   await forget(data.user_id ? String(data.user_id) : undefined);
   const code = randomUUID();
-  return NextResponse.json({ url: `${SITE_URL}/en/privacy?deletion=${code}`, confirmation_code: code });
+  return NextResponse.json({ url: `${SITE_URL}/privacy?deletion=${code}`, confirmation_code: code });
 }

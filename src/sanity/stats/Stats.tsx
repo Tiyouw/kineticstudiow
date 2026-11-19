@@ -185,7 +185,7 @@ export default function Stats() {
                     <RankList rows={Object.entries(data.clicks.byKind).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([k, c]) => ({ label: KIND_LABEL[k] ?? k, value: c }))} empty="Belum ada klik di periode ini." />
                   </Panel>
                   <Panel title="Maskot paling diminati">
-                    <RankList rows={data.clicks.topProducts.map((p) => ({ label: p.name, value: p.count, href: `/en/shop/${p.slug}` }))} empty="Belum ada klik order/tanya maskot." />
+                    <RankList rows={data.clicks.topProducts.map((p) => ({ label: p.name, value: p.count, href: `/shop/${p.slug}` }))} empty="Belum ada klik order/tanya maskot." />
                   </Panel>
                 </Grid>
               </Section>

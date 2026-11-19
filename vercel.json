@@ -1,4 +1,44 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "crons": [{ "path": "/api/threads/cron", "schedule": "0 2 * * *" }]
+  "crons": [
+    {
+      "path": "/api/threads/cron",
+      "schedule": "0 2 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/en",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?kineticstudiow\\.my\\.id"
+        }
+      ],
+      "destination": "https://www.kineticstudiow.com/",
+      "permanent": true
+    },
+    {
+      "source": "/en/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?kineticstudiow\\.my\\.id"
+        }
+      ],
+      "destination": "https://www.kineticstudiow.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?:www\\.)?kineticstudiow\\.my\\.id"
+        }
+      ],
+      "destination": "https://www.kineticstudiow.com/:path*",
+      "permanent": true
+    }
+  ]
 }

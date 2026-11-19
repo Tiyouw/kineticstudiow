@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { href, type Locale, type PageKey } from "@/lib/i18n";
+import { href, stripLocale, type Locale, type PageKey } from "@/lib/i18n";
 import { useWa } from "@/components/WaProvider";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
@@ -13,11 +13,11 @@ const ITEMS: PageKey[] = ["home", "work", "shop", "custom", "about"];
 
 /** The nav item for a path, or null on paths that aren't a site page (the 404). */
 export function currentPage(pathname: string): PageKey | null {
-  const parts = pathname.split("/").filter(Boolean);
-  const seg = parts[1] ?? "";
+  const parts = stripLocale(pathname).split("/").filter(Boolean);
+  const seg = parts[0] ?? "";
   if (seg === "") return "home";
   if (seg === "shop") return "shop";
-  if (parts.length > 2) return null;
+  if (parts.length > 1) return null;
   if (seg === "work") return "work";
   if (seg === "custom-order") return "custom";
   if (seg === "about") return "about";
