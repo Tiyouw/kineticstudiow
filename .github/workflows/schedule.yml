@@ -13,4 +13,4 @@ jobs:
     timeout-minutes: 6
     steps:
       - run: |
-          curl -fsS --max-time 300 -H "Authorization: Bearer ${{ secrets.SCHEDULE_SECRET }}" https://www.kineticstudiow.my.id/api/schedule
+          curl -fsS --max-time 300 -H "Authorization: Bearer ${{ secrets.SCHEDULE_SECRET }}" https://www.kineticstudiow.com/api/schedule

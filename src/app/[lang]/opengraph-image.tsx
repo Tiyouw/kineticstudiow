@@ -24,7 +24,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
             <span style={{ color: C.red, textShadow: `4px 4px 0 ${C.chalk}` }}>{id ? "berkarakter" : "with character"}</span>
           </div>
           <div style={{ display: "flex", marginTop: 34, alignSelf: "flex-start", background: C.red, color: C.chalk, fontFamily: "Anton", fontSize: 30, letterSpacing: 2, padding: "12px 26px", border: `3px solid ${C.chalk}`, boxShadow: `6px 6px 0 ${C.deep}` }}>
-            KINETICSTUDIOW.MY.ID
+            KINETICSTUDIOW.COM
           </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
