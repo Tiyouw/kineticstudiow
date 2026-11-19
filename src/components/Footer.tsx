@@ -28,7 +28,7 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
             <li><a href="https://www.threads.com/@kinetic.studiow" target="_blank" rel="noopener"><ThreadsIcon /> Threads<span>@kinetic.studiow</span></a></li>
             <li><a href="https://www.pinterest.com/kineticstudiow/" target="_blank" rel="noopener"><PinterestIcon /> Pinterest<span>kineticstudiow</span></a></li>
             <li><a href="https://behance.net/kineticstd" target="_blank" rel="noopener"><BehanceIcon /> Behance<span>kineticstd</span></a></li>
-            <li><a href="mailto:hello@kineticstudiow.my.id"><MailIcon /> {f.email}<span>hello@kineticstudiow.my.id</span></a></li>
+            <li><a href="mailto:hello@kineticstudiow.com"><MailIcon /> {f.email}<span>hello@kineticstudiow.com</span></a></li>
             <li><a href={w.href("general", locale)} target="_blank" rel="noopener"><WaIcon /> WhatsApp<span>{f.chatToOrder}</span></a></li>
           </ul>
         </div>

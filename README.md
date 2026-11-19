@@ -75,7 +75,7 @@ Credentials live in Tiyo's enowX vault (by name) or in Vercel env vars, never in
 | Vercel (project `kineticstudiow`) | hosting, env vars, analytics | vault `vercel` |
 | GitHub `Tiyouw/kineticstudiow` | code, Actions backup (secret `SANITY_READ_TOKEN`) | vault `github` |
 | Sanity `kineticstudiow-cms` (`yqf1n0yb`) | CMS. Members: Tiyo, Kinetic's Google account | sanity.io/manage |
-| Cloudflare (zones `kineticstudiow.com`, `kineticstudiow.my.id`) | DNS; Email Routing on `.my.id` only | vault `cloudflare-tiyo` |
+| Cloudflare (zones `kineticstudiow.com`, `kineticstudiow.my.id`) | DNS + Email Routing (both zones) | vault `cloudflare-tiyo` |
 | Google Search Console | indexing (verified by DNS TXT) | Tiyo's Google account |
 
 Env vars (Vercel, production + preview): `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`,
@@ -89,11 +89,13 @@ Optional: `NEXT_PUBLIC_SITE_URL` (overrides the canonical domain), `NEXT_PUBLIC_
 
 DNS (Cloudflare, **DNS only**, not proxied), the same on both zones:
 `A @ 216.198.79.1` and `CNAME www → 428269f923c29648.vercel-dns-017.com`. `kineticstudiow.com` was bought at Spaceship
-(nameservers moved to Cloudflare, 2026-11-19). `kineticstudiow.my.id` also keeps Cloudflare Email Routing MX/SPF/DKIM,
+(nameservers moved to Cloudflare, 2026-11-19). Both zones have Cloudflare Email Routing MX/SPF/DKIM; `.my.id` also keeps
 Mailgun (`mail.` subdomain) and the Google verification TXT: never delete them.
 
-Email: `hello@kineticstudiow.my.id` is a Cloudflare Email Routing rule forwarding to a Gmail inbox
-(forward only; replying *as* hello@ needs Gmail "Send mail as" with an SMTP service).
+Email: `hello@kineticstudiow.com` (shown on the site) and the old `hello@kineticstudiow.my.id` are Cloudflare Email
+Routing rules forwarding to Kinetic's Gmail inbox; `admin@` on both zones forwards to Tiyo's. Catch-all is off. Keep the
+`.my.id` rules: old mail still arrives there. The site itself sends no email (orders go to WhatsApp).
+(Forward only; replying *as* hello@ needs Gmail "Send mail as" with an SMTP service.)
 
 ## Backup and restore
 
@@ -108,8 +110,8 @@ SANITY_AUTH_TOKEN=<a write/admin token> npx sanity dataset import kinetic-sanity
 
 ## Moving to a new domain
 
-Done for `kineticstudiow.com` on 2026-11-19 (steps 1–3 and 5 except the email; 4 and 6 are manual). The email stays
-`hello@kineticstudiow.my.id` until Email Routing is set up on the `.com` zone.
+Done for `kineticstudiow.com` on 2026-11-19 (steps 1–3 and 5 except the email; 4 and 6 are manual). Email moved to
+`hello@kineticstudiow.com` the same day (Email Routing on the `.com` zone).
 
 1. Add the domain to the Vercel project; point its DNS at Vercel (DNS only).
 2. Set `NEXT_PUBLIC_SITE_URL=https://www.<new>` in Vercel and redeploy (or change the fallback in `src/lib/site.ts`).

@@ -41,7 +41,7 @@ export default async function AboutPage({ params }: Props) {
     { k: "Threads", v: "@kinetic.studiow", h: "https://www.threads.com/@kinetic.studiow", ext: true },
     { k: "Pinterest", v: "kineticstudiow", h: "https://www.pinterest.com/kineticstudiow/", ext: true },
     { k: "Behance", v: "kineticstd", h: "https://behance.net/kineticstd", ext: true },
-    { k: a.email, v: "hello@kineticstudiow.my.id", h: "mailto:hello@kineticstudiow.my.id", ext: false },
+    { k: a.email, v: "hello@kineticstudiow.com", h: "mailto:hello@kineticstudiow.com", ext: false },
     { k: "WhatsApp", v: a.waValue, h: w.href("general", locale), ext: true },
   ];
 
