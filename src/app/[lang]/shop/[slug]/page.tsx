@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { SITE_URL, alternates, jsonLd } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { href, locales, type Locale } from "@/lib/i18n";
+import { href, locales, productHref, type Locale } from "@/lib/i18n";
 import { fill } from "@/i18n/pages/product";
 import { prices, getProduct, getProducts, getCopy, getWaLinks } from "@/content";
 import Ticket from "@/components/Ticket";
@@ -77,7 +77,7 @@ export default async function ProductPage({ params }: Props) {
     brand: { "@type": "Brand", name: "Kinetic Studiow" },
     offers: {
       "@type": "Offer",
-      url: `${SITE_URL}/${locale}/shop/${p.slug}`,
+      url: SITE_URL + productHref(locale, p.slug),
       // English pages are for buyers abroad: USD there, rupiah on the Indonesian pages
       priceCurrency: locale === "en" && p.priceUsd ? "USD" : "IDR",
       price: locale === "en" && p.priceUsd ? p.priceUsd : p.priceIdr,

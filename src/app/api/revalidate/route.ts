@@ -1,7 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { after, type NextRequest, NextResponse } from "next/server";
 import { parseBody } from "next-sanity/webhook";
-import { locales } from "@/lib/i18n";
+import { localePath, locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { pingIndexNow } from "@/lib/indexnow";
 import sitemap from "@/app/sitemap";
@@ -26,9 +26,9 @@ export async function POST(req: NextRequest) {
     // a product or a Journal post: its page and the lists that show it; anything else may show on any page
     const urls =
       body?._type === "product" && slug
-        ? locales.flatMap((l) => [`${SITE_URL}/${l}/shop/${slug}`, `${SITE_URL}/${l}/shop`, `${SITE_URL}/${l}`])
+        ? locales.flatMap((l) => [SITE_URL + localePath(l, `/shop/${slug}`), SITE_URL + localePath(l, "/shop"), SITE_URL + localePath(l)])
         : body?._type === "post" && slug
-          ? locales.flatMap((l) => [`${SITE_URL}/${l}/journal/${slug}`, `${SITE_URL}/${l}/journal`])
+          ? locales.flatMap((l) => [SITE_URL + localePath(l, `/journal/${slug}`), SITE_URL + localePath(l, "/journal")])
           : (await sitemap()).map((e) => e.url);
     await pingIndexNow(urls);
     // Journal entries ticked "Kirim ke Threads" go out once published; the daily cron retries any that fail.

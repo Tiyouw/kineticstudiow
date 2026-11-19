@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
-import { locales } from "@/lib/i18n";
+import { localePath, locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { pingIndexNow } from "@/lib/indexnow";
 import { publishPending } from "@/lib/threads";
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
   );
   if (due.length) {
     revalidateTag("sanity");
-    await pingIndexNow(due.flatMap((s) => locales.flatMap((l) => [`${SITE_URL}/${l}/journal/${s}`, `${SITE_URL}/${l}/journal`])));
+    await pingIndexNow(due.flatMap((s) => locales.flatMap((l) => [SITE_URL + localePath(l, `/journal/${s}`), SITE_URL + localePath(l, "/journal")])));
   }
   await db.createIfNotExists({ _id: STATE, _type: "scheduleState" });
   await db.patch(STATE).set({ lastRun: now }).commit();

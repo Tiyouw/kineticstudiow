@@ -52,7 +52,7 @@ export default function SharePanel() {
     return <Card padding={3} radius={2} tone="caution" border><Text size={1}>Isi judul dan klik Generate di Alamat halaman dulu, baru tombol bagikan muncul.</Text></Card>;
   }
 
-  const url = `${SITE_URL}/en/journal/${slug}`;
+  const url = `${SITE_URL}/journal/${slug}`;
   const image = imageUrl(coverRef, projectId, dataset, 1440);
   const download = imageUrl(coverRef, projectId, dataset, 1440, `kinetic-${slug}.jpg`);
   const links = shareLinks(caption, url, image);

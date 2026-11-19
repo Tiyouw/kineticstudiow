@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getPosts, getWaLinks } from "@/content";
-import { href, type Locale, type PageKey } from "@/lib/i18n";
+import { href, localePath, type Locale, type PageKey } from "@/lib/i18n";
 import type { CommonDict } from "@/i18n/common";
 import LangSwitch from "./LangSwitch";
 import TiyoouwCredit from "./TiyoouwCredit";
@@ -39,8 +39,8 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
               <li key={k}><Link href={href(locale, k)} aria-current={current === k ? "page" : undefined}>{c.nav[k]}</Link></li>
             ))}
             {/* the Journal joins the list once it has a post */}
-            <li><Link href={`/${locale}/faq`}>FAQ</Link></li>
-            {posts.length ? <li><Link href={`/${locale}/journal`}>{f.journal}</Link></li> : null}
+            <li><Link href={localePath(locale, "/faq")}>FAQ</Link></li>
+            {posts.length ? <li><Link href={localePath(locale, "/journal")}>{f.journal}</Link></li> : null}
           </ul>
           <div className="f-lang"><LangSwitch locale={locale} label={c.language} id="footer-lang" /></div>
         </div>
@@ -50,7 +50,7 @@ export default async function Footer({ locale, c, current }: { locale: Locale; c
           {f.copyright} · {f.websiteBy}{" "}
           <TiyoouwCredit className="f-tiyo"><span>tiyoouw.com</span></TiyoouwCredit>
         </p>
-        <p className="label" style={{ fontSize: 11 }}>{f.place} · <Link className="f-privacy" href={`/${locale}/privacy`}>{f.privacy}</Link></p>
+        <p className="label" style={{ fontSize: 11 }}>{f.place} · <Link className="f-privacy" href={localePath(locale, "/privacy")}>{f.privacy}</Link></p>
       </div>
     </footer>
   );

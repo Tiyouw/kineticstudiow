@@ -142,7 +142,7 @@ async function waitReady(id: string, token: string) {
 
 async function postOne(p: PendingPost, a: { token: string; userId: string }) {
   // a Journal article links to its page; a Threads-only post to its optional link
-  const url = p.kind === "short" ? p.link?.trim() : `${SITE_URL}/en/journal/${p.slug}`;
+  const url = p.kind === "short" ? p.link?.trim() : `${SITE_URL}/journal/${p.slug}`;
   const caption = p.caption?.trim() || p.title?.en || "";
   const text = url ? threadsText(caption, url) : trimTo(caption, 500);
   const images = [p.cover, ...(p.gallery ?? [])].map((ref) => imageUrl(ref, projectId, dataset, 1440)).filter((u): u is string => !!u).slice(0, 10);

@@ -30,7 +30,7 @@ export default function PreviewPane({ document, schemaType }: Props) {
   const [ready, setReady] = useState(false); // draft mode is on for this browser
   const [src, setSrc] = useState<string | null>(null);
   const frame = useRef<HTMLIFrameElement>(null);
-  const path = `/${lang}${pathOf(schemaType.name, doc)}`;
+  const path = ((lang === "en" ? "" : "/id") + pathOf(schemaType.name, doc)) || "/";
 
   // turn draft mode on once, through the same secret handshake Pratinjau uses
   useEffect(() => {

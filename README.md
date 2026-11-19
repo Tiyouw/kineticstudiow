@@ -13,14 +13,18 @@ Built by **tiyoouw** (Tiyo). Orders go to WhatsApp with prefilled messages; ther
 - Next.js 15.5 (App Router), React 19, TypeScript, plain CSS
 - Sanity 4 as CMS (`next-sanity` 11). **Stay on Sanity 4 while on Next 15**: Sanity 5 needs a newer React than Next 15 bundles and the build breaks.
 - Vercel hosting + Web Analytics
-- Languages: `/en` (default, the target market) and `/id`. Bare paths redirect to `/en`.
+- Languages: English is the default with **no prefix** (`/`, `/work`, `/shop/x`); Indonesian lives under `/id`
+  (`/id`, `/id/work`). `src/middleware.ts` rewrites unprefixed paths to the `[lang]="en"` route and 308-redirects
+  old `/en/...` URLs to the unprefixed path. No language detection: without `/id` a visitor always gets English.
+  Build links with `localePath()` / `href()` from `src/lib/i18n.ts`, never by hand.
+- Old domain: `vercel.json` redirects `(www.)kineticstudiow.my.id/*` (and `/en/*`) to the final `.com` URL in one hop.
 
 ## Develop
 
 ```bash
 npm install
 vercel env pull .env.local   # or copy the Sanity vars from Vercel
-npm run dev                  # http://localhost:3000 -> /en
+npm run dev                  # http://localhost:3000 (English), /id (Indonesian)
 ```
 
 The Sanity CLI needs Node 20.19+ / 22 (`npx -y node@22 node_modules/sanity/bin/sanity ...` on older machines).

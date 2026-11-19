@@ -4,7 +4,7 @@ import WaProvider from "@/components/WaProvider";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { Anton, Barlow } from "next/font/google";
-import { isLocale, locales, type Locale } from "@/lib/i18n";
+import { isLocale, localePath, locales, type Locale } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/next";
 import { draftMode } from "next/headers";
@@ -85,7 +85,7 @@ export default async function LangLayout({ children, params }: { children: React
           <>
             {/* Pratinjau in the Studio: refreshes on every edit; the link leaves draft mode */}
             <VisualEditing />
-            <a id="draft-exit" href={`/api/draft-mode/disable?to=/${locale}`}>Keluar pratinjau</a>
+            <a id="draft-exit" href={`/api/draft-mode/disable?to=${localePath(locale)}`}>Keluar pratinjau</a>
           </>
         ) : null}
       </body>

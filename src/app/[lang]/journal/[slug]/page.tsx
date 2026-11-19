@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "next-sanity";
 import { SITE_URL, alternates, jsonLd } from "@/lib/site";
-import { locales, productHref, projectHref, type Locale } from "@/lib/i18n";
+import { localePath, locales, productHref, projectHref, type Locale } from "@/lib/i18n";
 import { getCopy, getPost, getPosts } from "@/content";
 import PostCard, { postDate, postHref } from "@/components/journal/PostCard";
 import CtaBand from "@/components/CtaBand";
@@ -90,7 +90,7 @@ export default async function PostPage({ params }: Props) {
         <nav id="crumbs" aria-label={t.crumbs}>
           <div className="wrap">
             <ol>
-              <li><Link href={`/${locale}/journal`}>{t.all}</Link></li>
+              <li><Link href={localePath(locale, "/journal")}>{t.all}</Link></li>
               <li aria-current="page"><time dateTime={p.publishedAt}>{postDate(p.publishedAt, locale)}</time></li>
             </ol>
           </div>
@@ -142,7 +142,7 @@ export default async function PostPage({ params }: Props) {
             <div className="wrap">
               <div className="sec-head jr-more-head">
                 <h2 className="disp h2 rough">{t.more}</h2>
-                <Link className="link" href={`/${locale}/journal`}>{t.all} <ArrowIcon /></Link>
+                <Link className="link" href={localePath(locale, "/journal")}>{t.all} <ArrowIcon /></Link>
               </div>
               <div className="jr-grid jr-grid-more">
                 {more.map((x) => <PostCard key={x.slug} p={x} locale={locale} lazy />)}

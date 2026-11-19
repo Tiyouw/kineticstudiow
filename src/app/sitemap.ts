@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { locales } from "@/lib/i18n";
+import { defaultLocale, localePath, locales } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import { getPosts, getProducts, getProjects } from "@/content";
 
@@ -16,10 +16,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
   return paths.flatMap((path) =>
     locales.map((l) => ({
-      url: `${SITE_URL}/${l}${path}`,
+      url: SITE_URL + localePath(l, path),
       changeFrequency: path.startsWith("/shop") || path === "/journal" ? ("weekly" as const) : path === "/privacy" ? ("yearly" as const) : ("monthly" as const),
       priority: path === "" ? 1 : path === "/privacy" ? 0.2 : path.split("/").length > 2 ? 0.6 : 0.8,
-      alternates: { languages: Object.fromEntries(locales.map((x) => [x, `${SITE_URL}/${x}${path}`])) },
+      alternates: { languages: { ...Object.fromEntries(locales.map((x) => [x, SITE_URL + localePath(x, path)])), "x-default": SITE_URL + localePath(defaultLocale, path) } },
     })),
   );
 }
