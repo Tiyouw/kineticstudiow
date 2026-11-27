@@ -139,6 +139,8 @@ function drawDJ() {
   if (djv.readyState >= 2) { gl.viewport(0, 0, dj.width, dj.height); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, djv); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); djFrames++; }
 }
 function djLoop() { if (st.hidden) return; drawDJ(); djv.requestVideoFrameCallback ? djv.requestVideoFrameCallback(djLoop) : requestAnimationFrame(djLoop); }
+// a paused video fires no requestVideoFrameCallback: draw whenever a still frame becomes available
+djv.addEventListener('seeked', drawDJ); djv.addEventListener('canplay', drawDJ);
 // the host does not answer byte-range requests (iOS Safari needs 206 for <video src>), so play from a blob: URL
 const blobs = {};
 const djURL = o => blobs[o] || (blobs[o] = fetch(`${BASE}media/dj-${o}.mp4`).then(r => { if (!r.ok) throw new Error(r.status); return r.blob(); })
@@ -148,7 +150,7 @@ async function loadDJ(o) {
   let src; try { src = await djURL(o); } catch (e) { msg(T.djFail); return; }
   if (S.opt !== o) return;
   S.src = `media/dj-${o}.mp4`; djv.src = src;
-  djv.addEventListener('loadeddata', () => { djv.currentTime = 0; drawDJ(); if (S.playing) djv.play().catch(() => { }); }, { once: true });
+  djv.addEventListener('loadeddata', () => { drawDJ(); if (S.playing) djv.play().catch(() => { }); }, { once: true });
 }
 const setPlay = p => { S.playing = p; const b = $('#st-play'); b.textContent = p ? '❚❚' : '▶'; b.setAttribute('aria-pressed', !p); b.setAttribute('aria-label', p ? T.pause : T.play); p ? djv.play().catch(() => { }) : djv.pause(); };
 $('#st-play').onclick = () => { if (!S.playing) userPlay = true; setPlay(!S.playing); };
