@@ -34,6 +34,7 @@ The Sanity CLI needs Node 20.19+ / 22 (`npx -y node@22 node_modules/sanity/bin/s
 | Path | What |
 |---|---|
 | `src/app/[lang]/` | pages: home, work, shop, shop/[slug], custom-order, about, not-found, catch-all 404 |
+| `public/assets/zine/spin-it-loud/` | the Spin It Loud zine AR page (`/zine/spin-it-loud`, `/id/zine/spin-it-loud`): static `en.html`/`id.html` + assets, no site chrome; `src/middleware.ts` rewrites the two URLs to them. Built by `ar/build.py` in the kinetic-spin-it-loud repo. Credit: Motion & AR by tiyoouw.com |
 | `src/app/studio/` | the Sanity Studio route (`/studio`, noindex) |
 | `src/app/api/revalidate/` | Sanity webhook target: clears the `sanity` cache tag |
 | `src/app/sitemap.ts`, `robots.ts` | SEO endpoints (all pages × both languages, hreflang) |

@@ -8,8 +8,23 @@ import { defaultLocale } from "@/lib/i18n";
  * - anything else is English: rewritten (not redirected) to the [lang]="en" route.
  * No language detection from Accept-Language or cookies: without /id a visitor always gets English.
  */
+/**
+ * Standalone zine pages (no site chrome, full-screen camera): static files in public/assets/zine/<name>/<lang>.html,
+ * served at /zine/<name> (English) and /id/zine/<name> (Indonesian). Built in the kinetic-spin-it-loud repo (ar/build.py).
+ */
+const ZINE: Record<string, string> = {
+  "/zine/spin-it-loud": "/assets/zine/spin-it-loud/en.html",
+  "/id/zine/spin-it-loud": "/assets/zine/spin-it-loud/id.html",
+};
+
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const zine = ZINE[pathname];
+  if (zine) {
+    const url = req.nextUrl.clone();
+    url.pathname = zine;
+    return NextResponse.rewrite(url);
+  }
   const first = pathname.split("/")[1] ?? "";
   if (first === defaultLocale) {
     const url = req.nextUrl.clone();
